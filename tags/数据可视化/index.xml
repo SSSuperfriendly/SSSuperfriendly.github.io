@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Superfriendly 的个人博客</title>
-    <link>https://SSSuperfriendly.github.io/</link>
-    <description>Recent content on Superfriendly 的个人博客</description>
+    <title>数据可视化 on Superfriendly 的个人博客</title>
+    <link>https://SSSuperfriendly.github.io/tags/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96/</link>
+    <description>Recent content in 数据可视化 on Superfriendly 的个人博客</description>
     <generator>Hugo -- 0.148.1</generator>
     <language>zh-cn</language>
     <lastBuildDate>Thu, 07 Aug 2025 14:09:42 +0800</lastBuildDate>
-    <atom:link href="https://SSSuperfriendly.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://SSSuperfriendly.github.io/tags/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>工具分享|交互式图表 Python 库 - D3Blocks</title>
       <link>https://SSSuperfriendly.github.io/posts/new-article/</link>
@@ -67,15 +67,6 @@ D3 的优势在于其高性能、可深度定制的图表，并且符合 Web 标
 &lt;h2 id=&#34;详细示例&#34;&gt;详细示例&lt;/h2&gt;
 &lt;h3 id=&#34;1-粒子动画图表---基础版本&#34;&gt;1. 粒子动画图表 - 基础版本&lt;/h3&gt;
 &lt;p&gt;将文字转换为交互式粒子动画，鼠标移动或触摸文本会导致粒子弹跳。&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>我的第一篇文章</title>
-      <link>https://SSSuperfriendly.github.io/posts/my-first-post/</link>
-      <pubDate>Sun, 27 Jul 2025 18:30:10 +0800</pubDate>
-      <guid>https://SSSuperfriendly.github.io/posts/my-first-post/</guid>
-      <description>&lt;p&gt;你好，世界！&lt;/p&gt;
-&lt;p&gt;这是我用 Hugo 搭建的第一个博客，感觉太酷了！&lt;/p&gt;
-&lt;p&gt;之后我将依此为媒介之一来和大家分享感悟，共同成长。&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

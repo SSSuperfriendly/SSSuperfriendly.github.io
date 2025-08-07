@@ -1,19 +1,30 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Superfriendly 的个人博客</title>
-    <link>https://SSSuperfriendly.github.io/</link>
-    <description>Recent content on Superfriendly 的个人博客</description>
+    <title>D3.js on Superfriendly 的个人博客</title>
+    <link>http://localhost:1313/tags/d3.js/</link>
+    <description>Recent content in D3.js on Superfriendly 的个人博客</description>
     <generator>Hugo -- 0.148.1</generator>
     <language>zh-cn</language>
     <lastBuildDate>Thu, 07 Aug 2025 14:09:42 +0800</lastBuildDate>
-    <atom:link href="https://SSSuperfriendly.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/d3.js/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>工具分享|交互式图表 Python 库 - D3Blocks</title>
-      <link>https://SSSuperfriendly.github.io/posts/new-article/</link>
+      <link>http://localhost:1313/posts/new-article/</link>
       <pubDate>Thu, 07 Aug 2025 14:09:42 +0800</pubDate>
-      <guid>https://SSSuperfriendly.github.io/posts/new-article/</guid>
-      <description>&lt;p&gt;D3Blocks 融合 Python 与 D3.js，生成 15 种交互式图表，输出为独立 HTML，便于共享。
+      <guid>http://localhost:1313/posts/new-article/</guid>
+      <description>&lt;h2 id=&#34;项目信息&#34;&gt;项目信息&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;名称:&lt;/strong&gt; d3blocks-comprehensive-guide&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;版本:&lt;/strong&gt; 2.0.0&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;描述:&lt;/strong&gt; D3Blocks完全指南：15种交互式图表的Python实现，融合D3.js强大功能&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;作者:&lt;/strong&gt; Superfriendly&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;创建日期:&lt;/strong&gt; 2025-08-07&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;文章长度:&lt;/strong&gt; 约10000字&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;建议阅读时间:&lt;/strong&gt; 20分钟&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;引言&#34;&gt;引言&lt;/h2&gt;
+&lt;p&gt;D3Blocks 融合 Python 与 D3.js，生成 15 种交互式图表，输出为独立 HTML，便于共享。
 用 Python 创建交互式、独立、可共享且视觉美观的图表确实是一项挑战。解决方案是 D3blocks！
 它基于 D3 JavaScript 的图形处理引擎构建，但可使用 Python 进行配置，并且只需一行代码即可完成！&lt;/p&gt;
 &lt;h3 id=&#34;为什么选择-d3js&#34;&gt;为什么选择 D3.js?&lt;/h3&gt;
@@ -67,15 +78,6 @@ D3 的优势在于其高性能、可深度定制的图表，并且符合 Web 标
 &lt;h2 id=&#34;详细示例&#34;&gt;详细示例&lt;/h2&gt;
 &lt;h3 id=&#34;1-粒子动画图表---基础版本&#34;&gt;1. 粒子动画图表 - 基础版本&lt;/h3&gt;
 &lt;p&gt;将文字转换为交互式粒子动画，鼠标移动或触摸文本会导致粒子弹跳。&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>我的第一篇文章</title>
-      <link>https://SSSuperfriendly.github.io/posts/my-first-post/</link>
-      <pubDate>Sun, 27 Jul 2025 18:30:10 +0800</pubDate>
-      <guid>https://SSSuperfriendly.github.io/posts/my-first-post/</guid>
-      <description>&lt;p&gt;你好，世界！&lt;/p&gt;
-&lt;p&gt;这是我用 Hugo 搭建的第一个博客，感觉太酷了！&lt;/p&gt;
-&lt;p&gt;之后我将依此为媒介之一来和大家分享感悟，共同成长。&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>
