@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>个人感悟 on Superfriendly 的个人博客</title>
+    <link>http://localhost:1313/categories/%E4%B8%AA%E4%BA%BA%E6%84%9F%E6%82%9F/</link>
+    <description>Recent content in 个人感悟 on Superfriendly 的个人博客</description>
+    <generator>Hugo -- 0.148.1</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 27 Jul 2025 18:30:10 +0800</lastBuildDate>
+    <atom:link href="http://localhost:1313/categories/%E4%B8%AA%E4%BA%BA%E6%84%9F%E6%82%9F/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>我的第一篇文章</title>
+      <link>http://localhost:1313/posts/my-first-post/</link>
+      <pubDate>Sun, 27 Jul 2025 18:30:10 +0800</pubDate>
+      <guid>http://localhost:1313/posts/my-first-post/</guid>
+      <description>这是我用 Hugo 搭建的第一个博客，感觉太酷了！之后我将依此为媒介之一来和大家分享感悟，共同成长。</description>
+    </item>
+  </channel>
+</rss>
