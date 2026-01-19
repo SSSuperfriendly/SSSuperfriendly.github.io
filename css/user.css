@@ -1,0 +1,25 @@
+/* =========================================
+   MathJax 公式强制美化补丁
+   ========================================= */
+/* 1. 消除点击公式时的丑陋蓝框，并稍微放大公式 */
+.mjx-container,
+.MathJax {
+  outline: 0 !important;
+  font-size: 1.1em !important; /* 稍微调大一点，看起来更清晰 */
+}
+/* 2. 【核心修复】重置行高 */
+/* 这是解决“丑陋竖线”和“上标乱飞”的关键！ */
+.mjx-container *,
+.MathJax * {
+  line-height: normal !important;
+  box-sizing: content-box !important;
+}
+/* 3. 优化运算符间距 */
+mjx-mo {
+  margin: 0 0.2em !important;
+}
+/* 4. 针对那个丑陋的“红框”公式特别修复 */
+/* 确保范数符号 || 紧凑且连续 */
+mjx-texatom {
+  line-height: normal !important;
+}

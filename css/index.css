@@ -1,3 +1,19 @@
+.mjx-container,
+.MathJax {
+  outline: 0 !important;
+  font-size: 1.1em !important; /* 稍微调大一点，看起来更清晰 */
+}
+.mjx-container *,
+.MathJax * {
+  line-height: normal !important;
+  box-sizing: content-box !important;
+}
+mjx-mo {
+  margin: 0 0.2em !important;
+}
+mjx-texatom {
+  line-height: normal !important;
+}
 .page pre,
 .page .highlight {
   overflow: auto;
