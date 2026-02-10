@@ -1,0 +1,109 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5"><title>Kunpeng Chen</title><meta name="author" content="Chen Kunpeng"><link rel="shortcut icon" href="/img/favicon.png?v=20260117"><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css"><meta name="generator" content="Hexo 8.1.1"></head><body><header id="page_header"><div class="header_wrap"><div id="blog_name"><a class="blog_title" id="site-name" href="/">Kunpeng Chen</a></div><button class="menus_icon"><div class="navicon"></div></button><ul class="menus_items"><li class="menus_item"><a class="site-page" href="/"> About Me</a></li><li class="menus_item"><a class="site-page" href="/news/"> News</a></li><li class="menus_item"><a class="site-page" href="/#Publications"> Publications</a></li><li class="menus_item"><a class="site-page" href="/categories/Blogs/"> Blogs</a></li></ul></div></header><main id="page_main"><div class="side-card sticky"><div class="card-wrap" itemscope itemtype="http://schema.org/Person"><div class="author-avatar"><img class="avatar-img" src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/profile.png'" alt="avatar"></div><div class="author-discrip"><h3>Chen Kunpeng</h3><p class="author-bio"><strong>Tongji University</strong>. Focusing on Trustworthy AI & Federated Learning.</p></div><div class="author-links"><button class="btn m-social-links">Links</button><ul class="social-icons"><li><a class="social-icon" href="https://x.com/4tHobieb8n15222/" target="_blank"><i class="fab fa-twitter" aria-hidden="true"></i></a></li><li><a class="social-icon" href="/" target="_blank"><i class="fab fa-facebook-square" aria-hidden="true"></i></a></li><li><a class="social-icon" href="https://github.com/SSSuperfriendly" target="_blank"><i class="fab fa-github" aria-hidden="true"></i></a></li><li><a class="social-icon" href="/" target="_blank"><i class="fab fa-stack-overflow" aria-hidden="true"></i></a></li><li><a class="social-icon" href="/" target="_blank"><i class="fab fa-linkedin" aria-hidden="true"></i></a></li><li><a class="social-icon" href="/" target="_blank"><i class="fab fa-weibo" aria-hidden="true"></i></a></li><li><a class="social-icon" href="/" target="_blank"><i class="fab fa-weixin" aria-hidden="true"></i></a></li><li><a class="social-icon" href="/" target="_blank"><i class="fab fa-qq" aria-hidden="true"></i></a></li><li><a class="social-icon" href="mailto:chenkunpeng@tongji.edu.cn" target="_blank"><i class="fas fa-envelope" aria-hidden="true"></i></a></li><li><a class="social-icon" href="/" target="_blank"><i class="fas fa-rss" aria-hidden="true"></i></a></li></ul><ul class="social-links"><li><a class="e-social-link" href="/" target="_blank"><i class="fas fa-graduation-cap" aria-hidden="true"></i><span>Google Scholar</span></a></li><li><a class="e-social-link" href="/" target="_blank"><i class="fab fa-orcid" aria-hidden="true"></i><span>ORCID</span></a></li></ul></div><a class="cv-links" href="/attaches/CV.pdf" target="_blank"><i class="fas fa-file-pdf" aria-hidden="true"><span>My Detail CV</span></i></a></div></div><div class="page" itemscope itemtype="http://schema.org/CreativeWork"><h2 class="page-title">【Federated Continual Learning】一份阶段性见解</h2><article><blockquote>
+<p><strong>写在前面</strong>：联邦持续学习（FCL）并非简单的“FL + CL”。它是在**异构性（Heterogeneity）<strong>和</strong>动态性（Dynamics）<strong>的双重约束下，解决</strong>灾难性遗忘（Catastrophic Forgetting）<strong>与</strong>客户端干扰（Inter-client Interference）**的系统工程。本文将从任务场景分类（特别是FCIL）、核心挑战及主流技术路线三个维度进行深度拆解。</p>
+</blockquote>
+<hr>
+<h2 id="1-问题定义与数学表述">1. 问题定义与数学表述</h2>
+<p>在 FCL 设置中，我们要解决的是一个<strong>动态的多目标优化问题</strong>。<br>
+假设有  个客户端，每个客户端  在时刻  接收到新的任务/数据流 。我们的目标是学习一个全局模型 ，使其在所有历史任务  上的累积风险最小化：</p>
+<p>这里存在两个核心矛盾：</p>
+<ol>
+<li><strong>Intra-client Forgetting (内部遗忘)</strong>: 客户端  学习  时，会遗忘 。</li>
+<li><strong>Inter-client Interference (外部干扰)</strong>: 客户端  的梯度更新可能与客户端  的知识相冲突（Gradient Conflict），导致聚合后的全局模型性能下降。</li>
+</ol>
+<hr>
+<h2 id="2-FCL-的分类学：从任务定义出发">2. FCL 的分类学：从任务定义出发</h2>
+<p>根据任务标识（Task ID）在训练和推理阶段的可用性，FCL 主要分为三类。其中 <strong>FCIL</strong> 是目前最具挑战性、也是顶会（CVPR, ICCV, NeurIPS）最关注的方向。</p>
+<h3 id="2-1-Federated-Task-Incremental-Learning-FTIL">2.1 Federated Task-Incremental Learning (FTIL)</h3>
+<ul>
+<li><strong>定义</strong>：训练和测试时都知道 Task ID。模型可以使用特定于任务的头（Multi-head）或参数。</li>
+<li><strong>难度</strong>：⭐⭐</li>
+<li><strong>特点</strong>：因为知道是哪个任务，不同任务间的干扰较小。可以通过**参数隔离（Parameter Isolation）<strong>或</strong>掩码机制（Masking）**轻松解决。</li>
+</ul>
+<h3 id="2-2-Federated-Domain-Incremental-Learning-FDIL">2.2 Federated Domain-Incremental Learning (FDIL)</h3>
+<ul>
+<li><strong>定义</strong>：任务 ID 未知，但标签空间（Label Space）固定不变。变化的是输入数据的分布 （即 Domain Shift）。</li>
+<li><strong>难度</strong>：⭐⭐⭐</li>
+<li><strong>场景</strong>：例如自动驾驶车队，从晴天学到雨天，识别的对象始终是车和行人。</li>
+<li><strong>难点</strong>：在于如何学习<strong>域不变特征（Domain-Invariant Features）</strong>。</li>
+</ul>
+<h3 id="2-3-Federated-Class-Incremental-Learning-FCIL-——-你的重点关注区">2.3 Federated Class-Incremental Learning (FCIL) —— <em>你的重点关注区</em></h3>
+<ul>
+<li><strong>定义</strong>：Task ID 未知，且标签空间随时间动态扩张（）。模型需要识别所有见过的类别。</li>
+<li><strong>难度</strong>：⭐⭐⭐⭐⭐</li>
+<li><strong>痛点</strong>：</li>
+<li><strong>分类器偏差（Classifier Bias）</strong>：模型倾向于将输入预测为最新学习的类别（Recency Bias），因为最后一层的分类头权重范数通常更大。</li>
+<li><strong>语义漂移（Semantic Drift）</strong>：旧类别的特征提取器被新数据更新后，旧类别的 Embedding 分布发生偏移，导致原来的分类边界失效。</li>
+<li><strong>非独立同分布（Non-IID）加剧</strong>：在 FCIL 中，不同客户端不仅当前任务不同，历史任务序列也不同，导致聚合极其困难。</li>
+</ul>
+<hr>
+<h2 id="3-核心技术路线与-SOTA-方法">3. 核心技术路线与 SOTA 方法</h2>
+<p>针对上述问题，目前学术界的主流解法可以归纳为以下四类：</p>
+<h3 id="3-1-基于重放的方法-Replay-based">3.1 基于重放的方法 (Replay-based)</h3>
+<p>最直接的方法是让客户端“复习”旧数据。</p>
+<ul>
+<li>
+<p><strong>Experience Replay (ER)</strong>: 缓存少量旧样本。</p>
+</li>
+<li>
+<p><em>缺点</em>：违反 FL 的隐私原则（存储原始数据）。</p>
+</li>
+<li>
+<p><strong>Generative Replay (生成式重放)</strong>: 训练一个生成模型（GAN 或 Diffusion）来伪造旧数据。</p>
+</li>
+<li>
+<p><em>代表作</em>：<strong>FedGAN</strong>, <strong>DGL</strong> (Deep Generative Replay in FL)。</p>
+</li>
+<li>
+<p><em>优势</em>：不存数据，保护隐私。</p>
+</li>
+<li>
+<p><em>结合你的研究</em>：你之前的 <strong>FedKTL</strong> 调研就是这一类，利用服务器端的生成器来补充知识。</p>
+</li>
+</ul>
+<h3 id="3-2-基于正则化的方法-Regularization-based">3.2 基于正则化的方法 (Regularization-based)</h3>
+<p>通过数学约束，限制重要参数的更新幅度。</p>
+<ul>
+<li><strong>EWC (Elastic Weight Consolidation)</strong>: 计算 Fisher 信息矩阵，惩罚对旧任务重要的参数变动。</li>
+<li><strong>Knowledge Distillation (知识蒸馏)</strong>: 利用旧模型（Teacher）指导新模型（Student），保持输出分布的一致性。</li>
+<li><em>代表作</em>：<strong>FedWeIT</strong> (Decomposed weights)。</li>
+<li><em>在图学习中</em>：<strong>LwF-based GNN</strong>，约束节点嵌入（Node Embedding）不要发生剧烈变化。</li>
+</ul>
+<h3 id="3-3-基于架构的方法-Architecture-based">3.3 基于架构的方法 (Architecture-based)</h3>
+<p>根据任务动态扩展模型结构，或进行参数分解。</p>
+<ul>
+<li><strong>Parameter Decomposition (参数分解)</strong>: 将模型分为 <strong>Global Shared Parameters</strong>（提取通用特征）和 <strong>Local Personalized Parameters</strong>（适应特定任务）。</li>
+<li><em>代表作</em>：<strong>FedPer</strong>, <strong>FedRep</strong>。</li>
+<li><em>关联你的 HiGraphFCL</em>：你提到的“大小模型协同”和“图结构解耦”正是这种思想的高级变体——将“不变子图”作为 Global，“变化子图”作为 Local。</li>
+</ul>
+<h3 id="3-4-基于原型的方法-Prototype-based-——-适合图学习">3.4 基于原型的方法 (Prototype-based) —— <em>适合图学习</em></h3>
+<p>不传输梯度，而是传输类别的<strong>原型（Prototype/Centroid）</strong>。</p>
+<ul>
+<li><strong>机制</strong>：客户端上传各类别特征的均值，服务器聚合后下发全局原型。</li>
+<li><strong>优势</strong>：通信量极小，且对异构性有很强的鲁棒性。</li>
+<li><strong>代表作</strong>：<strong>FedProto</strong> (AAAI 2022)。</li>
+<li><strong>在 FCIL 中的应用</strong>：利用旧类别的原型来校准分类器，防止分类边界偏移。</li>
+</ul>
+<hr>
+<h2 id="4-针对-Graph-FCL-图联邦持续学习-的特殊考量">4. 针对 Graph FCL (图联邦持续学习) 的特殊考量</h2>
+<ol>
+<li><strong>拓扑结构的灾难性遗忘</strong>：不仅仅是遗忘节点特征，GNN 还会遗忘“结构模式”（比如某种特定的子图 Motif）。</li>
+</ol>
+<ul>
+<li><em>Challenge</em>: 新任务的图结构可能导致旧任务学到的聚合路径（Message Passing Path）失效。</li>
+</ul>
+<ol start="2">
+<li><strong>结构异构性 (Structural Heterogeneity)</strong>：不同客户端的图结构属性（如度分布、聚类系数）差异巨大。</li>
+<li><strong>链路重连与扩张</strong>：在持续学习中，节点可能会随时间新增边（Link Prediction），这会动态改变图的拓扑，导致之前的 Embedding 彻底失效。</li>
+</ol>
+<hr>
+<h2 id="5-从“安全与互信”切入-FCIL">5. 从“安全与互信”切入 FCIL</h2>
+<p>常规的 FCIL 综述往往忽略了<strong>Security</strong>。</p>
+<ul>
+<li><strong>Attack Surface Expansion</strong>: 在持续学习过程中，攻击者有更多的时间窗口进行投毒（Poisoning）。而且，由于数据分布本身就在变（Concept Drift），很难区分“自然的数据漂移”和“恶意的后门注入”。</li>
+<li><strong>Trust Decay (信任衰减)</strong>: 一个曾经可信的客户端，可能在第  轮任务中因为数据质量下降或被攻陷而变得不可信。现有的 FCL 缺乏<strong>动态信任评估机制</strong>。</li>
+<li><strong>你的 HiGraphFCL 的位置</strong>：</li>
+<li>现有的 FCL 只关注 <strong>Accuracy</strong> (抗遗忘)。</li>
+<li>现有的 Secure FL 只关注 <strong>Static Robustness</strong> (静态防御)。</li>
+<li><strong>Your Gap</strong>: 缺乏一个同时解决 <strong>Continual Learning + Graph Heterogeneity + Dynamic Trust</strong> 的统一框架。</li>
+</ul>
+</article></div></main><div class="nav-wrap"><div class="nav"><button class="site-nav"><div class="navicon"></div></button><ul class="nav_items"><li class="nav_item"><a class="nav-page" href="/"> About Me</a></li><li class="nav_item"><a class="nav-page" href="/news/"> News</a></li><li class="nav_item"><a class="nav-page" href="/#Publications"> Publications</a></li><li class="nav_item"><a class="nav-page" href="/categories/Blogs/"> Blogs</a></li></ul></div><div class="cd-top"><i class="fa fa-arrow-up" aria-hidden="true"></i></div></div><footer id="page_footer"><div class="footer_wrap"><div class="copyright">&copy;2025 - 2026 by Chen Kunpeng</div><div class="theme-info">Powered by <a target="_blank" href="https://hexo.io" rel="nofollow noopener">Hexo</a> & <a target="_blank" href="https://github.com/PhosphorW/hexo-theme-academia" rel="nofollow noopener">Academia Theme</a></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery-pjax@latest/jquery.pjax.min.js"></script><script src="/js/main.js"></script></body></html>
