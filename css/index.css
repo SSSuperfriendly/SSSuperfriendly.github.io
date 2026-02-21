@@ -1046,108 +1046,78 @@ blockquote p {
 ::-webkit-scrollbar-thumb {
   background-color: rgba(122,130,136,0.4);
 }
+html,
+body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
 @media (max-width: 34em) {
-  html,
-  body {
-    overflow-x: hidden;
-    max-width: 100%;
-  }
-  #page_main {
-    padding-left: 0.8rem;
-    padding-right: 0.8rem;
-    margin-top: 1.6rem;
-  }
   .side-card {
-    width: 100%;
-    max-width: 100%;
+    width: 100% !important;
+    float: none !important;
+    margin-right: 0 !important;
     box-sizing: border-box;
-    overflow: hidden;
-    margin-bottom: 1.2rem;
   }
   .side-card .card-wrap {
-    display: flex;
-    flex-wrap: nowrap;
-    align-items: flex-start;
-    padding: 10px 12px;
-    box-sizing: border-box;
+    display: block;
+    padding: 10px 14px;
   }
   .author-avatar {
     display: block;
-    flex-shrink: 0;
-    width: 64px;
-    height: 64px;
+    width: auto;
+    height: auto;
+    text-align: left;
+    margin-bottom: 8px;
   }
   .author-avatar img {
     width: 64px;
     max-width: 64px;
     border-radius: 50%;
-    padding: 0;
   }
   .author-discrip {
     display: block;
-    flex: 1;
-    min-width: 0;
-    padding-left: 12px;
-    padding-right: 8px;
+    width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+    line-height: 1.4;
+    margin-bottom: 6px;
   }
   .author-discrip h3 {
-    font-size: 1.6rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    font-size: 1.8rem;
+    margin-bottom: 4px;
   }
   .author-discrip .author-bio {
-    font-size: 1.2rem;
-    white-space: normal;
-    word-break: break-word;
+    font-size: 1.3rem;
   }
   .author-links {
     display: block;
-    flex-shrink: 0;
     position: relative;
-    vertical-align: top;
   }
   .cv-links {
     display: inline-block;
-    margin-left: 76px;
-    margin-top: 4px;
+    margin-left: 0;
+    margin-top: 6px;
     font-size: 1.3rem;
   }
   .page {
-    width: 100%;
-    max-width: 100%;
-    float: none;
+    width: 100% !important;
+    float: none !important;
+    margin-right: 0 !important;
     box-sizing: border-box;
-    overflow-x: hidden;
-  }
-  .page article,
-  .page-title {
-    padding-left: 0.8rem;
-    padding-right: 0.8rem;
   }
   .page article {
     word-break: break-word;
     overflow-wrap: break-word;
   }
-  .page article h1 {
-    font-size: 2.4rem;
-  }
-  .page article h2 {
-    font-size: 2.2rem;
-  }
-  .page article h3 {
-    font-size: 2rem;
-  }
-  .page article .highlight {
+  .page article .highlight,
+  .page article pre,
+  .page article table {
     overflow-x: auto;
     max-width: 100%;
     -webkit-overflow-scrolling: touch;
   }
   .page article table {
     display: block;
-    overflow-x: auto;
-    max-width: 100%;
-    -webkit-overflow-scrolling: touch;
   }
   .page article img {
     max-width: 100%;
