@@ -1,18 +1,21 @@
-.mjx-container,
-.MathJax {
-  outline: 0 !important;
-  font-size: 1.1em !important; /* 稍微调大一点，看起来更清晰 */
+.katex {
+  font-size: 1.1em !important;
+  line-height: normal !important;
 }
-.mjx-container *,
-.MathJax * {
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.5em 0;
+  margin: 1em 0 !important;
+}
+.katex-html {
   line-height: normal !important;
   box-sizing: content-box !important;
 }
-mjx-mo {
-  margin: 0 0.2em !important;
-}
-mjx-texatom {
-  line-height: normal !important;
+.katex-error {
+  color: #c00;
+  font-family: monospace;
+  font-size: 0.9em;
 }
 .share-section {
   margin-top: 2.5em;
