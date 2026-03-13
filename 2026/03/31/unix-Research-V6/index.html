@@ -1,0 +1,140 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5"><title>Kunpeng Chen</title><meta name="author" content="Chen Kunpeng"><link rel="shortcut icon" href="/img/favicon.png?v=20260117"><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false},{left:'\\[',right:'\\]',display:true},{left:'\\(',right:'\\)',display:false}],throwOnError:false,strict:false})"></script><meta name="generator" content="Hexo 8.1.1"></head><body><header id="page_header"><div class="header_wrap"><div id="blog_name"><a class="blog_title" id="site-name" href="/">Kunpeng Chen</a></div><button class="menus_icon"><div class="navicon"></div></button><ul class="menus_items"><li class="menus_item"><a class="site-page" href="/"> About Me</a></li><li class="menus_item"><a class="site-page" href="/news/"> News</a></li><li class="menus_item"><a class="site-page" href="/#Publications"> Publications</a></li><li class="menus_item"><a class="site-page" href="/categories/Blogs/"> Blogs</a></li></ul></div></header><main id="page_main"><div class="side-card sticky"><div class="card-wrap" itemscope itemtype="http://schema.org/Person"><div class="author-avatar"><img class="avatar-img" src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/profile.png'" alt="avatar"></div><div class="author-discrip"><h3>Chen Kunpeng</h3><p class="author-bio"><strong>Tongji University</strong>. Focusing on Trustworthy AI & Federated Learning.</p></div><div class="author-links"><button class="btn m-social-links">Links</button><ul class="social-icons"><li><a class="social-icon" href="https://x.com/4tHobieb8n15222/" target="_blank"><i class="fab fa-twitter" aria-hidden="true"></i></a></li><li><a class="social-icon" href="/" target="_blank"><i class="fab fa-facebook-square" aria-hidden="true"></i></a></li><li><a class="social-icon" href="https://github.com/SSSuperfriendly" target="_blank"><i class="fab fa-github" aria-hidden="true"></i></a></li><li><a class="social-icon" href="/" target="_blank"><i class="fab fa-stack-overflow" aria-hidden="true"></i></a></li><li><a class="social-icon" href="/" target="_blank"><i class="fab fa-linkedin" aria-hidden="true"></i></a></li><li><a class="social-icon" href="/" target="_blank"><i class="fab fa-weibo" aria-hidden="true"></i></a></li><li><a class="social-icon" href="/" target="_blank"><i class="fab fa-weixin" aria-hidden="true"></i></a></li><li><a class="social-icon" href="/" target="_blank"><i class="fab fa-qq" aria-hidden="true"></i></a></li><li><a class="social-icon" href="mailto:chenkunpeng@tongji.edu.cn" target="_blank"><i class="fas fa-envelope" aria-hidden="true"></i></a></li><li><a class="social-icon" href="/" target="_blank"><i class="fas fa-rss" aria-hidden="true"></i></a></li></ul><ul class="social-links"><li><a class="e-social-link" href="/" target="_blank"><i class="fas fa-graduation-cap" aria-hidden="true"></i><span>Google Scholar</span></a></li><li><a class="e-social-link" href="/" target="_blank"><i class="fab fa-orcid" aria-hidden="true"></i><span>ORCID</span></a></li></ul></div><a class="cv-links" href="/attaches/CV.pdf" target="_blank"><i class="fas fa-file-pdf" aria-hidden="true"><span>My Detail CV</span></i></a></div></div><div class="page" itemscope itemtype="http://schema.org/CreativeWork"><h2 class="page-title">【UNIX V6++】如果你是贝尔实验室的一名研究院……</h2><article><blockquote>
+<p>历经无数个日夜的构思与代码编写，我们的 UNIX V6++ 操作系统终于迎来了它的雏形。在这篇文章中，我将和大家分享 UNIX V6++ 的架构设计，希望这篇文章能为你带来启发。NIX V6 原始参考源码可以在这里获得：<a target="_blank" rel="noopener" href="https://github.com/dspinellis/unix-history-repo/tree/Research-V6-Snapshot-Development">Research-V6-Snapshot-Development</a></p>
+</blockquote>
+<h2 id="1-UNIX-V6-功能概述">1. UNIX V6++ 功能概述</h2>
+<p>在设计之初，我们确立了系统的功能边界，力求用最简洁的代码实现最高效的运转。系统主要涵盖以下模块：</p>
+<ul>
+<li><strong>设备管理</strong>：区分块设备和字符设备，统一 I/O 接口。</li>
+<li><strong>系统调用</strong>：用户态与内核态的桥梁。</li>
+<li><strong>进程管理</strong>：支持进程创建（<code>fork</code>）与复杂的进程调度。</li>
+<li><strong>文件系统与交换空间</strong>：管理持久化数据与内存置换。</li>
+<li><strong>系统初始化</strong>：从引导启动到 <code>init</code> 进程的建立。</li>
+<li><strong>多用户支持</strong>：基于 UID/GID 的权限隔离。</li>
+<li><strong>中断处理</strong>：响应外部硬件与内部异常。</li>
+<li><strong>Shell 与 管道</strong>：提供强大的命令行交互与进程间通信能力。</li>
+</ul>
+<h2 id="2-PDP-11-40-硬件基础：一切的起点">2. PDP-11/40 硬件基础：一切的起点</h2>
+<p>操作系统离不开底层的硬件支持。UNIX V6 深度依赖于 PDP-11/40 的体系结构。PDP-11 最优雅的设计之一就是其 <strong>UNIBUS 总线</strong> 架构。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;====================UNIBUS====================&gt;</span><br><span class="line">      |      |        |        |</span><br><span class="line">  +-----+ +-----+  +------+ +-----+</span><br><span class="line">  | CPU | | 内存 |  | I/O  | | I/O |  ....</span><br><span class="line">  +-----+ +-----+  +------+ +-----+</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>通过 UNIBUS，外设寄存器被直接映射到了内存地址空间中。这意味着我们不需要特殊的 I/O 指令，直接通过普通的内存读写指令就能操作硬件。UNIBUS 的地址总线宽度为 18bit（最大寻址 256KB），其中内存最高端的 8KB 空间被专门保留用于映射 I/O 寄存器。</p>
+<h3 id="2-1-寄存器设计">2.1. 寄存器设计</h3>
+<p>PDP-11 提供了 7 个 16 位的通用寄存器（r0 ～ r7），并在硬件层面上严格区分了内核态和用户态：</p>
+<table>
+<thead>
+<tr>
+<th>寄存器</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>r0, r1</strong></td>
+<td>存储运算结果和函数的返回值</td>
+</tr>
+<tr>
+<td><strong>r2, r3, r4</strong></td>
+<td>本地处理（程序自由使用的通用寄存器）</td>
+</tr>
+<tr>
+<td><strong>r5</strong></td>
+<td>帧指针 (Frame Pointer)</td>
+</tr>
+<tr>
+<td><strong>r6 (SP)</strong></td>
+<td>栈指针。硬件上区分内核模式和用户模式，切换模式时硬件会自动切换对应的 SP</td>
+</tr>
+<tr>
+<td><strong>r7 (PC)</strong></td>
+<td>程序计数器 (Program Counter)</td>
+</tr>
+</tbody>
+</table>
+<p>此外，还有一个至关重要的 <strong>PSW（处理器状态字）</strong> 寄存器，它不仅保存了条件码，还决定了当前的运行特权级。</p>
+<table>
+<thead>
+<tr>
+<th>比特位</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>0~3</strong></td>
+<td>条件码：借位(0)、溢出(1)、零位(2)、负位(3)</td>
+</tr>
+<tr>
+<td><strong>4</strong></td>
+<td>陷入 (Trap) 标志</td>
+</tr>
+<tr>
+<td><strong>5~7</strong></td>
+<td>处理器优先级 (0～7)</td>
+</tr>
+<tr>
+<td><strong>12~13</strong></td>
+<td>处理器先前模式</td>
+</tr>
+<tr>
+<td><strong>14~15</strong></td>
+<td>处理器当前模式 (00: 内核模式, 11: 用户模式)</td>
+</tr>
+</tbody>
+</table>
+<p>在我们的源码中，PSW 被映射到了特定的内存地址 <code>0177776</code>（八进制）：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> PS 0177776</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="3-进程管理：系统的灵魂">3. 进程管理：系统的灵魂</h2>
+<p>进程是操作系统的灵魂。为了兼顾效率和内存限制，我们将进程上下文拆分成了两个核心结构体：<code>proc</code> 和 <code>user</code>。</p>
+<h3 id="3-1-proc-与-user-结构体">3.1. proc 与 user 结构体</h3>
+<p><code>proc</code> 结构体常驻物理内存，即使进程被 Swap 出去，它也依然在内存中。它保存了调度器最关心的信息：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">proc</span> &#123;</span></span><br><span class="line">    <span class="type">char</span> p_stat;   <span class="comment">/* 进程状态 */</span></span><br><span class="line">    <span class="type">char</span> p_flag;   <span class="comment">/* 进程标志位 */</span></span><br><span class="line">    <span class="type">char</span> p_pri;    <span class="comment">/* 调度优先级，越小优先级越高 */</span></span><br><span class="line">    <span class="type">char</span> p_sig;    <span class="comment">/* 接收到的信号 */</span></span><br><span class="line">    <span class="type">char</span> p_uid;    <span class="comment">/* 用户 ID */</span></span><br><span class="line">    <span class="type">char</span> p_time;   <span class="comment">/* 驻留内存/交换区的时间，用于调度计算 */</span></span><br><span class="line">    <span class="type">char</span> p_cpu;    <span class="comment">/* CPU 占用率 */</span></span><br><span class="line">    <span class="type">char</span> p_nice;   <span class="comment">/* 调度偏移量 */</span></span><br><span class="line">    <span class="type">int</span>  p_ttyp;   <span class="comment">/* 控制终端 */</span></span><br><span class="line">    <span class="type">int</span>  p_pid;    <span class="comment">/* 进程 ID */</span></span><br><span class="line">    <span class="type">int</span>  p_ppid;   <span class="comment">/* 父进程 ID */</span></span><br><span class="line">    <span class="type">int</span>  p_addr;   <span class="comment">/* 数据段在内存或交换区的地址 */</span></span><br><span class="line">    <span class="type">int</span>  p_size;   <span class="comment">/* 数据段大小 (*64 字节) */</span></span><br><span class="line">    <span class="type">int</span>  p_wchan;  <span class="comment">/* 进程休眠等待的事件地址 */</span></span><br><span class="line">    <span class="type">int</span>  *p_textp; <span class="comment">/* 指向共享代码段 text 结构体的指针 */</span></span><br><span class="line">&#125; proc[NPROC];</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> NPROC 50   <span class="comment">/* 系统最大支持 50 个并发进程 */</span></span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>而 <code>user</code> 结构体（全局变量 <code>u</code>）包含了进程打开的文件描述符、目录上下文、各类内核栈信息等。由于它比较庞大，当内存紧张时，<code>user</code> 结构体会随着进程的数据段一起被 Swap 到磁盘上。</p>
+<h3 id="3-2-进程状态与标志">3.2. 进程状态与标志</h3>
+<p>系统中进程的生命周期通过 <code>p_stat</code> 和 <code>p_flag</code> 精确控制：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* p_stat 状态枚举 */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SSLEEP 1 <span class="comment">/* 高优先级休眠（不可被信号中断） */</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SWAIT  2 <span class="comment">/* 低优先级休眠（可被中断） */</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SRUN   3 <span class="comment">/* 就绪/可执行状态 */</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SIDL   4 <span class="comment">/* 进程创建中 */</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SZOMB  5 <span class="comment">/* 僵尸状态 */</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SSTOP  6 <span class="comment">/* 被跟踪（trace）暂停 */</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* p_flag 标志位 */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SLOAD  01  <span class="comment">/* 核心数据位于内存中 */</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SSYS   02  <span class="comment">/* 系统进程（如调度进程 proc[0]），免于被 swap */</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SLOCK  04  <span class="comment">/* 调度锁，临时禁止 swap */</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SSWAP  010 <span class="comment">/* 数据已经被换出到磁盘 */</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> STRC   020 <span class="comment">/* 处于被跟踪状态 */</span></span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="3-3-内存分配与虚拟地址映射">3.3. 内存分配与虚拟地址映射</h3>
+<p>进程的内存被划分为<strong>代码段</strong>和<strong>数据段</strong>。为了节省宝贵的内存，多个运行相同程序的进程（如打开多个 shell）会共享同一个代码段。这一机制通过全局的 <code>text[]</code> 数组实现。</p>
+<p>借助于 PDP-11 的 <strong>MMU (内存管理单元)</strong>，进程拥有独立的 16 位（64KB）虚拟地址空间，而底层物理地址为 18 位（256KB）。MMU 通过 APR (Active Page Register) 将这两者映射起来。每页最大 8KB，通过 PAR (基地址) 和 PDR (访问控制) 组合，既实现了地址隔离，又保证了内存安全性。</p>
+<h3 id="3-4-进程的诞生：fork-与-newproc">3.4. 进程的诞生：fork 与 newproc</h3>
+<p>UNIX 使用父子树状结构管理进程。<code>fork</code> 也许是 UNIX 最具艺术感的设计之一——它被调用一次，却在父子进程中分别返回不同的值。</p>
+<p>在内核态，<code>fork</code> 最终调用 <code>newproc()</code>。<code>newproc()</code> 的核心逻辑如下：</p>
+<ol>
+<li>遍历 <code>proc</code> 数组，找出一个空槽位（<code>p_stat == NULL</code>）。</li>
+<li>生成一个全局唯一的新 PID (<code>mpid++</code>)。</li>
+<li>拷贝父进程的 <code>proc</code> 信息给子进程。</li>
+<li>增加打开文件句柄（<code>u_ofile</code>）和共享代码段的引用计数。</li>
+<li><strong>极其关键的一步</strong>：为子进程分配数据段内存。如果物理内存不足，它甚至会触发 <code>xswap</code> 将父进程换出，以此腾出空间完成拷贝。</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* ... (节选自 newproc) ... */</span></span><br><span class="line"><span class="keyword">if</span>(a2 == <span class="literal">NULL</span>) &#123;</span><br><span class="line">    <span class="comment">/* 处理内存不够的情况：将父进程暂时换出 */</span></span><br><span class="line">    rip-&gt;p_stat = SIDL; </span><br><span class="line">    rpp-&gt;p_addr = a1;</span><br><span class="line">    savu(u.u_ssav);</span><br><span class="line">    xswap(rpp, <span class="number">0</span>, <span class="number">0</span>); </span><br><span class="line">    rpp-&gt;p_flag =| SSWAP;</span><br><span class="line">    rip-&gt;p_stat = SRUN;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">/* 内存充足，直接拷贝数据段 */</span></span><br><span class="line">    rpp-&gt;p_addr = a2;</span><br><span class="line">    <span class="keyword">while</span>(n--)</span><br><span class="line">        copyseg(a1++, a2++);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="3-5-进程调度与-Swap-机制">3.5. 进程调度与 Swap 机制</h3>
+<p>进程调度由 <code>swtch()</code> 函数完成。它的逻辑十分直接：遍历所有状态为 <code>SRUN</code> 且处于物理内存中 (<code>SLOAD</code>) 的进程，挑出 <code>p_pri</code> 值最小（优先级最高）的执行。</p>
+<p>当内存耗尽时，0 号进程（也就是 <code>sched()</code> 守护进程）就会苏醒。它使用 <strong>First Fit</strong> 算法管理物理内存 (<code>coremap</code>) 和交换空间 (<code>swapmap</code>)。如果需要换入某个进程但内存不足，<code>sched()</code> 会无情地挑选出那些处于休眠状态（<code>SWAIT</code>）、且驻留内存时间足够长的进程，通过 <code>xswap()</code> 将其踢到磁盘上，从而盘活整个系统。</p>
+<h2 id="4-异常处理：Panic-与-Idle">4. 异常处理：Panic 与 Idle</h2>
+<p>操作系统难免会遇到无法挽回的内核态错误。此时，我们会调用 <code>panic()</code> 抛出一条简短但致命的字符串。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">panic(s)</span><br><span class="line"><span class="type">char</span> *s;</span><br><span class="line">&#123;</span><br><span class="line">    panicstr = s;</span><br><span class="line">    update();</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;panic: %s\n&quot;</span>, s);</span><br><span class="line">    <span class="keyword">for</span>(;;)</span><br><span class="line">        idle();</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><code>idle()</code> 函数会将 CPU 优先级降到最低 (<code>spl 0</code>)，执行硬件级 <code>wait</code> 指令挂起 CPU，等待下一次中断的降临——这通常意味着只能拔电源重启了。</p>
+<h2 id="5-中断与优先级">5. 中断与优先级</h2>
+<p>硬件不会主动配合软件的节奏，因此我们高度依赖中断机制。无论是块设备 I/O 完成、终端敲击键盘、还是时钟滴答，都会触发硬件中断。</p>
+<p>为了防止内核在处理关键数据结构时被打断造成竞态条件，我们利用 PSW 寄存器设定了 0~7 的中断屏蔽等级。例如，执行关键的进程调度前，通常会调用 <code>spl6()</code> 屏蔽绝大多数中断，处理完毕后再调用 <code>spl0()</code> 恢复响应。</p>
+<h2 id="6-管道-Pipes-：数据流转的哲学">6. 管道 (Pipes)：数据流转的哲学</h2>
+<p>最后，不得不提的是管道机制。在没有管道之前，如果要把前一个程序的输出交接给下一个程序，只能这样：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a1 &gt; tmp</span><br><span class="line">a2 &lt; tmp</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>这不仅需要反复读写磁盘，还极大地浪费了存储空间。管道的引入，本质上是分配一块环形的内存缓冲区。两个进程一个往里写，一个往外读，当缓冲区满或空时，进程会优雅地通过 <code>sleep</code> 和 <code>wakeup</code> 进行同步。这是最低投入、最高产出的进程间通信方案，也是 UNIX “一切皆数据流”哲学的绝佳体现。</p>
+<hr>
+</article><div class="share-section"><span class="share-label">分享本文</span><div class="share-buttons"><a class="share-btn share-twitter" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fsssuperfriendly.github.io%2F2026%2F03%2F31%2Funix-Research-V6%2F&amp;text=%E3%80%90UNIX%20V6%2B%2B%E3%80%91%E5%A6%82%E6%9E%9C%E4%BD%A0%E6%98%AF%E8%B4%9D%E5%B0%94%E5%AE%9E%E9%AA%8C%E5%AE%A4%E7%9A%84%E4%B8%80%E5%90%8D%E7%A0%94%E7%A9%B6%E9%99%A2%E2%80%A6%E2%80%A6" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i><span>Twitter / X</span></a><a class="share-btn share-linkedin" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fsssuperfriendly.github.io%2F2026%2F03%2F31%2Funix-Research-V6%2F" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i><span>LinkedIn</span></a><a class="share-btn share-copy" href="javascript:void(0)" onclick="copyShareLink('https://sssuperfriendly.github.io/2026/03/31/unix-Research-V6/')"><i class="fas fa-link"></i><span>复制链接</span></a></div></div><script>function copyShareLink(url) {
+    var btn = document.querySelector('.share-copy span');
+    navigator.clipboard.writeText(url).then(function() {
+        btn.textContent = '已复制！';
+        setTimeout(function() { btn.textContent = '复制链接'; }, 2000);
+    }).catch(function() {
+        var ta = document.createElement('textarea');
+        ta.value = url;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        btn.textContent = '已复制！';
+        setTimeout(function() { btn.textContent = '复制链接'; }, 2000);
+    });
+}</script></div></main><div class="nav-wrap"><div class="nav"><button class="site-nav"><div class="navicon"></div></button><ul class="nav_items"><li class="nav_item"><a class="nav-page" href="/"> About Me</a></li><li class="nav_item"><a class="nav-page" href="/news/"> News</a></li><li class="nav_item"><a class="nav-page" href="/#Publications"> Publications</a></li><li class="nav_item"><a class="nav-page" href="/categories/Blogs/"> Blogs</a></li></ul></div><div class="cd-top"><i class="fa fa-arrow-up" aria-hidden="true"></i></div></div><footer id="page_footer"><div class="footer_wrap"><div class="copyright">&copy;2025 - 2026 by Chen Kunpeng</div><div class="theme-info">Powered by <a target="_blank" href="https://hexo.io" rel="nofollow noopener">Hexo</a> & <a target="_blank" href="https://github.com/PhosphorW/hexo-theme-academia" rel="nofollow noopener">Academia Theme</a></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery-pjax@latest/jquery.pjax.min.js"></script><script src="/js/main.js"></script></body></html>
