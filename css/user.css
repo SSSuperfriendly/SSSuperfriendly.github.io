@@ -1,0 +1,76 @@
+/* =========================================
+   KaTeX 公式样式优化
+   ========================================= */
+/* 1. 行内公式字号与行高 */
+.katex {
+  font-size: 1.1em !important;
+  line-height: normal !important;
+}
+/* 2. 块级公式居中 + 防止过宽时撑破版面 */
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.5em 0;
+  margin: 1em 0 !important;
+}
+/* 3. 修复行内公式与正文基线对齐 */
+.katex-html {
+  line-height: normal !important;
+  box-sizing: content-box !important;
+}
+/* 4. 渲染失败时的原始 LaTeX 文本（KaTeX errorColor 配合此样式） */
+.katex-error {
+  color: #c00;
+  font-family: monospace;
+  font-size: 0.9em;
+}
+/* =========================================
+   分享按钮样式
+   ========================================= */
+.share-section {
+  margin-top: 2.5em;
+  padding-top: 1.5em;
+  border-top: 1px solid #e4e4e4;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.8em;
+}
+.share-label {
+  font-weight: 600;
+  color: #494e52;
+  font-size: 0.9em;
+  white-space: nowrap;
+}
+.share-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+}
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  padding: 0.35em 1em;
+  border-radius: 4px;
+  font-size: 0.82em;
+  font-weight: 500;
+  text-decoration: none !important;
+  transition: opacity 0.2s, transform 0.15s;
+  color: #fff !important;
+  cursor: pointer;
+  line-height: 1.5;
+}
+.share-btn:hover {
+  opacity: 0.82;
+  transform: translateY(-1px);
+}
+.share-twitter {
+  background: #1da1f2;
+}
+.share-linkedin {
+  background: #0a66c2;
+}
+.share-copy {
+  background: #6c757d;
+}
