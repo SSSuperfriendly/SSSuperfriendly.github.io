@@ -12,6 +12,9 @@
   line-height: normal !important;
   box-sizing: content-box !important;
 }
+.katex-mathml {
+  display: none !important;
+}
 .katex-error {
   color: #c00;
   font-family: monospace;

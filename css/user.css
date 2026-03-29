@@ -18,6 +18,10 @@
   line-height: normal !important;
   box-sizing: content-box !important;
 }
+/* 兜底：防止 KaTeX 样式未命中时 MathML 层与可视层同时显示 */
+.katex-mathml {
+  display: none !important;
+}
 /* 4. 渲染失败时的原始 LaTeX 文本（KaTeX errorColor 配合此样式） */
 .katex-error {
   color: #c00;
