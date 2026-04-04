@@ -1,0 +1,127 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5"><title>Kunpeng Chen</title><meta name="author" content="Chen Kunpeng"><link rel="shortcut icon" href="/img/favicon.png?v=20260117"><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css"><meta name="generator" content="Hexo 8.1.1"></head><body><header id="page_header"><div class="header_wrap"><div id="blog_name"><a class="blog_title" id="site-name" href="/">Kunpeng Chen</a></div><button class="menus_icon"><div class="navicon"></div></button><ul class="menus_items"><li class="menus_item"><a class="site-page" href="/"> About Me</a></li><li class="menus_item"><a class="site-page" href="/news/"> News</a></li><li class="menus_item"><a class="site-page" href="/#Publications"> Publications</a></li><li class="menus_item"><a class="site-page" href="/categories/Blogs/"> Blogs</a></li></ul></div></header><main id="page_main"><div class="side-card sticky"><div class="card-wrap" itemscope itemtype="http://schema.org/Person"><div class="author-avatar"><img class="avatar-img" src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/profile.png'" alt="avatar"></div><div class="author-discrip"><h3>Chen Kunpeng</h3><p class="author-bio"><strong>Tongji University</strong>. Focusing on Trustworthy AI & Federated Learning.</p></div><div class="author-links"><button class="btn m-social-links">Links</button><ul class="social-icons"><li><a class="social-icon" href="https://x.com/4tHobieb8n15222/" target="_blank"><i class="fab fa-twitter" aria-hidden="true"></i></a></li><li><a class="social-icon" href="/" target="_blank"><i class="fab fa-facebook-square" aria-hidden="true"></i></a></li><li><a class="social-icon" href="https://github.com/SSSuperfriendly" target="_blank"><i class="fab fa-github" aria-hidden="true"></i></a></li><li><a class="social-icon" href="/" target="_blank"><i class="fab fa-stack-overflow" aria-hidden="true"></i></a></li><li><a class="social-icon" href="/" target="_blank"><i class="fab fa-linkedin" aria-hidden="true"></i></a></li><li><a class="social-icon" href="/" target="_blank"><i class="fab fa-weibo" aria-hidden="true"></i></a></li><li><a class="social-icon" href="/" target="_blank"><i class="fab fa-weixin" aria-hidden="true"></i></a></li><li><a class="social-icon" href="/" target="_blank"><i class="fab fa-qq" aria-hidden="true"></i></a></li><li><a class="social-icon" href="mailto:chenkunpeng@tongji.edu.cn" target="_blank"><i class="fas fa-envelope" aria-hidden="true"></i></a></li><li><a class="social-icon" href="/" target="_blank"><i class="fas fa-rss" aria-hidden="true"></i></a></li></ul><ul class="social-links"><li><a class="e-social-link" href="/" target="_blank"><i class="fas fa-graduation-cap" aria-hidden="true"></i><span>Google Scholar</span></a></li><li><a class="e-social-link" href="/" target="_blank"><i class="fab fa-orcid" aria-hidden="true"></i><span>ORCID</span></a></li></ul></div><a class="cv-links" href="/attaches/CV.pdf" target="_blank"><i class="fas fa-file-pdf" aria-hidden="true"><span>My Detail CV</span></i></a></div></div><div class="page" itemscope itemtype="http://schema.org/CreativeWork"><h2 class="page-title">浅析ε-贪婪探索</h2><article><p>ε-贪婪探索，是强化学习中一种简洁的行动选择策略：以 ε 的概率随机探索，以 1−ε 的概率“贪婪”地利用当前已知的最佳行动。换句话说——智能体有 ε 的几率随意乱试，其余时候则选择估值最高的那个动作。它用一种直觉上非常自然的方式，平衡了“探索”与“利用”。</p>
+<p>即便到了现在，ε-贪婪依然是课程中的必讲方法，也是工程实践里的常用基线。它在离散动作问题上表现稳健，同时也为更高级的探索策略提供了参考坐标。主流资料普遍建议：在早期开发、基准测试，以及动作空间较小且随机性可控的任务中，可以优先考虑 ε-贪婪。</p>
+<p><strong>核心特点：</strong></p>
+<ul>
+<li><strong>极简</strong>：只需一个标量参数 ε</li>
+<li><strong>随机性</strong>：显式引入随机扰动，有效防止过早陷入局部最优</li>
+<li><strong>基线价值</strong>：常作为对照基线，用以衡量更复杂方法的优劣</li>
+<li><strong>适用边界</strong>：在离散动作空间上效果最佳；连续或超大规模离散空间下，表现会打折扣。</li>
+</ul>
+<p><strong>举例说明：</strong></p>
+<ul>
+<li>在多臂老虎机问题中，ε-贪婪会以 ε 的概率随机拉一根臂，否则拉当前经验收益最高的那根。</li>
+<li>在 Q-learning 中，ε-贪婪依据 Q 值选动作：以 ε 随机探索，否则选择 Q 值最大的动作。</li>
+<li>实践中，ε 往往随时间动态调整（即“退火调度”），而非固定不变。这是因为在训练初期，智能体对环境一无所知，需要<strong>大量探索</strong>，因此 ε 可以设置得高一些。随着训练进行，智能体越来越有经验，Q表越来越准，就应该<strong>逐渐减少探索，增加利用</strong>，收敛到最优策略。</li>
+</ul>
+<p>主流衰减策略包括：</p>
+<table>
+<thead>
+<tr>
+<th>策略类型</th>
+<th>衰减公式</th>
+<th>特点</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>线性衰减</strong></td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ϵ</mi><mi>t</mi></msub><mo>=</mo><msub><mi>ϵ</mi><mrow><mi>s</mi><mi>t</mi><mi>a</mi><mi>r</mi><mi>t</mi></mrow></msub><mo>−</mo><mfrac><mrow><mo stretchy="false">(</mo><msub><mi>ϵ</mi><mrow><mi>s</mi><mi>t</mi><mi>a</mi><mi>r</mi><mi>t</mi></mrow></msub><mo>−</mo><msub><mi>ϵ</mi><mrow><mi>e</mi><mi>n</mi><mi>d</mi></mrow></msub><mo stretchy="false">)</mo><mo>⋅</mo><mi>t</mi></mrow><mi>T</mi></mfrac></mrow><annotation encoding="application/x-tex">\epsilon_t = \epsilon_{start} - \frac{(\epsilon_{start} - \epsilon_{end}) \cdot t}{T}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">ϵ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.73333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">ϵ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">s</span><span class="mord mathnormal mtight">t</span><span class="mord mathnormal mtight">a</span><span class="mord mathnormal mtight" style="margin-right:0.02778em;">r</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.355em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.01em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.485em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mtight"><span class="mord mathnormal mtight">ϵ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.29634285714285713em;"><span style="top:-2.357em;margin-left:0em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">s</span><span class="mord mathnormal mtight">t</span><span class="mord mathnormal mtight">a</span><span class="mord mathnormal mtight" style="margin-right:0.02778em;">r</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span><span class="mbin mtight">−</span><span class="mord mtight"><span class="mord mathnormal mtight">ϵ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3448em;"><span style="top:-2.3487714285714287em;margin-left:0em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">e</span><span class="mord mathnormal mtight">n</span><span class="mord mathnormal mtight">d</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15122857142857138em;"><span></span></span></span></span></span></span><span class="mclose mtight">)</span><span class="mbin mtight">⋅</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></td>
+<td>均匀降低探索率</td>
+<td>稳定环境，专家特化程度可预测</td>
+</tr>
+<tr>
+<td><strong>指数衰减</strong></td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ϵ</mi><mi>t</mi></msub><mo>=</mo><msub><mi>ϵ</mi><mrow><mi>s</mi><mi>t</mi><mi>a</mi><mi>r</mi><mi>t</mi></mrow></msub><mo>⋅</mo><msup><mi>γ</mi><mi>t</mi></msup></mrow><annotation encoding="application/x-tex">\epsilon_t = \epsilon_{start} \cdot \gamma^t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">ϵ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.59445em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">ϵ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">s</span><span class="mord mathnormal mtight">t</span><span class="mord mathnormal mtight">a</span><span class="mord mathnormal mtight" style="margin-right:0.02778em;">r</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.9879959999999999em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05556em;">γ</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7935559999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span></span></span></span></span></span></span></span>（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>γ</mi><mo>&lt;</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\gamma &lt; 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7335400000000001em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.05556em;">γ</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span>）</td>
+<td>早期快速衰减，后期缓慢</td>
+<td>需要快速收敛的场景</td>
+</tr>
+<tr>
+<td><strong>自适应衰减</strong></td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ϵ</mi><mi>t</mi></msub><mo>=</mo><mi>f</mi><mo stretchy="false">(</mo><mtext>performance</mtext><mo separator="true">,</mo><mtext>uncertainty</mtext><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\epsilon_t = f(\text{performance}, \text{uncertainty})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">ϵ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord text"><span class="mord">performance</span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord text"><span class="mord">uncertainty</span></span><span class="mclose">)</span></span></span></span></td>
+<td>根据性能指标动态调整</td>
+<td>复杂环境，专家激活模式动态变化</td>
+</tr>
+</tbody>
+</table>
+<p>关键设计原则：<strong>切勿让<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϵ</mi></mrow><annotation encoding="application/x-tex">\epsilon</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">ϵ</span></span></span></span>降至0</strong>，应保持一个小的非零底值（如<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ϵ</mi><mrow><mi>m</mi><mi>i</mi><mi>n</mi></mrow></msub><mo>=</mo><mn>0.01</mn></mrow><annotation encoding="application/x-tex">\epsilon_{min} = 0.01</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">ϵ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">m</span><span class="mord mathnormal mtight">i</span><span class="mord mathnormal mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">0</span><span class="mord">1</span></span></span></span>），以允许模型持续探索，防止陷入次优策略或无法适应环境变化。而<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϵ</mi><mo>=</mo><mn>0.15</mn></mrow><annotation encoding="application/x-tex">\epsilon = 0.15</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">ϵ</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">1</span><span class="mord">5</span></span></span></span>的设定参考了强化学习中的经典经验，既可以<strong>足够的探索机会</strong>又可以控制<strong>与预算<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span></span></span></span>的协同</strong>（当<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">B=1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span>（仅1个全秩专家）时，15%的反转概率意味着每约7次前向传播，就有1次让尾部专家获得全秩计算权）</p>
+<p>然而，固定的<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϵ</mi><mo>=</mo><mn>0.15</mn></mrow><annotation encoding="application/x-tex">\epsilon =0.15</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">ϵ</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">1</span><span class="mord">5</span></span></span></span> 也存在缺陷：训练初期，模型对环境一无所知，需要大量探索；训练后期，模型越来越有经验，应逐渐减少探索、增加利用以收敛到最优策略。</p>
+<p>ε-贪婪虽简单，但团队常犯一些可预见的错误，导致学习效率下降或出现隐蔽的 bug。以下列出常见误区、成因及实用修正方法。</p>
+<p><strong>误区一：全程使用固定的、较高的 ε</strong></p>
+<ul>
+<li>
+<p><strong>成因</strong>：图省事，或者担心过早利用。</p>
+</li>
+<li>
+<p><strong>问题</strong>：持续的高随机性会阻碍收敛，性能波动大。</p>
+</li>
+<li>
+<p><strong>修正</strong>：使用衰减调度（线性、指数或自适应）。先高后低，随学习过程降低 ε。</p>
+</li>
+</ul>
+<p><strong>误区二：让 ε 精确降到 0</strong></p>
+<ul>
+<li>
+<p><strong>成因</strong>：对“利用 vs 探索”的权衡理解有偏差。</p>
+</li>
+<li>
+<p><strong>问题</strong>：ε=0 时，智能体可能卡在次优策略上，无法从环境变化中恢复。</p>
+</li>
+<li>
+<p><strong>修正</strong>：保留一个极小的最低 ε（比如一个非零的微小值），留一丝探索机会。</p>
+</li>
+</ul>
+<p><strong>误区三：在结构化动作空间上使用均匀随机探索</strong></p>
+<ul>
+<li>
+<p><strong>成因</strong>：机械套用均匀随机采样。</p>
+</li>
+<li>
+<p><strong>问题</strong>：在大型或结构化动作空间中，均匀随机的动作几乎不可能发现有用的行为模式。</p>
+</li>
+<li>
+<p><strong>修正</strong>：使用结构化探索（如动作掩码、带先验知识的探索或参数噪声）。</p>
+</li>
+</ul>
+<p><strong>误区四：忽略状态相关的探索需求</strong></p>
+<ul>
+<li>
+<p><strong>成因</strong>：全局单一的 ε 太方便了。</p>
+</li>
+<li>
+<p><strong>问题</strong>：某些状态比其他状态更需要探索，全局 ε 可能导致关键区域探索不足。</p>
+</li>
+<li>
+<p><strong>修正</strong>：如果环境需要，采用状态相关的策略（如基于计数的奖励加成，或基于不确定度的探索）。</p>
+</li>
+</ul>
+<p><strong>误区五：没有与经验回放缓存或目标网络集成</strong></p>
+<ul>
+<li>
+<p><strong>成因</strong>：把探索和稳定性措施当成两件独立的事。</p>
+</li>
+<li>
+<p><strong>问题</strong>：没有回放或稳定化手段的 ε-贪婪可能导致学习不稳定。</p>
+</li>
+<li>
+<p><strong>修正</strong>：将 ε-贪婪与经验回放缓存、目标网络以及适当的学习率调度配合使用。</p>
+</li>
+</ul>
+</article><div class="share-section"><span class="share-label">分享本文</span><div class="share-buttons"><a class="share-btn share-twitter" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fsssuperfriendly.github.io%2F2026%2F04%2F04%2FEpsilon-Greedy-infro%2F&amp;text=%E6%B5%85%E6%9E%90%CE%B5-%E8%B4%AA%E5%A9%AA%E6%8E%A2%E7%B4%A2" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i><span>Twitter / X</span></a><a class="share-btn share-linkedin" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fsssuperfriendly.github.io%2F2026%2F04%2F04%2FEpsilon-Greedy-infro%2F" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i><span>LinkedIn</span></a><a class="share-btn share-copy" href="javascript:void(0)" onclick="copyShareLink('https://sssuperfriendly.github.io/2026/04/04/Epsilon-Greedy-infro/')"><i class="fas fa-link"></i><span>复制链接</span></a></div></div><script>function copyShareLink(url) {
+    var btn = document.querySelector('.share-copy span');
+    navigator.clipboard.writeText(url).then(function() {
+        btn.textContent = '已复制！';
+        setTimeout(function() { btn.textContent = '复制链接'; }, 2000);
+    }).catch(function() {
+        var ta = document.createElement('textarea');
+        ta.value = url;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        btn.textContent = '已复制！';
+        setTimeout(function() { btn.textContent = '复制链接'; }, 2000);
+    });
+}</script></div></main><div class="nav-wrap"><div class="nav"><button class="site-nav"><div class="navicon"></div></button><ul class="nav_items"><li class="nav_item"><a class="nav-page" href="/"> About Me</a></li><li class="nav_item"><a class="nav-page" href="/news/"> News</a></li><li class="nav_item"><a class="nav-page" href="/#Publications"> Publications</a></li><li class="nav_item"><a class="nav-page" href="/categories/Blogs/"> Blogs</a></li></ul></div><div class="cd-top"><i class="fa fa-arrow-up" aria-hidden="true"></i></div></div><footer id="page_footer"><div class="footer_wrap"><div class="copyright">&copy;2025 - 2026 by Chen Kunpeng</div><div class="theme-info">Powered by <a target="_blank" href="https://hexo.io" rel="nofollow noopener">Hexo</a> & <a target="_blank" href="https://github.com/PhosphorW/hexo-theme-academia" rel="nofollow noopener">Academia Theme</a></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery-pjax@latest/jquery.pjax.min.js"></script><script src="/js/main.js"></script></body></html>
