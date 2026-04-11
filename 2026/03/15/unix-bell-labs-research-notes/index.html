@@ -118,21 +118,4 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a1 &gt; tmp</span><br><span class="line">a2 &lt; tmp</span><br></pre></td></tr></table></figure>
 <p>这不仅需要反复读写磁盘，还极大地浪费了存储空间。管道的引入，本质上是分配一块环形的内存缓冲区。两个进程一个往里写，一个往外读，当缓冲区满或空时，进程会优雅地通过 <code>sleep</code> 和 <code>wakeup</code> 进行同步。这是最低投入、最高产出的进程间通信方案，也是 UNIX “一切皆数据流”哲学的绝佳体现。</p>
 <hr>
-</article><div class="share-section"><span class="share-label">分享本文</span><div class="share-buttons"><a class="share-btn share-twitter" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fsssuperfriendly.github.io%2F2026%2F03%2F15%2Funix-bell-labs-research-notes%2F&amp;text=%E5%A6%82%E6%9E%9C%E6%88%91%E6%98%AF%E8%B4%9D%E5%B0%94%E5%AE%9E%E9%AA%8C%E5%AE%A4%E7%9A%84%E4%B8%80%E5%90%8D%E7%A0%94%E7%A9%B6%E5%91%98%E2%80%A6%E2%80%A6" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i><span>Twitter / X</span></a><a class="share-btn share-linkedin" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fsssuperfriendly.github.io%2F2026%2F03%2F15%2Funix-bell-labs-research-notes%2F" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i><span>LinkedIn</span></a><a class="share-btn share-copy" href="javascript:void(0)" onclick="copyShareLink('https://sssuperfriendly.github.io/2026/03/15/unix-bell-labs-research-notes/')"><i class="fas fa-link"></i><span>复制链接</span></a></div></div><script>function copyShareLink(url) {
-    var btn = document.querySelector('.share-copy span');
-    navigator.clipboard.writeText(url).then(function() {
-        btn.textContent = '已复制！';
-        setTimeout(function() { btn.textContent = '复制链接'; }, 2000);
-    }).catch(function() {
-        var ta = document.createElement('textarea');
-        ta.value = url;
-        ta.style.position = 'fixed';
-        ta.style.opacity = '0';
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        document.body.removeChild(ta);
-        btn.textContent = '已复制！';
-        setTimeout(function() { btn.textContent = '复制链接'; }, 2000);
-    });
-}</script></div></main><div class="nav-wrap"><div class="nav"><button class="site-nav"><div class="navicon"></div></button><ul class="nav_items"><li class="nav_item"><a class="nav-page" href="/"> About Me</a></li><li class="nav_item"><a class="nav-page" href="/news/"> News</a></li><li class="nav_item"><a class="nav-page" href="/#Publications"> Publications</a></li><li class="nav_item"><a class="nav-page" href="/categories/Blogs/"> Blogs</a></li></ul></div><div class="cd-top"><i class="fa fa-arrow-up" aria-hidden="true"></i></div></div><footer id="page_footer"><div class="footer_wrap"><div class="copyright">&copy;2025 - 2026 by Chen Kunpeng</div><div class="theme-info">Powered by <a target="_blank" href="https://hexo.io" rel="nofollow noopener">Hexo</a> & <a target="_blank" href="https://github.com/PhosphorW/hexo-theme-academia" rel="nofollow noopener">Academia Theme</a></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery-pjax@latest/jquery.pjax.min.js"></script><script src="/js/main.js"></script></body></html>
+</article></div></main><div class="nav-wrap"><div class="nav"><button class="site-nav"><div class="navicon"></div></button><ul class="nav_items"><li class="nav_item"><a class="nav-page" href="/"> About Me</a></li><li class="nav_item"><a class="nav-page" href="/news/"> News</a></li><li class="nav_item"><a class="nav-page" href="/#Publications"> Publications</a></li><li class="nav_item"><a class="nav-page" href="/categories/Blogs/"> Blogs</a></li></ul></div><div class="cd-top"><i class="fa fa-arrow-up" aria-hidden="true"></i></div></div><footer id="page_footer"><div class="footer_wrap"><div class="copyright">&copy;2025 - 2026 by Chen Kunpeng</div><div class="theme-info">Powered by <a target="_blank" href="https://hexo.io" rel="nofollow noopener">Hexo</a> & <a target="_blank" href="https://github.com/PhosphorW/hexo-theme-academia" rel="nofollow noopener">Academia Theme</a></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery-pjax@latest/jquery.pjax.min.js"></script><script src="/js/main.js"></script></body></html>
