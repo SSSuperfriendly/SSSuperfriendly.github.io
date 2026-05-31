@@ -1,28 +1,20 @@
 /* =========================================
    KaTeX 公式样式优化
    ========================================= */
-/* 1. 行内公式字号与行高 */
 .katex {
-  font-size: 1.1em !important;
-  line-height: normal !important;
+  line-height: normal;
 }
-/* 2. 块级公式居中 + 防止过宽时撑破版面 */
 .katex-display {
-  overflow-x: auto;
-  overflow-y: hidden;
-  padding: 0.5em 0;
-  margin: 1em 0 !important;
+  margin: 1em 0;
 }
-/* 3. 修复行内公式与正文基线对齐 */
 .katex-html {
-  line-height: normal !important;
-  box-sizing: content-box !important;
+  line-height: normal;
+  box-sizing: content-box;
 }
 /* 兜底：防止 KaTeX 样式未命中时 MathML 层与可视层同时显示 */
 .katex-mathml {
   display: none !important;
 }
-/* 4. 渲染失败时的原始 LaTeX 文本（KaTeX errorColor 配合此样式） */
 .katex-error {
   color: #c00;
   font-family: monospace;
