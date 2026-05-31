@@ -1350,6 +1350,8 @@ blockquote p {
     display: block;
     visibility: visible;
     opacity: 1;
+    pointer-events: auto;
+    z-index: auto;
     position: relative;
     width: auto;
     margin: 0;
