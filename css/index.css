@@ -766,31 +766,79 @@ blockquote p {
   display: inline-flex;
   align-items: center;
   max-width: 100%;
+  padding: 0 0.08em;
   vertical-align: middle;
+}
+.page article eq .katex {
+  max-width: 100%;
+  line-height: 1.15;
 }
 .page article eqn {
   display: block;
+  position: relative;
   width: 100%;
   overflow-x: auto;
   overflow-y: hidden;
   max-width: 100%;
-  margin: 1.2rem 0;
-  padding: 0.15rem 0.1rem;
+  margin: 1.5rem 0;
+  padding: 1.2rem 1.5rem;
+  border: 1px solid rgba(140,90,53,0.12);
+  border-radius: 24px;
+  background: linear-gradient(180deg, rgba(255,251,246,0.96) 0%, rgba(249,240,226,0.84) 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.76), 0 20px 34px -30px rgba(93,67,49,0.35);
   -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(184,110,67,0.55) rgba(184,110,67,0.12);
+}
+.page article eqn::-webkit-scrollbar {
+  height: 0.7rem;
+}
+.page article eqn::-webkit-scrollbar-track {
+  background: rgba(184,110,67,0.12);
+  border-radius: 999px;
+}
+.page article eqn::-webkit-scrollbar-thumb {
+  background: rgba(184,110,67,0.5);
+  border-radius: 999px;
+}
+.page article section > eqn::before {
+  content: "";
+  display: block;
+  width: 3.8rem;
+  height: 0.2rem;
+  margin-bottom: 1rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(184,110,67,0.9) 0%, rgba(214,160,96,0.42) 100%);
 }
 .page article section.eqno {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   gap: 0.8rem;
+  margin: 1.5rem 0;
+  padding: 1.2rem 1.5rem;
+  border: 1px solid rgba(140,90,53,0.12);
+  border-radius: 24px;
+  background: linear-gradient(180deg, rgba(255,251,246,0.96) 0%, rgba(249,240,226,0.84) 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.76), 0 20px 34px -30px rgba(93,67,49,0.35);
 }
 .page article section.eqno > eqn {
-  margin: 1.2rem 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.page article section.eqno > eqn::before {
+  display: none;
 }
 .page article section.eqno > span {
   flex: 0 0 auto;
   min-width: 2.8rem;
   color: #6e6052;
   font-size: 0.92em;
+  font-variant-numeric: tabular-nums;
   text-align: right;
 }
 .page article .katex-block,
@@ -801,6 +849,16 @@ blockquote p {
   padding: 0.9rem 0.2rem;
   margin: 1.2rem 0;
   -webkit-overflow-scrolling: touch;
+}
+.page article eqn .katex-display,
+.page article section.eqno .katex-display {
+  margin: 0 !important;
+  padding: 0;
+  overflow: visible;
+}
+.page article eqn .katex-display > .katex,
+.page article section.eqno .katex-display > .katex {
+  padding: 0 0.2rem;
 }
 .page article .katex-block {
   text-align: center;
@@ -814,6 +872,24 @@ blockquote p {
   color: #a33;
   overflow-x: auto;
   vertical-align: middle;
+}
+@media (max-width: 48em) {
+  .page article eqn {
+    padding: 1rem 1rem 1.1rem;
+    border-radius: 20px;
+  }
+  .page article section > eqn::before {
+    margin-bottom: 0.7rem;
+  }
+  .page article section.eqno {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    padding: 1rem 1rem 1.1rem;
+    border-radius: 20px;
+  }
+  .page article section.eqno > span {
+    text-align: left;
+  }
 }
 .page article .highlight {
   overflow: auto;
