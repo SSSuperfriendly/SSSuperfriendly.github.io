@@ -1,0 +1,109 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5"><title>Kunpeng Chen</title><meta name="author" content="Chen Kunpeng"><link rel="shortcut icon" href="/img/favicon.png?v=20260117"><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css"><meta name="generator" content="Hexo 8.1.1"></head><body><header id="page_header"><div class="header_wrap"><div id="blog_name"><a class="blog_title" id="site-name" href="/">Kunpeng Chen</a></div><button class="menus_icon"><div class="navicon"></div></button><ul class="menus_items"><li class="menus_item"><a class="site-page" href="/"> About Me</a></li><li class="menus_item"><a class="site-page" href="/news/"> News</a></li><li class="menus_item"><a class="site-page" href="/book/"> Coffee Chat</a></li><li class="menus_item"><a class="site-page" href="/#Publications"> Publications</a></li><li class="menus_item"><a class="site-page" href="/categories/Blogs/"> Blogs</a></li></ul></div></header><main id="page_main"><div class="side-card sticky"><div class="card-wrap" itemscope itemtype="http://schema.org/Person"><div class="author-avatar"><img class="avatar-img" src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/profile.png'" alt="avatar"></div><div class="author-discrip"><h3>Chen Kunpeng</h3><p class="author-bio"><strong>Tongji University</strong>. <br>AI Systems & Neural architecture design.</p></div><div class="author-links"><button class="btn m-social-links">Links</button><ul class="social-icons"><li><a class="social-icon" href="/" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter" aria-hidden="true"></i></a></li><li><a class="social-icon" href="/" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-square" aria-hidden="true"></i></a></li><li><a class="social-icon" href="https://github.com/SSSuperfriendly" target="_blank" rel="noopener noreferrer"><i class="fab fa-github" aria-hidden="true"></i></a></li><li><a class="social-icon" href="/" target="_blank" rel="noopener noreferrer"><i class="fab fa-stack-overflow" aria-hidden="true"></i></a></li><li><a class="social-icon" href="/" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin" aria-hidden="true"></i></a></li><li><a class="social-icon" href="/" target="_blank" rel="noopener noreferrer"><i class="fab fa-weibo" aria-hidden="true"></i></a></li><li><a class="social-icon" href="/" target="_blank" rel="noopener noreferrer"><i class="fab fa-weixin" aria-hidden="true"></i></a></li><li><a class="social-icon" href="/" target="_blank" rel="noopener noreferrer"><i class="fab fa-qq" aria-hidden="true"></i></a></li><li><a class="social-icon" href="mailto:chenkunpeng@tongji.edu.cn" target="_blank" rel="noopener noreferrer"><i class="fas fa-envelope" aria-hidden="true"></i></a></li><li><a class="social-icon" href="/" target="_blank" rel="noopener noreferrer"><i class="fas fa-rss" aria-hidden="true"></i></a></li></ul><ul class="social-links"><li><a class="e-social-link" href="/" target="_blank" rel="noopener noreferrer"><i class="fas fa-graduation-cap" aria-hidden="true"></i><span>Google Scholar</span></a></li><li><a class="e-social-link" href="https://orcid.org/0009-0006-1089-6201" target="_blank" rel="noopener noreferrer"><i class="fab fa-orcid" aria-hidden="true"></i><span>ORCID</span></a></li></ul></div><a class="cv-links" href="/attaches/CV.pdf" target="_blank"><i class="fas fa-file-pdf" aria-hidden="true"><span>My Detail CV</span></i></a></div></div><div class="page" itemscope itemtype="http://schema.org/CreativeWork"><h2 class="page-title">连接主义的包容：从 Logistic 到 Softmax 回归</h2><article><p>对于一个离散随机变量 (X)，其概率分布为 (P)，<strong>香农熵</strong>定义为：<br>
+[<br>
+H(P) = -\sum_{k} p(k) \log p(k)<br>
+]</p>
+<p><strong>熵是混乱程度的度量，熵上升意味着纯度下降。</strong></p>
+<p>考虑一个真实分布为 (P)，我们用分布 (Q) 来编码事件，定义<strong>交叉熵</strong>为：<br>
+[<br>
+H(P, Q) = -\sum_{k} p(k) \log q(k)<br>
+]</p>
+<p>如何度量Q和P的相似程度，即**如何根据训练样本选择最好的模型参数？**这里我们引入最大似然估计。</p>
+<p>假设我们拥有训练集 (\mathcal{D} = {(\boldsymbol{x}^{(i)}, y^{(i)})}_{i=1}^N)，包含 (N) 个独立同分布的样本。我们希望模型在给定输入 (\boldsymbol{x}) 时输出对标签 (y) 的预测概率 (p(y \mid \boldsymbol{x}; \boldsymbol{\theta}))，其中 (\boldsymbol{\theta}) 代表如权重 (\boldsymbol{w}) 和偏置 (b)一样的参数。</p>
+<p>一个合理的标准是：<strong>选择参数 (\boldsymbol{\theta})，使得模型观测到这些真实标签的概率最大。</strong> 这个概率就是似然函数：<br>
+[<br>
+L(\boldsymbol{\theta}) = \prod_{i=1}^N p(y^{(i)} \mid \boldsymbol{x}^{(i)}; \boldsymbol{\theta})<br>
+]<br>
+对其取负对数，我们的目标是最小化负对数似然，即将负对数似然作为损失函数：<br>
+[<br>
+\mathcal{L}(\boldsymbol{\theta}) = -\ell(\boldsymbol{\theta}) = -\sum_{i=1}^N \log p(y^{(i)} \mid \boldsymbol{x}^{(i)}; \boldsymbol{\theta})<br>
+]<br>
+训练目标就是<strong>最小化 (\mathcal{L}(\boldsymbol{\theta}))</strong>。</p>
+<p>又有，对于分类标签，真实分布可以看作一个极端概率分布，即One-Hot 向量，真实类概率为 1，其余为 0。则有：<br>
+[<br>
+-\log p(y^{(i)} \mid \boldsymbol{x}^{(i)}) = -\sum_k \mathbf{1}{y^{(i)}=k} \log p(k \mid \boldsymbol{x}^{(i)}) = H(P_i, Q_i)<br>
+]<br>
+这正是每个样本的真实分布 (P_i) 与模型预测分布 (Q_i) 的<strong>交叉熵</strong>。所以，<strong>最大化似然，等价于最小化交叉熵损失</strong>。</p>
+<hr>
+<h2 id="Logistic-回归">Logistic 回归</h2>
+<p>对于二分类，标签 (y \in {0, 1})。我们假设它服从<strong>伯努利分布</strong>，其唯一参数为 (P(y=1))。Logistic 回归让线性组合经过 sigmoid 函数来输出这个概率：<br>
+[<br>
+z = \boldsymbol{w}^T \boldsymbol{x} + b, \qquad \hat{y} = \sigma(z) = \frac{1}{1+e^{-z}}<br>
+]<br>
+于是：<br>
+[<br>
+P(y=1 \mid \boldsymbol{x}) = \hat{y}, \qquad P(y=0 \mid \boldsymbol{x}) = 1-\hat{y}<br>
+]<br>
+统一写为：<br>
+[<br>
+p(y \mid \boldsymbol{x}) = \hat{y}^y (1-\hat{y})^{1-y}<br>
+]</p>
+<p>整个训练集的似然函数为：<br>
+[<br>
+L = \prod_{i=1}^N \hat{y}_i^{y_i} (1-\hat{y}<em>i)^{1-y_i}<br>
+]<br>
+取对数，得到对数似然：<br>
+[<br>
+\ell = \sum</em>{i=1}^N \big[ y_i \log \hat{y}_i + (1-y_i)\log(1-\hat{y}<em>i) \big]<br>
+]<br>
+最大化 (\ell) 等价于最小化其负值，即<strong>二元交叉熵损失</strong>：<br>
+[<br>
+\mathcal{L} = -\sum</em>{i=1}^N \big[ y_i \log \hat{y}_i + (1-y_i)\log(1-\hat{y}_i) \big]<br>
+]</p>
+<p><strong>为什么它能避免梯度消失？</strong></p>
+<p>先考虑单样本损失：<br>
+[<br>
+\mathcal{L} = -\big[ y\log\sigma(z) + (1-y)\log(1-\sigma(z)) \big]<br>
+]<br>
+求 (\frac{\partial \mathcal{L}}{\partial \boldsymbol{w}})，由链式法则：<br>
+[<br>
+\frac{\partial \mathcal{L}}{\partial \boldsymbol{w}} = \frac{\partial \mathcal{L}}{\partial z} \cdot \frac{\partial z}{\partial \boldsymbol{w}} = \frac{\partial \mathcal{L}}{\partial z} \cdot \boldsymbol{x}<br>
+]<br>
+先求 (\frac{\partial \mathcal{L}}{\partial z})（标量对标量）：<br>
+[<br>
+\begin{aligned}<br>
+\frac{\partial \mathcal{L}}{\partial z}<br>
+&amp;= -y \cdot \frac{1}{\sigma(z)}\sigma'(z) - (1-y) \cdot \frac{1}{1-\sigma(z)}(-\sigma'(z)) \<br>
+&amp;= -y\frac{\sigma'(z)}{\sigma(z)} + (1-y)\frac{\sigma'(z)}{1-\sigma(z)}<br>
+\end{aligned}<br>
+]<br>
+代入 sigmoid 的导数 (\sigma'(z) = \sigma(z)(1-\sigma(z)))：<br>
+[<br>
+\begin{aligned}<br>
+\frac{\partial \mathcal{L}}{\partial z}<br>
+&amp;= -y\frac{\sigma(z)(1-\sigma(z))}{\sigma(z)} + (1-y)\frac{\sigma(z)(1-\sigma(z))}{1-\sigma(z)} \<br>
+&amp;= -y(1-\sigma(z)) + (1-y)\sigma(z) \<br>
+&amp;= -y + y\sigma(z) + \sigma(z) - y\sigma(z) \<br>
+&amp;= \sigma(z) - y<br>
+\end{aligned}<br>
+]<br>
+因此：<br>
+[<br>
+\frac{\partial \mathcal{L}}{\partial \boldsymbol{w}} = (\sigma(z) - y) \cdot \boldsymbol{x}<br>
+]<br>
+对于 (N) 个样本，梯度就是求和（或平均）：<br>
+[<br>
+\frac{\partial \mathcal{L}}{\partial \boldsymbol{w}} = \sum_{i=1}^N (\sigma(z_i) - y_i) \boldsymbol{x}^{(i)}<br>
+]</p>
+<p>观察可知，其<strong>梯度直接等于“预测概率 − 真实标签”乘以输入。</strong> 这里 (\sigma(z)) 就是模型输出的<strong>预测概率值</strong>（在 0 到 1 之间），(y) 是离散标签 0 或 1。二者直接相减，误差多大，梯度就多大。</p>
+<p>又有，倘若我们使用均方误差 (\frac{1}{2}(y-\sigma(z))^2)，其梯度为 ((\sigma(z)-y) \cdot \sigma'(z))。多出来的 (\sigma'(z)) 在输出概率接近 0 或 1时趋近于 0，导致即便预测错得离谱，梯度也极小，参数更新近乎停滞。交叉熵损失让梯度直接正比于预测误差，训练既快又稳定。正是这一特性，让交叉熵成为分类任务的不二之选。</p>
+<p>而Softmax回归作为Logistic回归的泛化，考虑多分类任务。当类别数 (K &gt; 2) 时，标签转化为独热向量 (\boldsymbol{y} \in {0,1}^K)（只有一个位置为 1）。我们假设标签服从<strong>分类分布</strong>（一次试验，K 个互斥结果）。为每个类别 (k) 分配独立的权重 (\boldsymbol{w}_k) 和偏置 (b_k)，算得分数 (z_k = \boldsymbol{w}<em>k^T \boldsymbol{x} + b_k)。再通过 <strong>softmax</strong> 函数转化为概率：<br>
+[<br>
+P(y=k \mid \boldsymbol{x}) = \frac{e^{z_k}}{\sum</em>{j=1}^K e^{z_j}}<br>
+]<br>
+这保证了输出向量为正且和为 1。</p>
+<p>单个样本的似然即其真实类别 (y) 对应的预测概率：<br>
+[<br>
+p(y \mid \boldsymbol{x}) = \prod_{k=1}^K \hat{y}<em>k^{\mathbf{1}{y=k}} = \hat{y}<em>y<br>
+]<br>
+负对数似然给出<strong>多类交叉熵损失</strong>：<br>
+[<br>
+\mathcal{L} = -\sum</em>{i=1}^N \log \hat{y}</em>{y^{(i)}} = -\sum_{i=1}^N \sum_{k=1}^K y_k^{(i)} \log \hat{y}_k^{(i)}<br>
+]<br>
+其中 (y_k^{(i)}) 是样本 (i) 独热标签的第 (k) 维。</p>
+<p>同样地，对单个样本，损失对分数 (z_k) 的偏导为：<br>
+[<br>
+\frac{\partial \mathcal{L}}{\partial z_k} = \hat{y}_k - y_k<br>
+]<br>
+依然是 <strong>“预测概率 − 真实标签”</strong> 形式。</p>
+<p>更一般地，在机器学习和深度学习中通常已知一个概率分布P，算法要拟合一个概率分布Q，使得后者尽可能接近前者。可以通过最小化二者的交叉熵实现。logistic回归、softmax回归以及使用softmax输出层的人工神经网络都是典型代表。</p>
+</article></div></main><div class="nav-wrap"><div class="nav"><button class="site-nav"><div class="navicon"></div></button><ul class="nav_items"><li class="nav_item"><a class="nav-page" href="/"> About Me</a></li><li class="nav_item"><a class="nav-page" href="/news/"> News</a></li><li class="nav_item"><a class="nav-page" href="/book/"> Coffee Chat</a></li><li class="nav_item"><a class="nav-page" href="/#Publications"> Publications</a></li><li class="nav_item"><a class="nav-page" href="/categories/Blogs/"> Blogs</a></li></ul></div><div class="cd-top"><i class="fa fa-arrow-up" aria-hidden="true"></i></div></div><footer id="page_footer"><div class="footer_wrap"><div class="copyright">&copy;2025 - 2026 by Chen Kunpeng</div><div class="theme-info">Powered by <a target="_blank" href="https://hexo.io" rel="nofollow noopener">Hexo</a> & <a target="_blank" href="https://github.com/PhosphorW/hexo-theme-academia" rel="nofollow noopener">Academia Theme</a></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery-pjax@latest/jquery.pjax.min.js"></script><script src="/js/main.js"></script></body></html>
