@@ -759,6 +759,31 @@ blockquote p {
   color: #b86e43;
   text-decoration-color: rgba(184,110,67,0.55);
 }
+.page article .katex {
+  font-size: 1.04em;
+}
+.page article .katex-block,
+.page article .katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: 100%;
+  padding: 0.9rem 0.2rem;
+  margin: 1.2rem 0;
+  -webkit-overflow-scrolling: touch;
+}
+.page article .katex-block {
+  text-align: center;
+}
+.page article .katex-error {
+  display: inline-block;
+  max-width: 100%;
+  padding: 0.2rem 0.45rem;
+  border-radius: 0.45rem;
+  background: rgba(204,0,0,0.08);
+  color: #a33;
+  overflow-x: auto;
+  vertical-align: middle;
+}
 .page article .highlight {
   overflow: auto;
   margin: 2rem 0;
