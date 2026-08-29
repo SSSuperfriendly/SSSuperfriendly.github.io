@@ -800,55 +800,41 @@
 
 /* ---------------------------------------- hero bio layout + coffee chat card */
 
-/* Desktop: turn the hero into a real two-column layout so the left
-   sidebar (name + links + coffee card) sits in normal flow instead of
-   floating off the left margin; also let the card text wrap. */
-@media (min-width: 601px) {
-  .bio-layout {
-    display: flex;
-    align-items: flex-start;
-    gap: 28px;
-  }
-
-  .bio-sidebar {
-    position: static;
-    flex: 0 0 210px;
-    white-space: normal;
-  }
-
-  .bio-main {
-    min-width: 0;
-  }
-}
-
+/* Coffee chat card, floated in the left whitespace of the hero.
+   The template's .bio-sidebar is absolutely positioned to the left of the
+   content column (right: calc(100% + 16px)); the card flows right after the
+   name + links, so it lands in the lower-left whitespace next to the bio.
+   Kept compact so it fits within the hero height at any desktop width. */
 .coffee-card {
-  margin-top: 18px;
-  padding: 14px;
+  margin-top: 16px;
+  padding: 12px 14px;
   box-sizing: border-box;
+  width: auto;
   border: 1px solid #e5e5e5;
-  border-radius: 14px;
+  border-radius: 12px;
   background: #fafafa;
   text-align: left;
+  white-space: normal;
 }
 
 .coffee-card__title {
-  margin: 0 0 6px;
+  margin: 0 0 8px;
   font-family: 'DM Serif Display', Georgia, 'Times New Roman', serif;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 400;
   color: #222;
 }
 
 .coffee-card__desc {
-  margin: 0 0 12px;
+  margin: 0 0 10px;
   font-size: 12px;
-  line-height: 1.5;
+  line-height: 1.45;
   color: #555;
 }
 
 .coffee-card__btn {
   display: block;
-  padding: 9px 12px;
+  padding: 8px 12px;
   border-radius: 8px;
   background: #3589cd;
   color: #fff;
@@ -866,13 +852,10 @@
   text-decoration: none;
 }
 
-.coffee-card__fallback {
-  margin: 10px 0 0;
-  font-size: 11px;
-  color: #888;
-  text-align: center;
-}
-
-.coffee-card__fallback a {
-  color: #3589cd;
+/* Desktop: compact fixed-ish width so the text wraps and the card stays in
+   the whitespace next to the bio instead of crowding the content column. */
+@media (min-width: 601px) {
+  .bio-sidebar .coffee-card {
+    width: clamp(170px, 20vw, 200px);
+  }
 }
