@@ -1,4 +1,65 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5"><title>Kunpeng Chen</title><meta name="author" content="Chen Kunpeng"><link rel="shortcut icon" href="/img/favicon.png?v=20260117"><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css"><meta name="generator" content="Hexo 8.1.1"></head><body><header id="page_header"><div class="header_wrap"><div id="blog_name"><a class="blog_title" id="site-name" href="/">Kunpeng Chen</a></div><button class="menus_icon"><div class="navicon"></div></button><ul class="menus_items"><li class="menus_item"><a class="site-page" href="/"> About Me</a></li><li class="menus_item"><a class="site-page" href="/news/"> News</a></li><li class="menus_item"><a class="site-page" href="/book/"> Coffee Chat</a></li><li class="menus_item"><a class="site-page" href="/#Publications"> Publications</a></li><li class="menus_item"><a class="site-page" href="/categories/Blogs/"> Blogs</a></li></ul></div></header><main id="page_main"><div class="side-card sticky"><div class="card-wrap" itemscope itemtype="http://schema.org/Person"><div class="author-avatar"><img class="avatar-img" src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/profile.png'" alt="avatar"></div><div class="author-discrip"><h3>Chen Kunpeng</h3><p class="author-bio"><strong>Tongji University</strong>. <br>AI Systems & Neural architecture design.</p></div><div class="author-links"><button class="btn m-social-links">Links</button><ul class="social-icons"><li><a class="social-icon" href="/" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter" aria-hidden="true"></i></a></li><li><a class="social-icon" href="/" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-square" aria-hidden="true"></i></a></li><li><a class="social-icon" href="https://github.com/SSSuperfriendly" target="_blank" rel="noopener noreferrer"><i class="fab fa-github" aria-hidden="true"></i></a></li><li><a class="social-icon" href="/" target="_blank" rel="noopener noreferrer"><i class="fab fa-stack-overflow" aria-hidden="true"></i></a></li><li><a class="social-icon" href="/" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin" aria-hidden="true"></i></a></li><li><a class="social-icon" href="/" target="_blank" rel="noopener noreferrer"><i class="fab fa-weibo" aria-hidden="true"></i></a></li><li><a class="social-icon" href="/" target="_blank" rel="noopener noreferrer"><i class="fab fa-weixin" aria-hidden="true"></i></a></li><li><a class="social-icon" href="/" target="_blank" rel="noopener noreferrer"><i class="fab fa-qq" aria-hidden="true"></i></a></li><li><a class="social-icon" href="mailto:chenkunpeng@tongji.edu.cn" target="_blank" rel="noopener noreferrer"><i class="fas fa-envelope" aria-hidden="true"></i></a></li><li><a class="social-icon" href="/" target="_blank" rel="noopener noreferrer"><i class="fas fa-rss" aria-hidden="true"></i></a></li></ul><ul class="social-links"><li><a class="e-social-link" href="/" target="_blank" rel="noopener noreferrer"><i class="fas fa-graduation-cap" aria-hidden="true"></i><span>Google Scholar</span></a></li><li><a class="e-social-link" href="https://orcid.org/0009-0006-1089-6201" target="_blank" rel="noopener noreferrer"><i class="fab fa-orcid" aria-hidden="true"></i><span>ORCID</span></a></li></ul></div><a class="cv-links" href="/attaches/CV.pdf" target="_blank"><i class="fas fa-file-pdf" aria-hidden="true"><span>My Detail CV</span></i></a></div></div><div class="page" itemscope itemtype="http://schema.org/CreativeWork"><h2 class="page-title">浅析ε-贪婪探索</h2><article><p>ε-贪婪探索，是强化学习中一种简洁的行动选择策略：以 ε 的概率随机探索，以 1−ε 的概率“贪婪”地利用当前已知的最佳行动。换句话说——智能体有 ε 的几率随意乱试，其余时候则选择估值最高的那个动作。它用一种直觉上非常自然的方式，平衡了“探索”与“利用”。</p>
+<!DOCTYPE HTML>
+
+<html lang="zh-CN">
+
+  <head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>浅析ε-贪婪探索 | Kunpeng Chen</title>
+    <meta name="author" content="Chen Kunpeng">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="结合强化学习直觉与工程经验，梳理 ε-贪婪探索的机制、优点与局限。">
+<link rel="canonical" href="https://SSSuperfriendly.github.io/2026/04/04/epsilon-greedy-exploration/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Kunpeng Chen">
+    <meta property="og:title" content="浅析ε-贪婪探索 | Kunpeng Chen">
+    <meta property="og:description" content="结合强化学习直觉与工程经验，梳理 ε-贪婪探索的机制、优点与局限。">
+    <meta property="og:url" content="https://SSSuperfriendly.github.io/2026/04/04/epsilon-greedy-exploration/">
+    <meta property="og:image" content="https://SSSuperfriendly.github.io/images/avatar.jpg">
+    <meta property="og:image:alt" content="Portrait of Kunpeng Chen">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="浅析ε-贪婪探索 | Kunpeng Chen">
+    <meta name="twitter:description" content="结合强化学习直觉与工程经验，梳理 ε-贪婪探索的机制、优点与局限。">
+    <meta name="twitter:image" content="https://SSSuperfriendly.github.io/images/avatar.jpg">
+    <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="/css/desktop.css" media="screen and (min-width: 601px)">
+    <link rel="stylesheet" href="/css/mobile.css" media="screen and (max-width: 600px)">
+    <link rel="stylesheet" href="/css/desktop.css" media="print">
+    <link rel="stylesheet" href="/css/extras.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,700;1,8..60,400&display=swap
+https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css
+  </head>
+
+  <body>
+    <nav id="site-nav" class="site-nav" aria-label="Primary navigation">
+      <div class="site-nav__inner">
+        <a class="site-nav__brand" href="/#Top">
+          <span class="site-nav__brand-full">Kunpeng Chen</span>
+          <span class="site-nav__brand-short">Kunpeng</span>
+        </a>
+        <div class="site-nav__links">
+          <a href="/#Top">About</a>
+          <a href="/#News">News</a>
+          <a href="/#CoffeeChat">Coffee Chat</a>
+          <a href="/#Honors">Honors</a>
+          <a href="/blog/" class="">Blog</a>
+        </div>
+      </div>
+    </nav>
+    <main class="main-content">
+      <article class="post-article fade-in" lang="zh-CN">
+        <header class="post-header">
+          <h1 class="post-title">浅析ε-贪婪探索</h1>
+          <p class="post-meta">
+            <time datetime="2026-04-04">2026-04-04</time>
+            <span class="post-tags"><span class="post-tag">#Reinforcement Learning</span> <span class="post-tag">#Exploration</span></span>
+          </p>
+        </header>
+        <div class="post-content">
+<p>ε-贪婪探索，是强化学习中一种简洁的行动选择策略：以 ε 的概率随机探索，以 1−ε 的概率“贪婪”地利用当前已知的最佳行动。换句话说——智能体有 ε 的几率随意乱试，其余时候则选择估值最高的那个动作。它用一种直觉上非常自然的方式，平衡了“探索”与“利用”。</p>
 <p>即便到了现在，ε-贪婪依然是课程中的必讲方法，也是工程实践里的常用基线。它在离散动作问题上表现稳健，同时也为更高级的探索策略提供了参考坐标。主流资料普遍建议：在早期开发、基准测试，以及动作空间较小且随机性可控的任务中，可以优先考虑 ε-贪婪。</p>
 <p><strong>核心特点：</strong></p>
 <ul>
@@ -107,4 +168,23 @@
 <p><strong>修正</strong>：将 ε-贪婪与经验回放缓存、目标网络以及适当的学习率调度配合使用。</p>
 </li>
 </ul>
-</article></div></main><div class="nav-wrap"><div class="nav"><button class="site-nav"><div class="navicon"></div></button><ul class="nav_items"><li class="nav_item"><a class="nav-page" href="/"> About Me</a></li><li class="nav_item"><a class="nav-page" href="/news/"> News</a></li><li class="nav_item"><a class="nav-page" href="/book/"> Coffee Chat</a></li><li class="nav_item"><a class="nav-page" href="/#Publications"> Publications</a></li><li class="nav_item"><a class="nav-page" href="/categories/Blogs/"> Blogs</a></li></ul></div><div class="cd-top"><i class="fa fa-arrow-up" aria-hidden="true"></i></div></div><footer id="page_footer"><div class="footer_wrap"><div class="copyright">&copy;2025 - 2026 by Chen Kunpeng</div><div class="theme-info">Powered by <a target="_blank" href="https://hexo.io" rel="nofollow noopener">Hexo</a> & <a target="_blank" href="https://github.com/PhosphorW/hexo-theme-academia" rel="nofollow noopener">Academia Theme</a></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery-pjax@latest/jquery.pjax.min.js"></script><script src="/js/main.js"></script></body></html>
+
+        </div>
+        <nav class="post-nav">
+        <div class="post-nav-prev"><span class="post-nav-label">Older</span><a href="/2026/03/29/vqa-counterfactual-reasoning/">从VQA去偏看反事实推理</a></div>
+        <div class="post-nav-next"><span class="post-nav-label">Newer</span><a href="/2026/04/20/distributed-training-of-moe-overview/">MoE 分布式训练：路由、并行与 Checkpoint</a></div>
+        </nav>
+        <p class="post-back"><a href="/blog/">← Back to Blog</a></p>
+      </article>
+
+      <footer>
+        <hr>
+        <p class="footer-text fade-in delay-5">
+          <span class="copyright"><i class="far fa-copyright"></i> 2026 Kunpeng Chen&nbsp;&nbsp;</span>
+        </p>
+      </footer>
+    </main>
+
+    <script src="/js/main.js"></script>
+  </body>
+</html>

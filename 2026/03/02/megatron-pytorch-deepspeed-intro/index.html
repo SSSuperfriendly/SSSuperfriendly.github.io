@@ -1,9 +1,70 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5"><title>Kunpeng Chen</title><meta name="author" content="Chen Kunpeng"><link rel="shortcut icon" href="/img/favicon.png?v=20260117"><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css"><meta name="generator" content="Hexo 8.1.1"></head><body><header id="page_header"><div class="header_wrap"><div id="blog_name"><a class="blog_title" id="site-name" href="/">Kunpeng Chen</a></div><button class="menus_icon"><div class="navicon"></div></button><ul class="menus_items"><li class="menus_item"><a class="site-page" href="/"> About Me</a></li><li class="menus_item"><a class="site-page" href="/news/"> News</a></li><li class="menus_item"><a class="site-page" href="/book/"> Coffee Chat</a></li><li class="menus_item"><a class="site-page" href="/#Publications"> Publications</a></li><li class="menus_item"><a class="site-page" href="/categories/Blogs/"> Blogs</a></li></ul></div></header><main id="page_main"><div class="side-card sticky"><div class="card-wrap" itemscope itemtype="http://schema.org/Person"><div class="author-avatar"><img class="avatar-img" src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/profile.png'" alt="avatar"></div><div class="author-discrip"><h3>Chen Kunpeng</h3><p class="author-bio"><strong>Tongji University</strong>. <br>AI Systems & Neural architecture design.</p></div><div class="author-links"><button class="btn m-social-links">Links</button><ul class="social-icons"><li><a class="social-icon" href="/" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter" aria-hidden="true"></i></a></li><li><a class="social-icon" href="/" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-square" aria-hidden="true"></i></a></li><li><a class="social-icon" href="https://github.com/SSSuperfriendly" target="_blank" rel="noopener noreferrer"><i class="fab fa-github" aria-hidden="true"></i></a></li><li><a class="social-icon" href="/" target="_blank" rel="noopener noreferrer"><i class="fab fa-stack-overflow" aria-hidden="true"></i></a></li><li><a class="social-icon" href="/" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin" aria-hidden="true"></i></a></li><li><a class="social-icon" href="/" target="_blank" rel="noopener noreferrer"><i class="fab fa-weibo" aria-hidden="true"></i></a></li><li><a class="social-icon" href="/" target="_blank" rel="noopener noreferrer"><i class="fab fa-weixin" aria-hidden="true"></i></a></li><li><a class="social-icon" href="/" target="_blank" rel="noopener noreferrer"><i class="fab fa-qq" aria-hidden="true"></i></a></li><li><a class="social-icon" href="mailto:chenkunpeng@tongji.edu.cn" target="_blank" rel="noopener noreferrer"><i class="fas fa-envelope" aria-hidden="true"></i></a></li><li><a class="social-icon" href="/" target="_blank" rel="noopener noreferrer"><i class="fas fa-rss" aria-hidden="true"></i></a></li></ul><ul class="social-links"><li><a class="e-social-link" href="/" target="_blank" rel="noopener noreferrer"><i class="fas fa-graduation-cap" aria-hidden="true"></i><span>Google Scholar</span></a></li><li><a class="e-social-link" href="https://orcid.org/0009-0006-1089-6201" target="_blank" rel="noopener noreferrer"><i class="fab fa-orcid" aria-hidden="true"></i><span>ORCID</span></a></li></ul></div><a class="cv-links" href="/attaches/CV.pdf" target="_blank"><i class="fas fa-file-pdf" aria-hidden="true"><span>My Detail CV</span></i></a></div></div><div class="page" itemscope itemtype="http://schema.org/CreativeWork"><h2 class="page-title">Megatron、PyTorch和DeepSpeed</h2><article><p>从技术的角度解析大模型训练基础设施中的三个核心组件：PyTorch、DeepSpeed 以及 Megatron。</p>
-<h3 id="PyTorch">PyTorch</h3>
+<!DOCTYPE HTML>
+
+<html lang="zh-CN">
+
+  <head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Megatron、PyTorch和DeepSpeed | Kunpeng Chen</title>
+    <meta name="author" content="Chen Kunpeng">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="从训练基础设施视角梳理 PyTorch、Megatron 与 DeepSpeed 的分工与协作。">
+<link rel="canonical" href="https://SSSuperfriendly.github.io/2026/03/02/megatron-pytorch-deepspeed-intro/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Kunpeng Chen">
+    <meta property="og:title" content="Megatron、PyTorch和DeepSpeed | Kunpeng Chen">
+    <meta property="og:description" content="从训练基础设施视角梳理 PyTorch、Megatron 与 DeepSpeed 的分工与协作。">
+    <meta property="og:url" content="https://SSSuperfriendly.github.io/2026/03/02/megatron-pytorch-deepspeed-intro/">
+    <meta property="og:image" content="https://SSSuperfriendly.github.io/images/avatar.jpg">
+    <meta property="og:image:alt" content="Portrait of Kunpeng Chen">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Megatron、PyTorch和DeepSpeed | Kunpeng Chen">
+    <meta name="twitter:description" content="从训练基础设施视角梳理 PyTorch、Megatron 与 DeepSpeed 的分工与协作。">
+    <meta name="twitter:image" content="https://SSSuperfriendly.github.io/images/avatar.jpg">
+    <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="/css/desktop.css" media="screen and (min-width: 601px)">
+    <link rel="stylesheet" href="/css/mobile.css" media="screen and (max-width: 600px)">
+    <link rel="stylesheet" href="/css/desktop.css" media="print">
+    <link rel="stylesheet" href="/css/extras.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,700;1,8..60,400&display=swap
+https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css
+  </head>
+
+  <body>
+    <nav id="site-nav" class="site-nav" aria-label="Primary navigation">
+      <div class="site-nav__inner">
+        <a class="site-nav__brand" href="/#Top">
+          <span class="site-nav__brand-full">Kunpeng Chen</span>
+          <span class="site-nav__brand-short">Kunpeng</span>
+        </a>
+        <div class="site-nav__links">
+          <a href="/#Top">About</a>
+          <a href="/#News">News</a>
+          <a href="/#CoffeeChat">Coffee Chat</a>
+          <a href="/#Honors">Honors</a>
+          <a href="/blog/" class="">Blog</a>
+        </div>
+      </div>
+    </nav>
+    <main class="main-content">
+      <article class="post-article fade-in" lang="zh-CN">
+        <header class="post-header">
+          <h1 class="post-title">Megatron、PyTorch和DeepSpeed</h1>
+          <p class="post-meta">
+            <time datetime="2026-03-02">2026-03-02</time>
+            <span class="post-tags"><span class="post-tag">#Deep Learning</span> <span class="post-tag">#LLM</span> <span class="post-tag">#Architecture</span></span>
+          </p>
+        </header>
+        <div class="post-content">
+<p>从技术的角度解析大模型训练基础设施中的三个核心组件：PyTorch、DeepSpeed 以及 Megatron。</p>
+<h3>PyTorch</h3>
 <p>PyTorch 是目前绝大多数 LLM 训练的底层计算环境。它的核心职责是提供张量（Tensor）的数学运算抽象、构建前向传播（Forward Pass）的动态计算图，并通过自动微分（Autograd）机制计算反向传播（Backward Pass）的梯度。</p>
 <p>在大模型训练的语境下，PyTorch 原生提供了基于数据并行（Data Parallelism, DP）和分布式数据并行（Distributed Data Parallel, DDP）的功能。在 DDP 模式下，模型被完整地复制到集群中的每一个 GPU 上，每个 GPU 处理不同的数据微批次（Micro-batch），随后通过 All-Reduce 通信原语对计算出的梯度进行同步。</p>
 <p>当模型参数量超过单卡显存上限时，PyTorch 原生的 DDP 由于要求单卡必须能够容纳完整的模型参数、梯度和优化器状态（即所谓的 1+1+2 或更多倍的模型体积），导致无法进行训练（Out of Memory, OOM）。虽然 PyTorch 后来引入了 FSDP（Fully Sharded Data Parallel），但在极致的显存优化和算子融合层面，工业界通常会寻求更专业的解决方案。</p>
-<h3 id="DeepSpeed">DeepSpeed</h3>
+<h3>DeepSpeed</h3>
 <p>DeepSpeed 是微软开源的深度学习优化库，它在软件层面上对 PyTorch 进行了深度的 Hook 和封装。DeepSpeed 的核心技术贡献是 <strong>ZeRO（Zero Redundancy Optimizer，零冗余优化器）</strong> 算法。</p>
 <p>ZeRO 算法旨在打破 DDP 中每个 GPU 都保存完整模型状态的冗余。它将训练过程中的显存占用分为三个阶段（Stages）进行切分：</p>
 <ul>
@@ -12,7 +73,7 @@
 <li><strong>ZeRO-3：</strong> 在前两者的基础上，对模型参数（Parameters）本身也进行分片。</li>
 </ul>
 <p>在 ZeRO-3 模式下，单张 GPU 仅保存整个模型的极小一部分。只有在前向传播或反向传播需要用到某一层参数时，DeepSpeed 才会通过 All-Gather 通信从其他 GPU 动态获取这些参数，并在计算完成后立即释放（销毁）这部分参数的显存占用。此外，DeepSpeed 还提供了 ZeRO-Offload 技术，能够将部分显存数据卸载到 CPU 内存或 NVMe 固态硬盘上，进一步突破 GPU 显存限制。</p>
-<h3 id="Megatron-Megatron-LM">Megatron (Megatron-LM)</h3>
+<h3>Megatron (Megatron-LM)</h3>
 <p>Megatron 是由 NVIDIA 开发的，专门针对大规模 Transformer 架构进行极致优化的分布式训练框架。不同于 DeepSpeed 侧重于显存状态的管理，Megatron 侧重于<strong>计算维度的拆解</strong>，即如何在多张物理 GPU 之间最高效地分配矩阵乘法（GEMM）运算。</p>
 <p>Megatron 实现了 <strong>并行架构</strong>：</p>
 <ol>
@@ -21,7 +82,7 @@
 <li><strong>数据并行 (Data Parallelism, DP)：</strong> 在 TP 和 PP 之外的维度进行常规的数据切分。</li>
 </ol>
 <p>除此之外，Megatron 包含了大量针对 NVIDIA 硬件底层深度优化的定制 CUDA 算子（如 FlashAttention 的早期集成、LayerNorm 的算子融合等），以最大化 GPU 的硬件浮点运算效率（MFU）。</p>
-<h3 id="四、-架构总结与对比">四、 架构总结与对比</h3>
+<h3>四、 架构总结与对比</h3>
 <p>简而言之：</p>
 <ul>
 <li><strong>PyTorch</strong> 提供了定义神经网络的语言和基础数学运算；</li>
@@ -29,4 +90,23 @@
 <li><strong>Megatron</strong> 解决的是<strong>计算效率</strong>的问题，通过 3D 并行和算子优化，让巨型模型在超大型集群（万卡级别）上跑出极高的吞吐量。</li>
 </ul>
 <p>在实际的工业界大型预训练中，这三者并非互斥关系。最常见的组合是：底层基于 <strong>PyTorch</strong>，使用 <strong>Megatron</strong> 的张量并行和流水线并行处理计算，并在数据并行维度上套用 <strong>DeepSpeed</strong> 的 ZeRO-1 进行优化器分片，这种架构通常被称为 <strong>Megatron-DeepSpeed</strong>。</p>
-</article></div></main><div class="nav-wrap"><div class="nav"><button class="site-nav"><div class="navicon"></div></button><ul class="nav_items"><li class="nav_item"><a class="nav-page" href="/"> About Me</a></li><li class="nav_item"><a class="nav-page" href="/news/"> News</a></li><li class="nav_item"><a class="nav-page" href="/book/"> Coffee Chat</a></li><li class="nav_item"><a class="nav-page" href="/#Publications"> Publications</a></li><li class="nav_item"><a class="nav-page" href="/categories/Blogs/"> Blogs</a></li></ul></div><div class="cd-top"><i class="fa fa-arrow-up" aria-hidden="true"></i></div></div><footer id="page_footer"><div class="footer_wrap"><div class="copyright">&copy;2025 - 2026 by Chen Kunpeng</div><div class="theme-info">Powered by <a target="_blank" href="https://hexo.io" rel="nofollow noopener">Hexo</a> & <a target="_blank" href="https://github.com/PhosphorW/hexo-theme-academia" rel="nofollow noopener">Academia Theme</a></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery-pjax@latest/jquery.pjax.min.js"></script><script src="/js/main.js"></script></body></html>
+
+        </div>
+        <nav class="post-nav">
+        <div class="post-nav-prev"><span class="post-nav-label">Older</span><a href="/2026/02/21/moe-gentle-introduction/">A Gentle Introduction to Mixture of Experts</a></div>
+        <div class="post-nav-next"><span class="post-nav-label">Newer</span><a href="/2026/03/05/convex-functions-and-optimization/">凸函数与凸优化</a></div>
+        </nav>
+        <p class="post-back"><a href="/blog/">← Back to Blog</a></p>
+      </article>
+
+      <footer>
+        <hr>
+        <p class="footer-text fade-in delay-5">
+          <span class="copyright"><i class="far fa-copyright"></i> 2026 Kunpeng Chen&nbsp;&nbsp;</span>
+        </p>
+      </footer>
+    </main>
+
+    <script src="/js/main.js"></script>
+  </body>
+</html>

@@ -1,83 +1,68 @@
-$(function () {
-    // resize window
-    $(window).resize(function () {
-        if ($(window).width() < 1280 && $(window).width()>540) {
-            $(".page").css({"width": $(window).width() - $(".side-card").width() - 90, "float": "left"})
-        } else {
-            $(".page").removeAttr("style")
-        }
+// Site JavaScript: sticky nav + smooth scrolling.
+// Nav links are written as /#Anchor so they work from any subpage:
+// if the anchor exists on the current page we scroll to it, otherwise we
+// navigate to the homepage and let the browser land on the anchor.
+
+var navScrollRafId = null;
+
+var navAnchorOffset = {
+  desktop: 40,
+  mobile: 76
+};
+
+function updateSiteNav() {
+  var nav = document.getElementById('site-nav');
+  if (nav) {
+    nav.classList.toggle('is-floating', window.scrollY > 20);
+  }
+}
+
+function handleSiteNavScroll() {
+  if (navScrollRafId !== null) {
+    return;
+  }
+  navScrollRafId = requestAnimationFrame(function() {
+    navScrollRafId = null;
+    updateSiteNav();
+  });
+}
+
+function initSiteNav() {
+  var nav = document.getElementById('site-nav');
+  updateSiteNav();
+  window.addEventListener('scroll', handleSiteNavScroll, { passive: true });
+
+  if (!nav) {
+    return;
+  }
+
+  nav.querySelectorAll('a[href^="#"], a[href^="/#"]').forEach(function(link) {
+    link.addEventListener('click', function(event) {
+      var href = link.getAttribute('href');
+      var hash = href.indexOf('#') >= 0 ? href.slice(href.indexOf('#')) : '';
+      var target = hash ? document.querySelector(hash) : null;
+
+      if (!target) {
+        // The anchor lives on the homepage — go there (falls back to the
+        // browser's native fragment navigation once the page loads).
+        window.location.href = '/' + hash;
+        return;
+      }
+
+      event.preventDefault();
+      var layout = window.innerWidth <= 600 ? 'mobile' : 'desktop';
+      var targetTop = target.getBoundingClientRect().top
+        + window.scrollY
+        - navAnchorOffset[layout];
+      var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      window.scrollTo({
+        top: Math.max(0, targetTop),
+        behavior: prefersReducedMotion ? 'auto' : 'smooth'
+      });
+      history.pushState(null, '', hash);
     });
+  });
+}
 
-    // menu
-    $(".menus_icon").click(function () {
-        if ($(".header_wrap").hasClass("menus-open")) {
-            $(".header_wrap").removeClass("menus-open").addClass("menus-close")
-        } else {
-            $(".header_wrap").removeClass("menus-close").addClass("menus-open")
-        }
-    })
-
-    $(".m-social-links").click(function () {
-        if ($(".author-links").hasClass("is-open")) {
-            $(".author-links").removeClass("is-open").addClass("is-close")
-        } else {
-            $(".author-links").removeClass("is-close").addClass("is-open")
-        }
-    })
-
-    $(".site-nav").click(function () {
-        if ($(".nav").hasClass("nav-open")) {
-            $(".nav").removeClass("nav-open").addClass("nav-close")
-        } else {
-            $(".nav").removeClass("nav-close").addClass("nav-open")
-        }
-    })
-
-    $(document).click(function(e){
-        var target = $(e.target);
-        if(target.closest(".nav").length != 0) return;
-        $(".nav").removeClass("nav-open").addClass("nav-close")
-        if(target.closest(".author-links").length != 0) return;
-        $(".author-links").removeClass("is-open").addClass("is-close")
-        if((target.closest(".menus_icon").length != 0) || (target.closest(".menus_items").length != 0)) return;
-        $(".header_wrap").removeClass("menus-open").addClass("menus-close")
-    })
-
-    // 显示 cdtop
-    $(document).ready(function ($) {
-        var offset = 100,
-            scroll_top_duration = 700,
-            $back_to_top = $('.nav-wrap');
-
-        $(window).scroll(function () {
-            ($(this).scrollTop() > offset) ? $back_to_top.addClass('is-visible') : $back_to_top.removeClass('is-visible');
-        });
-
-        $(".cd-top").on('click', function (event) {
-            event.preventDefault();
-            $('body,html').animate({
-                scrollTop: 0,
-            }, scroll_top_duration);
-        });
-    });
-
-    // Disable pjax to avoid stale page cache after deploy on GitHub Pages.
-    // Full-page navigation is slower but much more reliable for content freshness.
-
-    // smooth scroll
-    $(function () {
-        $('a[href*=\\#]:not([href=\\#])').click(function () {
-            if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
-                var target = $(this.hash);
-                target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
-                if (target.length) {
-                    $('html,body').animate({
-                        scrollTop: target.offset().top
-                    }, 700);
-                    return false;
-                }
-            }
-        });
-    });
-
-})
+initSiteNav();
