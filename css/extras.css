@@ -800,6 +800,7 @@
   .blog-more .button {
     display: block;
     width: 100%;
+    box-sizing: border-box;
     padding: 12px 10px;
   }
 }
