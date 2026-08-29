@@ -15,5 +15,19 @@
     "topics": ["selected", "high-performance-ai", "ai-systems"],
     "year": 2026,
     "show": true
+  },
+  {
+    "id": "mecefo-v2",
+    "title": "MeCeFO-v2: Efficient Fault-Tolerant Optimization for MoE Training",
+    "isPlaceholder": false,
+    "authors": [],
+    "venue": "arXiv 2026",
+    "venueType": "arxiv",
+    "image": "/images/mecefo-v2.png",
+    "links": {},
+    "highlights": [],
+    "topics": ["ai-systems"],
+    "year": 2026,
+    "show": true
   }
 ]

@@ -482,6 +482,10 @@ function createPublicationHTMLDesktop(pub) {
     return `<a href="${item.url}" class="${cls}"${target}>${item.text}</a>`;
   }).join('\n            ');
 
+  const authorsParagraphHTML = authorsHTML
+    ? `<p class="paper-authors">${authorsHTML}</p>`
+    : '';
+
   const venueNoBreak = pub.venue.replace(/\s/g, '&nbsp;');
   let venueText = venueNoBreak;
 
@@ -515,7 +519,7 @@ function createPublicationHTMLDesktop(pub) {
           </div>
           <div class="paper-main">
             ${titleHTML}
-            <p class="paper-authors">${authorsHTML}</p>
+            ${authorsParagraphHTML}
           </div>${imageHTML}${highlightsHTML}
         </div>`;
 }
