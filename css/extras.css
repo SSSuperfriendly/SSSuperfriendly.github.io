@@ -37,7 +37,8 @@
 
 /* ---------------------------------------------------------- news (more) */
 
-.news-more {
+.news-more,
+.about-more {
   margin: 14px 0 0;
 }
 
@@ -789,6 +790,7 @@
   }
 
   .news-more .button,
+  .about-more .button,
   .blog-more .button {
     display: block;
     width: 100%;

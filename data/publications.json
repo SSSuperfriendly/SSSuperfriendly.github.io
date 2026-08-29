@@ -1,0 +1,18 @@
+[
+  {
+    "id": "your-project",
+    "title": "Your Project Title Here",
+    "isPlaceholder": true,
+    "authors": [
+      { "name": "Kunpeng Chen", "isHighlight": true }
+    ],
+    "venue": "Coming Soon",
+    "venueType": "insub",
+    "image": "",
+    "links": {},
+    "highlights": [],
+    "topics": ["selected", "high-performance-ai", "ai-systems"],
+    "year": 2026,
+    "show": true
+  }
+]

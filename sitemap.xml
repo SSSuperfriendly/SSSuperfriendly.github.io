@@ -2,7 +2,8 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://SSSuperfriendly.github.io/</loc></url>
   <url><loc>https://SSSuperfriendly.github.io/news/</loc></url>
-  <url><loc>https://SSSuperfriendly.github.io/blog/</loc></url>
+  <url><loc>https://SSSuperfriendly.github.io/about/</loc></url>
+  <url><loc>https://SSSuperfriendly.github.io/blogs/</loc></url>
   <url><loc>https://SSSuperfriendly.github.io/book/</loc></url>
   <url><loc>https://SSSuperfriendly.github.io/2026/05/31/from-entropy-to-softmax/</loc></url>
   <url><loc>https://SSSuperfriendly.github.io/2026/05/01/segment-anything-model/</loc></url>

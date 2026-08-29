@@ -41,11 +41,10 @@ https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css
           <span class="site-nav__brand-short">Kunpeng</span>
         </a>
         <div class="site-nav__links">
-          <a href="/#Top">About</a>
+          <a href="/#Top">About Me</a>
           <a href="/#News">News</a>
+          <a href="/blogs/" class="">Blogs</a>
           <a href="/#CoffeeChat">Coffee Chat</a>
-          <a href="/#Honors">Honors</a>
-          <a href="/blog/" class="">Blog</a>
         </div>
       </div>
     </nav>
@@ -88,6 +87,8 @@ https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css
             </div>
           </div>
         </div>
+
+        <p class="about-more"><a class="button bio-button" href="/about/">Read More</a></p>
       </section>
 
       <section id="News" class="fade-in delay-1">
@@ -145,54 +146,6 @@ https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css
         </div>
       </section>
 
-      <section id="Honors" class="fade-in delay-3">
-        <h2><strong>Honors</strong></h2>
-        <ul class="honor-list">
-
-        <li class="honor-item">
-          <span class="honor-name">National Scholarship</span>
-          <span class="honor-scope">national-wide</span>
-          <span class="honor-percent">0.4%</span>
-        </li>
-
-        <li class="honor-item">
-          <span class="honor-name">National Inspirational Scholarship</span>
-          <span class="honor-scope">national-wide</span>
-          <span class="honor-percent">3%</span>
-        </li>
-
-        <li class="honor-item">
-          <span class="honor-name">Inspirational Star (Nomination Award)</span>
-          <span class="honor-scope">school-wide</span>
-          <span class="honor-percent">0.05%</span>
-        </li>
-
-        <li class="honor-item">
-          <span class="honor-name">Tang Zhongying Moral Education Scholarship</span>
-          <span class="honor-scope">school-wide</span>
-          <span class="honor-percent">0.5%</span>
-        </li>
-
-        <li class="honor-item">
-          <span class="honor-name">Huawei Scholarship</span>
-          <span class="honor-scope">school-wide</span>
-          <span class="honor-percent">1%</span>
-        </li>
-
-        <li class="honor-item">
-          <span class="honor-name">Outstanding Student</span>
-          <span class="honor-scope">school-wide</span>
-          <span class="honor-percent">5%</span>
-        </li>
-
-        <li class="honor-item">
-          <span class="honor-name">Outstanding Student Cadre</span>
-          <span class="honor-scope">school-wide</span>
-          <span class="honor-percent">1%</span>
-        </li>
-        </ul>
-      </section>
-
       <section id="Blog" class="fade-in delay-4">
         <h2><strong>Blog</strong></h2>
         <div class="recent-posts">
@@ -226,7 +179,45 @@ https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css
           <a class="recent-post-title" href="/2026/04/04/epsilon-greedy-exploration/">浅析ε-贪婪探索</a>
           <span class="recent-post-tags"><span class="recent-post-tag">Reinforcement Learning</span><span class="recent-post-tag">Exploration</span></span>
         </div>
-          <p class="blog-more"><a class="button bio-button" href="/blog/">View All</a></p>
+          <p class="blog-more"><a class="button bio-button" href="/blogs/">View All</a></p>
+        </div>
+      </section>
+
+      <section id="Research" class="fade-in delay-2">
+        <div class="research-heading">
+          <h2><strong>Research</strong></h2>
+          <div class="research-filter" role="group" aria-label="Filter research by topic">
+            <span class="research-filter__indicator" aria-hidden="true"></span>
+            <button type="button" class="research-filter__btn is-active" data-filter="selected" aria-pressed="true">Favorite</button>
+            <button type="button" class="research-filter__btn" data-filter="high-performance-ai" aria-pressed="false">High-Performance AI</button>
+            <button type="button" class="research-filter__btn" data-filter="ai-systems" aria-pressed="false">AI Systems</button>
+          </div>
+        </div>
+        <div class="research-line-intro" aria-live="polite" aria-hidden="true">
+          <p id="research-line-description" class="research-line-intro__description"></p>
+        </div>
+        <div id="publications-container">
+          <!-- Publications are loaded at runtime from /data/publications.json -->
+        </div>
+      </section>
+
+      <section id="Experiences" class="fade-in delay-5">
+        <h2><strong>Experiences</strong></h2>
+        <div class="experience-section">
+          <!-- 复制下面这段并取消注释，改成你自己的经历：
+               exp-period 写时间段；exp-logo 放机构 logo（图片放进 src/static/images/，路径写 /images/xx.png）；
+               exp-title 写单位，exp-position 写身份；exp-mentor 写导师。
+          <div class="experience-item">
+            <div class="exp-period">Sep 2024 – Present</div>
+            <div class="exp-main">
+              <img src="/images/xxx-logo.png" class="exp-logo" alt="Organization logo">
+              <div class="exp-info">
+                <div class="exp-title">Your Organization<span class="exp-position"> · Your Role</span></div>
+                <div class="exp-mentor">Mentored by <a href="https://example.com">Name</a></div>
+              </div>
+            </div>
+          </div>
+          -->
         </div>
       </section>
 
