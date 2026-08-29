@@ -1,10 +1,11 @@
 [
   {
     "id": "your-project",
-    "title": "Your Project Title Here",
+    "title": "Interesting Ahead",
     "isPlaceholder": true,
     "authors": [
-      { "name": "Kunpeng Chen", "isHighlight": true }
+      { "name": "Kunpeng Chen", "isHighlight": true },
+      { "name": "and his Co-authors", "isHighlight": false }
     ],
     "venue": "Coming Soon",
     "venueType": "insub",

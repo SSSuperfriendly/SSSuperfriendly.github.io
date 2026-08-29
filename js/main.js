@@ -357,20 +357,9 @@ function setResearchFilter(filter, skipTransition) {
 }
 
 function initResearchFilter() {
-  const validFilters = Array.from(document.querySelectorAll('.research-filter__btn'))
-    .map(function(button) {
-      return button.dataset.filter;
-    });
-
-  let savedFilter = 'selected';
-  try {
-    const stored = localStorage.getItem('research-filter');
-    if (stored && validFilters.includes(stored)) {
-      savedFilter = stored;
-    }
-  } catch (error) {
-    // Ignore storage errors in private browsing.
-  }
+  // Always default to Favorite ("selected") on every page load / refresh —
+  // the last-selected filter is intentionally NOT restored from localStorage.
+  const savedFilter = 'selected';
 
   document.querySelectorAll('.research-filter__btn').forEach(function(button) {
     button.addEventListener('click', function() {
