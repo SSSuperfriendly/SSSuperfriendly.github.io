@@ -40,7 +40,18 @@ function initSiteNav() {
     link.addEventListener('click', function(event) {
       var href = link.getAttribute('href');
       var hash = href.indexOf('#') >= 0 ? href.slice(href.indexOf('#')) : '';
+      var isHomeAnchor = href.charAt(0) === '/';
+      var onHome = window.location.pathname === '/'
+        || window.location.pathname === '/index.html';
       var target = hash ? document.querySelector(hash) : null;
+
+      // /#hash links always target homepage sections. Every subpage has its
+      // own #Top, so a bare existence check would wrongly treat them as local
+      // and never navigate home (e.g. About Me dead on /news/#Top).
+      if (isHomeAnchor && !onHome) {
+        window.location.href = '/' + hash;
+        return;
+      }
 
       if (!target) {
         // The anchor lives on the homepage — go there (falls back to the

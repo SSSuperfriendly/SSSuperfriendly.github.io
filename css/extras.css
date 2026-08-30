@@ -160,6 +160,37 @@
   white-space: nowrap;
 }
 
+/* ------------------------------------------------ software copyrights */
+
+.software-copyrights {
+  margin: 10px 20px 0;
+}
+
+.software-copyright-item {
+  padding: 12px 0;
+  border-bottom: 1px dashed #e2e2e2;
+}
+
+.software-copyright-item:last-child {
+  border-bottom: none;
+}
+
+.software-copyright-name {
+  font-size: 15px;
+  line-height: 1.5;
+  color: #222;
+}
+
+.software-copyright-cn {
+  color: #666;
+}
+
+.software-copyright-reg {
+  margin-top: 4px;
+  font-size: 13px;
+  color: #999;
+}
+
 /* -------------------------------------------------------- recent posts */
 
 .recent-posts {
