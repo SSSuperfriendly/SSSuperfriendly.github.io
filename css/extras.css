@@ -855,8 +855,8 @@
   flex-wrap: wrap;
   justify-content: flex-end;
   align-items: center;
-  gap: 10px;
-  width: 166px; /* 4 × 34 + 3 × 10 → exactly 4 per row, 3 on the second */
+  gap: 4px 6px; /* row-gap 4px, column-gap 6px — tighter than the first pass (10px) */
+  width: 154px; /* 4 × 34 + 3 × 6 → exactly 4 per row, 3 on the second */
   margin-top: 2px;
 }
 
