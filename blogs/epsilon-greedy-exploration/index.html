@@ -1,0 +1,124 @@
+<!DOCTYPE html><html lang="en-US" dir="ltr" data-astro-cid-ju4pidww> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes"><meta name="generator" content="Astro v7.2.9"><meta name="HandheldFriendly" content="True"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="Kunpeng Chen"><meta name="format-detection" content="telephone=no,date=no,address=no,email=no,url=no"><meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)"><meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)"><!-- Reuse the main site's favicon (deployed at the site root, not under /blogs/). --><link rel="icon" type="image/png" href="/images/favicon.png"><link rel="apple-touch-icon" href="/images/favicon.png"><link rel="sitemap" href="/blogs/sitemap-index.xml"><link rel="alternate" type="application/rss+xml" title="Kunpeng Chen" href="https://sssuperfriendly.github.io/blogs/rss.xml"><link rel="preload" href="/blogs/_astro/IBMPlexSans-VariableFont_wdth_wght.Dew2wRiQ.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/blogs/_astro/IBMPlexSans-Italic-VariableFont_wdth_wght.pQNzRgz1.woff2" as="font" type="font/woff2" crossorigin><script>
+    const theme = localStorage.theme
+    if (theme === "light" || theme === "dark")
+      document.documentElement.dataset.theme = theme
+  </script> <title>浅析ε-贪婪探索 | Kunpeng Chen</title> <meta name="description" content="结合强化学习直觉与工程经验，梳理 ε-贪婪探索的机制、优点与局限。"> <link rel="canonical" href="https://sssuperfriendly.github.io/blogs/epsilon-greedy-exploration/"> <meta property="og:title" content="浅析ε-贪婪探索"> <meta property="og:description" content="结合强化学习直觉与工程经验，梳理 ε-贪婪探索的机制、优点与局限。"> <meta property="og:type" content="article"> <meta property="og:url" content="https://sssuperfriendly.github.io/blogs/epsilon-greedy-exploration/"> <meta property="og:site_name" content="Kunpeng Chen"> <meta property="og:locale" content="en_US"> <meta property="og:image" content="https://sssuperfriendly.github.io/images/avatar.jpg"> <meta property="og:image:alt" content="浅析ε-贪婪探索"> <meta name="twitter:card" content="summary_large_image"> <meta name="twitter:title" content="浅析ε-贪婪探索"> <meta name="twitter:description" content="结合强化学习直觉与工程经验，梳理 ε-贪婪探索的机制、优点与局限。"> <meta name="twitter:image" content="https://sssuperfriendly.github.io/images/avatar.jpg"> <meta name="twitter:image:alt" content="浅析ε-贪婪探索"> <meta name="twitter:creator" content="Kunpeng Chen"> <meta property="article:published_time" content="2026-04-04T00:00:00.000Z"> <meta property="article:author" content="Kunpeng Chen"> <link rel="stylesheet" href="/blogs/_astro/Layout.Da6ytpEJ.css"><link rel="stylesheet" href="/blogs/_astro/_..DuD03iBd.css"><script type="module" src="/blogs/_astro/page.Dwipeu-R.js"></script></head> <body data-astro-cid-ju4pidww> <script type="module">var e=()=>{let e=document.documentElement,t=e.dataset.theme===`dark`||!e.dataset.theme&&matchMedia(`(prefers-color-scheme: dark)`).matches?`light`:`dark`;e.dataset.theme=t,localStorage.theme=t},t=document.getElementById(`theme-toggle`);t&&(t.onclick=e);</script><script type="module">var e=[...document.querySelectorAll(`[data-scroll-top]`)],t=()=>{let t=scrollY>innerHeight*.5;for(let n of e)n.toggleAttribute(`data-visible`,t)};addEventListener(`scroll`,t,{passive:!0}),t(),document.addEventListener(`click`,e=>{e.target.closest(`[data-scroll-top]`)&&window.scrollTo({top:0})});</script><page-grid data-astro-cid-ju4pidww="true"> <page-header data-astro-cid-ju4pidww="true"> <page-nav data-astro-cid-ju4pidww="true"> <aside data-bar data-astro-cid-wv7whodv> <sidebar-inner data-astro-cid-wv7whodv="true"> <a href="/blogs/" aria-label="Kunpeng Chen" data-astro-cid-wv7whodv> <svg width="512" height="512" viewBox="0 0 512 512" fill="none" data-astro-cid-wv7whodv="true">
+<g clip-path="url(#clip0_741_1317)">
+<path d="M512 366H72V438H512V512H0V292H440V220H0V0H512V74H72V146H512V366Z" fill="currentColor" />
+</g>
+<defs>
+<clipPath id="clip0_741_1317">
+<rect width="512" height="512" fill="white" />
+</clipPath>
+</defs>
+</svg> <span data-astro-cid-wv7whodv>Kunpeng Chen</span> </a> <nav data-astro-cid-wv7whodv> <ul data-astro-cid-wv7whodv> <li data-astro-cid-wv7whodv> <a href="/blogs/" data-astro-cid-wv7whodv> Blog </a> <ul data-astro-cid-wv7whodv> <li data-astro-cid-wv7whodv> <a href="/blogs/epsilon-greedy-exploration" aria-current="page" data-astro-cid-wv7whodv> 浅析ε-贪婪探索 </a> </li> </ul> </li><li data-astro-cid-wv7whodv> <a href="/blogs/authors/" data-astro-cid-wv7whodv> Authors </a>  </li><li data-astro-cid-wv7whodv> <a href="/" data-astro-cid-wv7whodv> Home </a>  </li>  </ul> </nav> </sidebar-inner> <sidebar-toggle data-astro-cid-wv7whodv="true"> <button id="theme-toggle" data-icon-button aria-label="Toggle theme"> <light-icon><svg width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M12 7a5 5 0 1 0 0 10a5 5 0 0 0 0-10" /><path fill="currentColor" fill-rule="evenodd" d="M12 1a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0V2a1 1 0 0 1 1-1M3.293 3.293a1 1 0 0 1 1.414 0l1.5 1.5a1 1 0 0 1-1.414 1.414l-1.5-1.5a1 1 0 0 1 0-1.414m17.414 0a1 1 0 0 1 0 1.414l-1.5 1.5a1 1 0 1 1-1.414-1.414l1.5-1.5a1 1 0 0 1 1.414 0M1 12a1 1 0 0 1 1-1h1a1 1 0 1 1 0 2H2a1 1 0 0 1-1-1m19 0a1 1 0 0 1 1-1h1a1 1 0 1 1 0 2h-1a1 1 0 0 1-1-1M6.207 17.793a1 1 0 0 1 0 1.414l-1.5 1.5a1 1 0 0 1-1.414-1.414l1.5-1.5a1 1 0 0 1 1.414 0m11.586 0a1 1 0 0 1 1.414 0l1.5 1.5a1 1 0 0 1-1.414 1.414l-1.5-1.5a1 1 0 0 1 0-1.414M12 20a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1" clip-rule="evenodd" /></svg></light-icon> <dark-icon><svg width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M20.958 15.325c.204-.486-.379-.9-.868-.684a7.7 7.7 0 0 1-3.101.648c-4.185 0-7.577-3.324-7.577-7.425a7.3 7.3 0 0 1 1.134-3.91c.284-.448-.057-1.068-.577-.936C5.96 4.041 3 7.613 3 11.862C3 16.909 7.175 21 12.326 21c3.9 0 7.24-2.345 8.632-5.675" /><path fill="currentColor" d="M15.611 3.103c-.53-.354-1.162.278-.809.808l.63.945a2.33 2.33 0 0 1 0 2.588l-.63.945c-.353.53.28 1.162.81.808l.944-.63a2.33 2.33 0 0 1 2.588 0l.945.63c.53.354 1.162-.278.808-.808l-.63-.945a2.33 2.33 0 0 1 0-2.588l.63-.945c.354-.53-.278-1.162-.809-.808l-.944.63a2.33 2.33 0 0 1-2.588 0z" /></svg></dark-icon> </button>  <post-actions data-astro-cid-q4ja3wfd="true"> <a href="/blogs/vqa-counterfactual-reasoning" data-icon-button data-dir="prev" aria-label="Previous post: 从VQA去偏看反事实推理" title="从VQA去偏看反事实推理" data-astro-cid-q4ja3wfd> <svg width="1em" height="1em" viewBox="0 0 256 256" data-astro-cid-q4ja3wfd="true"><path fill="currentColor" d="M228 128a12 12 0 0 1-12 12H69l51.52 51.51a12 12 0 0 1-17 17l-72-72a12 12 0 0 1 0-17l72-72a12 12 0 0 1 17 17L69 116h147a12 12 0 0 1 12 12" /></svg> </a> <a href="/blogs/distributed-training-of-moe-overview" data-icon-button data-dir="next" aria-label="Next post: MoE 分布式训练：路由、并行与 Checkpoint" title="MoE 分布式训练：路由、并行与 Checkpoint" data-astro-cid-q4ja3wfd> <svg width="1em" height="1em" viewBox="0 0 256 256" data-astro-cid-q4ja3wfd="true"><path fill="currentColor" d="m224.49 136.49l-72 72a12 12 0 0 1-17-17L187 140H40a12 12 0 0 1 0-24h147l-51.49-51.52a12 12 0 0 1 17-17l72 72a12 12 0 0 1-.02 17.01" /></svg> </a> <button data-icon-button data-scroll-top aria-label="Scroll to top" data-astro-cid-p774adf7> <svg width="1em" height="1em" viewBox="0 0 256 256" data-astro-cid-p774adf7="true"><path fill="currentColor" d="M208.49 120.49a12 12 0 0 1-17 0L140 69v147a12 12 0 0 1-24 0V69l-51.51 51.49a12 12 0 0 1-17-17l72-72a12 12 0 0 1 17 0l72 72a12 12 0 0 1 0 17" /></svg> </button>  </post-actions> </sidebar-toggle> </aside> </page-nav> <page-toc data-astro-cid-ju4pidww="true"></page-toc> </page-header> <page-content data-astro-cid-ju4pidww="true"> <main data-astro-cid-ju4pidww>   <button data-icon-button data-scroll-top data-floating="true" aria-label="Scroll to top" data-astro-cid-p774adf7> <svg width="1em" height="1em" viewBox="0 0 256 256" data-astro-cid-p774adf7="true"><path fill="currentColor" d="M208.49 120.49a12 12 0 0 1-17 0L140 69v147a12 12 0 0 1-24 0V69l-51.51 51.49a12 12 0 0 1-17-17l72-72a12 12 0 0 1 17 0l72 72a12 12 0 0 1 0 17" /></svg> </button>  <article data-url="/blogs/epsilon-greedy-exploration" data-title="浅析ε-贪婪探索 | Kunpeng Chen" data-astro-cid-ksnso4ze> <header data-astro-cid-ksnso4ze> <h1 data-astro-cid-ksnso4ze>浅析ε-贪婪探索</h1> <post-meta data-astro-cid-ksnso4ze="true"> <post-authors data-astro-cid-ksnso4ze="true"> <author-avatars data-astro-cid-ksnso4ze="true"> <img src="/blogs/static/avatar.jpg" alt="Kunpeng Chen" width="18" height="18" data-astro-cid-ksnso4ze> </author-avatars> <author-names data-astro-cid-ksnso4ze="true"> <a href="/blogs/authors/kunpeng-chen" data-astro-cid-ksnso4ze>Kunpeng Chen</a> </author-names> </post-authors> <time datetime="2026-04-04T00:00:00.000Z" data-astro-cid-ksnso4ze>Apr 4, 2026</time> <post-tags data-astro-cid-ksnso4ze="true"> <a href="/blogs/tags/Reinforcement Learning" data-astro-cid-ksnso4ze>#Reinforcement Learning</a><a href="/blogs/tags/Exploration" data-astro-cid-ksnso4ze>#Exploration</a> </post-tags> </post-meta> <p data-astro-cid-ksnso4ze>结合强化学习直觉与工程经验，梳理 ε-贪婪探索的机制、优点与局限。</p> </header>  <prose-content data-astro-cid-ksnso4ze="true"> <p>ε-贪婪探索，是强化学习中一种简洁的行动选择策略：以 ε 的概率随机探索，以 1−ε 的概率“贪婪”地利用当前已知的最佳行动。换句话说——智能体有 ε 的几率随意乱试，其余时候则选择估值最高的那个动作。它用一种直觉上非常自然的方式，平衡了“探索”与“利用”。</p>
+<p>即便到了现在，ε-贪婪依然是课程中的必讲方法，也是工程实践里的常用基线。它在离散动作问题上表现稳健，同时也为更高级的探索策略提供了参考坐标。主流资料普遍建议：在早期开发、基准测试，以及动作空间较小且随机性可控的任务中，可以优先考虑 ε-贪婪。</p>
+<p><strong>核心特点：</strong></p>
+<ul>
+<li><strong>极简</strong>：只需一个标量参数 ε</li>
+<li><strong>随机性</strong>：显式引入随机扰动，有效防止过早陷入局部最优</li>
+<li><strong>基线价值</strong>：常作为对照基线，用以衡量更复杂方法的优劣</li>
+<li><strong>适用边界</strong>：在离散动作空间上效果最佳；连续或超大规模离散空间下，表现会打折扣。</li>
+</ul>
+<p><strong>举例说明：</strong></p>
+<ul>
+<li>在多臂老虎机问题中，ε-贪婪会以 ε 的概率随机拉一根臂，否则拉当前经验收益最高的那根。</li>
+<li>在 Q-learning 中，ε-贪婪依据 Q 值选动作：以 ε 随机探索，否则选择 Q 值最大的动作。</li>
+<li>实践中，ε 往往随时间动态调整（即“退火调度”），而非固定不变。这是因为在训练初期，智能体对环境一无所知，需要<strong>大量探索</strong>，因此 ε 可以设置得高一些。随着训练进行，智能体越来越有经验，Q表越来越准，就应该<strong>逐渐减少探索，增加利用</strong>，收敛到最优策略。</li>
+</ul>
+<p>主流衰减策略包括：</p>
+<table>
+<thead>
+<tr>
+<th>策略类型</th>
+<th>衰减公式</th>
+<th>特点</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>线性衰减</strong></td>
+<td><math><mrow><msub><mi>ϵ</mi><mi>t</mi></msub><mo>=</mo><msub><mi>ϵ</mi><mrow><mi>s</mi><mi>t</mi><mi>a</mi><mi>r</mi><mi>t</mi></mrow></msub><mo>−</mo><mfrac><mrow><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><msub><mi>ϵ</mi><mrow><mi>s</mi><mi>t</mi><mi>a</mi><mi>r</mi><mi>t</mi></mrow></msub><mo>−</mo><msub><mi>ϵ</mi><mrow><mi>e</mi><mi>n</mi><mi>d</mi></mrow></msub><mo fence="true" form="postfix" stretchy="false">)</mo></mrow><mo>⋅</mo><mi>t</mi></mrow><mi>T</mi></mfrac></mrow></math></td>
+<td>均匀降低探索率</td>
+<td>稳定环境，专家特化程度可预测</td>
+</tr>
+<tr>
+<td><strong>指数衰减</strong></td>
+<td><math><mrow><msub><mi>ϵ</mi><mi>t</mi></msub><mo>=</mo><msub><mi>ϵ</mi><mrow><mi>s</mi><mi>t</mi><mi>a</mi><mi>r</mi><mi>t</mi></mrow></msub><mo>⋅</mo><msup><mi>γ</mi><mi>t</mi></msup></mrow></math>（<math><mrow><mi>γ</mi><mo>&lt;</mo><mn>1</mn></mrow></math>）</td>
+<td>早期快速衰减，后期缓慢</td>
+<td>需要快速收敛的场景</td>
+</tr>
+<tr>
+<td><strong>自适应衰减</strong></td>
+<td><math><mrow><msub><mi>ϵ</mi><mi>t</mi></msub><mo>=</mo><mi>f</mi><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><msub><mi>r</mi><mi>t</mi></msub><mo separator="true">,</mo><msub><mi>u</mi><mi>t</mi></msub><mo fence="true" form="postfix" stretchy="false">)</mo></mrow></mrow></math></td>
+<td>根据性能指标动态调整</td>
+<td>复杂环境，专家激活模式动态变化</td>
+</tr>
+</tbody>
+</table>
+<p>关键设计原则：<strong>切勿让 <math><mi>ϵ</mi></math> 降至 0</strong>，应保持一个小的非零底值（如 <math><mrow><msub><mi>ϵ</mi><mrow><mi>min</mi><mo>⁡</mo></mrow></msub><mo>=</mo><mn>0.01</mn></mrow></math>），以允许模型持续探索，防止陷入次优策略或无法适应环境变化。而 <math><mrow><mi>ϵ</mi><mo>=</mo><mn>0.15</mn></mrow></math> 的设定参考了强化学习中的经典经验，既可以提供足够的探索机会，又可以控制与预算 <math><mi>B</mi></math> 的协同（当 <math><mrow><mi>B</mi><mo>=</mo><mn>1</mn></mrow></math>，即仅有 1 个全秩专家时，15% 的反转概率意味着每约 7 次前向传播，就有 1 次让尾部专家获得全秩计算权）。</p>
+<p>然而，固定的 <math><mrow><mi>ϵ</mi><mo>=</mo><mn>0.15</mn></mrow></math> 也存在缺陷：训练初期，模型对环境一无所知，需要大量探索；训练后期，模型越来越有经验，应逐渐减少探索、增加利用以收敛到最优策略。</p>
+<p>ε-贪婪虽简单，但团队常犯一些可预见的错误，导致学习效率下降或出现隐蔽的 bug。以下列出常见误区、成因及实用修正方法。</p>
+<p><strong>误区一：全程使用固定的、较高的 ε</strong></p>
+<ul>
+<li>
+<p><strong>成因</strong>：图省事，或者担心过早利用。</p>
+</li>
+<li>
+<p><strong>问题</strong>：持续的高随机性会阻碍收敛，性能波动大。</p>
+</li>
+<li>
+<p><strong>修正</strong>：使用衰减调度（线性、指数或自适应）。先高后低，随学习过程降低 ε。</p>
+</li>
+</ul>
+<p><strong>误区二：让 ε 精确降到 0</strong></p>
+<ul>
+<li>
+<p><strong>成因</strong>：对“利用 vs 探索”的权衡理解有偏差。</p>
+</li>
+<li>
+<p><strong>问题</strong>：ε=0 时，智能体可能卡在次优策略上，无法从环境变化中恢复。</p>
+</li>
+<li>
+<p><strong>修正</strong>：保留一个极小的最低 ε（比如一个非零的微小值），留一丝探索机会。</p>
+</li>
+</ul>
+<p><strong>误区三：在结构化动作空间上使用均匀随机探索</strong></p>
+<ul>
+<li>
+<p><strong>成因</strong>：机械套用均匀随机采样。</p>
+</li>
+<li>
+<p><strong>问题</strong>：在大型或结构化动作空间中，均匀随机的动作几乎不可能发现有用的行为模式。</p>
+</li>
+<li>
+<p><strong>修正</strong>：使用结构化探索（如动作掩码、带先验知识的探索或参数噪声）。</p>
+</li>
+</ul>
+<p><strong>误区四：忽略状态相关的探索需求</strong></p>
+<ul>
+<li>
+<p><strong>成因</strong>：全局单一的 ε 太方便了。</p>
+</li>
+<li>
+<p><strong>问题</strong>：某些状态比其他状态更需要探索，全局 ε 可能导致关键区域探索不足。</p>
+</li>
+<li>
+<p><strong>修正</strong>：如果环境需要，采用状态相关的策略（如基于计数的奖励加成，或基于不确定度的探索）。</p>
+</li>
+</ul>
+<p><strong>误区五：没有与经验回放缓存或目标网络集成</strong></p>
+<ul>
+<li>
+<p><strong>成因</strong>：把探索和稳定性措施当成两件独立的事。</p>
+</li>
+<li>
+<p><strong>问题</strong>：没有回放或稳定化手段的 ε-贪婪可能导致学习不稳定。</p>
+</li>
+<li>
+<p><strong>修正</strong>：将 ε-贪婪与经验回放缓存、目标网络以及适当的学习率调度配合使用。</p>
+</li>
+</ul>
+ </prose-content> </article></main> <page-footer data-astro-cid-ju4pidww="true"><footer data-astro-cid-jo6i4kqk> <p data-astro-cid-jo6i4kqk>
+&copy; 2026 Kunpeng Chen </p> <ul data-astro-cid-o2gh7vpa> <li data-astro-cid-o2gh7vpa> <a href="https://github.com/SSSuperfriendly" data-icon-button target="_blank" rel="noopener noreferrer" aria-label="GitHub" title="GitHub" data-astro-cid-o2gh7vpa> <svg width="1em" height="1em" viewBox="0 0 24 24" aria-hidden="true" data-astro-cid-o2gh7vpa="true"><path fill="currentColor" d="M12 .297c-6.63 0-12 5.373-12 12c0 5.303 3.438 9.8 8.205 11.385c.6.113.82-.258.82-.577c0-.285-.01-1.04-.015-2.04c-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729c1.205.084 1.838 1.236 1.838 1.236c1.07 1.835 2.809 1.305 3.495.998c.108-.776.417-1.305.76-1.605c-2.665-.3-5.466-1.332-5.466-5.93c0-1.31.465-2.38 1.235-3.22c-.135-.303-.54-1.523.105-3.176c0 0 1.005-.322 3.3 1.23c.96-.267 1.98-.399 3-.405c1.02.006 2.04.138 3 .405c2.28-1.552 3.285-1.23 3.285-1.23c.645 1.653.24 2.873.12 3.176c.765.84 1.23 1.91 1.23 3.22c0 4.61-2.805 5.625-5.475 5.92c.42.36.81 1.096.81 2.22c0 1.606-.015 2.896-.015 3.286c0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" /></svg> </a> </li><li data-astro-cid-o2gh7vpa> <a href="https://x.com/peng_kun96266" data-icon-button target="_blank" rel="noopener noreferrer" aria-label="Twitter" title="Twitter" data-astro-cid-o2gh7vpa> <svg width="1em" height="1em" viewBox="0 0 24 24" aria-hidden="true" data-astro-cid-o2gh7vpa="true"><path fill="currentColor" d="M22.46 6c-.77.35-1.6.58-2.46.69c.88-.53 1.56-1.37 1.88-2.38c-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29c0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15c0 1.49.75 2.81 1.91 3.56c-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.2 4.2 0 0 1-1.93.07a4.28 4.28 0 0 0 4 2.98a8.52 8.52 0 0 1-5.33 1.84q-.51 0-1.02-.06C3.44 20.29 5.7 21 8.12 21C16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56c.84-.6 1.56-1.36 2.14-2.23" /></svg> </a> </li><li data-astro-cid-o2gh7vpa> <a href="mailto:kunpengchentj@gmail.com" data-icon-button target="_blank" rel="noopener noreferrer" aria-label="Email" title="Email" data-astro-cid-o2gh7vpa> <svg width="1em" height="1em" viewBox="0 0 24 24" aria-hidden="true" data-astro-cid-o2gh7vpa="true"><path fill="currentColor" fill-rule="evenodd" d="M3.172 5.172C2 6.343 2 8.229 2 12s0 5.657 1.172 6.828S6.229 20 10 20h4c3.771 0 5.657 0 6.828-1.172S22 15.771 22 12s0-5.657-1.172-6.828S17.771 4 14 4h-4C6.229 4 4.343 4 3.172 5.172M18.576 7.52a.75.75 0 0 1-.096 1.056l-2.196 1.83c-.887.74-1.605 1.338-2.24 1.746c-.66.425-1.303.693-2.044.693s-1.384-.269-2.045-.693c-.634-.408-1.352-1.007-2.239-1.745L5.52 8.577a.75.75 0 0 1 .96-1.153l2.16 1.799c.933.777 1.58 1.315 2.128 1.667c.529.34.888.455 1.233.455s.704-.114 1.233-.455c.547-.352 1.195-.89 2.128-1.667l2.159-1.8a.75.75 0 0 1 1.056.097" clip-rule="evenodd" /></svg> </a> </li><li data-astro-cid-o2gh7vpa> <a href="/blogs/rss.xml" data-icon-button target="_blank" rel="noopener noreferrer" aria-label="RSS" title="RSS" data-astro-cid-o2gh7vpa> <svg width="1em" height="1em" viewBox="0 0 24 24" aria-hidden="true" data-astro-cid-o2gh7vpa="true"><path fill="currentColor" fill-rule="evenodd" d="M3 10c0-3.771 0-5.657 1.172-6.828S7.229 2 11 2h2c3.771 0 5.657 0 6.828 1.172S21 6.229 21 10v4c0 3.771 0 5.657-1.172 6.828S16.771 22 13 22h-2c-3.771 0-5.657 0-6.828-1.172S3 17.771 3 14zm3 2c0-1.414 0-2.121.44-2.56C6.878 9 7.585 9 9 9h6c1.414 0 2.121 0 2.56.44c.44.439.44 1.146.44 2.56v4c0 1.414 0 2.121-.44 2.56c-.439.44-1.146.44-2.56.44H9c-1.414 0-2.121 0-2.56-.44C6 18.122 6 17.415 6 16zm1-6.75a.75.75 0 0 0 0 1.5h5a.75.75 0 0 0 0-1.5z" clip-rule="evenodd" /></svg> </a> </li> </ul> </footer></page-footer> </page-content> </page-grid> </body> </html>

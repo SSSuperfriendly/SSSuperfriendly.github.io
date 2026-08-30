@@ -1,0 +1,232 @@
+<!DOCTYPE html><html lang="en-US" dir="ltr" data-astro-cid-ju4pidww> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes"><meta name="generator" content="Astro v7.2.9"><meta name="HandheldFriendly" content="True"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="Kunpeng Chen"><meta name="format-detection" content="telephone=no,date=no,address=no,email=no,url=no"><meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)"><meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)"><!-- Reuse the main site's favicon (deployed at the site root, not under /blogs/). --><link rel="icon" type="image/png" href="/images/favicon.png"><link rel="apple-touch-icon" href="/images/favicon.png"><link rel="sitemap" href="/blogs/sitemap-index.xml"><link rel="alternate" type="application/rss+xml" title="Kunpeng Chen" href="https://sssuperfriendly.github.io/blogs/rss.xml"><link rel="preload" href="/blogs/_astro/IBMPlexSans-VariableFont_wdth_wght.Dew2wRiQ.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/blogs/_astro/IBMPlexSans-Italic-VariableFont_wdth_wght.pQNzRgz1.woff2" as="font" type="font/woff2" crossorigin><script>
+    const theme = localStorage.theme
+    if (theme === "light" || theme === "dark")
+      document.documentElement.dataset.theme = theme
+  </script> <title>凸函数与凸优化 | Kunpeng Chen</title> <meta name="description" content="从凸集、凸函数到对偶理论，系统梳理机器学习里的凸优化基础。"> <link rel="canonical" href="https://sssuperfriendly.github.io/blogs/convex-functions-and-optimization/"> <meta property="og:title" content="凸函数与凸优化"> <meta property="og:description" content="从凸集、凸函数到对偶理论，系统梳理机器学习里的凸优化基础。"> <meta property="og:type" content="article"> <meta property="og:url" content="https://sssuperfriendly.github.io/blogs/convex-functions-and-optimization/"> <meta property="og:site_name" content="Kunpeng Chen"> <meta property="og:locale" content="en_US"> <meta property="og:image" content="https://sssuperfriendly.github.io/images/avatar.jpg"> <meta property="og:image:alt" content="凸函数与凸优化"> <meta name="twitter:card" content="summary_large_image"> <meta name="twitter:title" content="凸函数与凸优化"> <meta name="twitter:description" content="从凸集、凸函数到对偶理论，系统梳理机器学习里的凸优化基础。"> <meta name="twitter:image" content="https://sssuperfriendly.github.io/images/avatar.jpg"> <meta name="twitter:image:alt" content="凸函数与凸优化"> <meta name="twitter:creator" content="Kunpeng Chen"> <meta property="article:published_time" content="2026-03-05T00:00:00.000Z"> <meta property="article:author" content="Kunpeng Chen"> <link rel="stylesheet" href="/blogs/_astro/Layout.Da6ytpEJ.css"><link rel="stylesheet" href="/blogs/_astro/_..DuD03iBd.css"><script type="module" src="/blogs/_astro/page.Dwipeu-R.js"></script></head> <body data-astro-cid-ju4pidww> <script type="module">var e=()=>{let e=document.documentElement,t=e.dataset.theme===`dark`||!e.dataset.theme&&matchMedia(`(prefers-color-scheme: dark)`).matches?`light`:`dark`;e.dataset.theme=t,localStorage.theme=t},t=document.getElementById(`theme-toggle`);t&&(t.onclick=e);</script><script type="module">var e=[...document.querySelectorAll(`[data-scroll-top]`)],t=()=>{let t=scrollY>innerHeight*.5;for(let n of e)n.toggleAttribute(`data-visible`,t)};addEventListener(`scroll`,t,{passive:!0}),t(),document.addEventListener(`click`,e=>{e.target.closest(`[data-scroll-top]`)&&window.scrollTo({top:0})});</script><script type="module" src="/blogs/_astro/TableOfContents.astro_astro_type_script_index_0_lang.BXJQX1UU.js"></script><page-grid data-astro-cid-ju4pidww="true"> <page-header data-astro-cid-ju4pidww="true"> <page-nav data-astro-cid-ju4pidww="true"> <aside data-bar data-astro-cid-wv7whodv> <sidebar-inner data-astro-cid-wv7whodv="true"> <a href="/blogs/" aria-label="Kunpeng Chen" data-astro-cid-wv7whodv> <svg width="512" height="512" viewBox="0 0 512 512" fill="none" data-astro-cid-wv7whodv="true">
+<g clip-path="url(#clip0_741_1317)">
+<path d="M512 366H72V438H512V512H0V292H440V220H0V0H512V74H72V146H512V366Z" fill="currentColor" />
+</g>
+<defs>
+<clipPath id="clip0_741_1317">
+<rect width="512" height="512" fill="white" />
+</clipPath>
+</defs>
+</svg> <span data-astro-cid-wv7whodv>Kunpeng Chen</span> </a> <nav data-astro-cid-wv7whodv> <ul data-astro-cid-wv7whodv> <li data-astro-cid-wv7whodv> <a href="/blogs/" data-astro-cid-wv7whodv> Blog </a> <ul data-astro-cid-wv7whodv> <li data-astro-cid-wv7whodv> <a href="/blogs/convex-functions-and-optimization" aria-current="page" data-astro-cid-wv7whodv> 凸函数与凸优化 </a> </li> </ul> </li><li data-astro-cid-wv7whodv> <a href="/blogs/authors/" data-astro-cid-wv7whodv> Authors </a>  </li><li data-astro-cid-wv7whodv> <a href="/" data-astro-cid-wv7whodv> Home </a>  </li>  </ul> </nav> </sidebar-inner> <sidebar-toggle data-astro-cid-wv7whodv="true"> <button id="theme-toggle" data-icon-button aria-label="Toggle theme"> <light-icon><svg width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M12 7a5 5 0 1 0 0 10a5 5 0 0 0 0-10" /><path fill="currentColor" fill-rule="evenodd" d="M12 1a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0V2a1 1 0 0 1 1-1M3.293 3.293a1 1 0 0 1 1.414 0l1.5 1.5a1 1 0 0 1-1.414 1.414l-1.5-1.5a1 1 0 0 1 0-1.414m17.414 0a1 1 0 0 1 0 1.414l-1.5 1.5a1 1 0 1 1-1.414-1.414l1.5-1.5a1 1 0 0 1 1.414 0M1 12a1 1 0 0 1 1-1h1a1 1 0 1 1 0 2H2a1 1 0 0 1-1-1m19 0a1 1 0 0 1 1-1h1a1 1 0 1 1 0 2h-1a1 1 0 0 1-1-1M6.207 17.793a1 1 0 0 1 0 1.414l-1.5 1.5a1 1 0 0 1-1.414-1.414l1.5-1.5a1 1 0 0 1 1.414 0m11.586 0a1 1 0 0 1 1.414 0l1.5 1.5a1 1 0 0 1-1.414 1.414l-1.5-1.5a1 1 0 0 1 0-1.414M12 20a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1" clip-rule="evenodd" /></svg></light-icon> <dark-icon><svg width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M20.958 15.325c.204-.486-.379-.9-.868-.684a7.7 7.7 0 0 1-3.101.648c-4.185 0-7.577-3.324-7.577-7.425a7.3 7.3 0 0 1 1.134-3.91c.284-.448-.057-1.068-.577-.936C5.96 4.041 3 7.613 3 11.862C3 16.909 7.175 21 12.326 21c3.9 0 7.24-2.345 8.632-5.675" /><path fill="currentColor" d="M15.611 3.103c-.53-.354-1.162.278-.809.808l.63.945a2.33 2.33 0 0 1 0 2.588l-.63.945c-.353.53.28 1.162.81.808l.944-.63a2.33 2.33 0 0 1 2.588 0l.945.63c.53.354 1.162-.278.808-.808l-.63-.945a2.33 2.33 0 0 1 0-2.588l.63-.945c.354-.53-.278-1.162-.809-.808l-.944.63a2.33 2.33 0 0 1-2.588 0z" /></svg></dark-icon> </button>  <post-actions data-astro-cid-q4ja3wfd="true"> <a href="/blogs/megatron-pytorch-deepspeed-intro" data-icon-button data-dir="prev" aria-label="Previous post: Megatron、PyTorch和DeepSpeed" title="Megatron、PyTorch和DeepSpeed" data-astro-cid-q4ja3wfd> <svg width="1em" height="1em" viewBox="0 0 256 256" data-astro-cid-q4ja3wfd="true"><path fill="currentColor" d="M228 128a12 12 0 0 1-12 12H69l51.52 51.51a12 12 0 0 1-17 17l-72-72a12 12 0 0 1 0-17l72-72a12 12 0 0 1 17 17L69 116h147a12 12 0 0 1 12 12" /></svg> </a> <a href="/blogs/unix-bell-labs-research-notes" data-icon-button data-dir="next" aria-label="Next post: 如果我是贝尔实验室的一名研究员……" title="如果我是贝尔实验室的一名研究员……" data-astro-cid-q4ja3wfd> <svg width="1em" height="1em" viewBox="0 0 256 256" data-astro-cid-q4ja3wfd="true"><path fill="currentColor" d="m224.49 136.49l-72 72a12 12 0 0 1-17-17L187 140H40a12 12 0 0 1 0-24h147l-51.49-51.52a12 12 0 0 1 17-17l72 72a12 12 0 0 1-.02 17.01" /></svg> </a> <button data-icon-button data-scroll-top aria-label="Scroll to top" data-astro-cid-p774adf7> <svg width="1em" height="1em" viewBox="0 0 256 256" data-astro-cid-p774adf7="true"><path fill="currentColor" d="M208.49 120.49a12 12 0 0 1-17 0L140 69v147a12 12 0 0 1-24 0V69l-51.51 51.49a12 12 0 0 1-17-17l72-72a12 12 0 0 1 17 0l72 72a12 12 0 0 1 0 17" /></svg> </button>  </post-actions> </sidebar-toggle> </aside> </page-nav> <page-toc data-astro-cid-ju4pidww="true"><nav aria-label="Table of contents" data-astro-cid-p33bl5ka> <toc-title aria-hidden="true" data-astro-cid-p33bl5ka="true"><span data-astro-cid-p33bl5ka>凸函数与凸优化</span></toc-title> <label data-bar data-astro-cid-p33bl5ka> <input type="checkbox" aria-label="Toggle table of contents" data-astro-cid-p33bl5ka> <svg viewBox="0 0 16 16" aria-hidden="true" data-astro-cid-p33bl5ka> <circle cx="8" cy="8" r="6.5" data-astro-cid-p33bl5ka></circle> <circle cx="8" cy="8" r="6.5" transform="rotate(-90 8 8)" data-astro-cid-p33bl5ka></circle> </svg> <toc-current data-astro-cid-p33bl5ka="true">凸函数与凸优化</toc-current> <svg width="1em" height="1em" viewBox="0 0 24 24" aria-hidden="true" data-astro-cid-p33bl5ka="true"><path fill="currentColor" d="m12.37 15.835l6.43-6.63C19.201 8.79 18.958 8 18.43 8H5.57c-.528 0-.771.79-.37 1.205l6.43 6.63c.213.22.527.22.74 0" /></svg> </label> <ul data-bar data-astro-cid-p33bl5ka> <li data-depth="2" data-astro-cid-p33bl5ka> <a href="#21-凸集形状的良好性质" data-astro-cid-p33bl5ka>2.1 凸集：形状的「良好」性质</a> </li><li data-depth="2" data-astro-cid-p33bl5ka> <a href="#22-凸函数碗状的损失曲面" data-astro-cid-p33bl5ka>2.2 凸函数：碗状的损失曲面</a> </li><li data-depth="2" data-astro-cid-p33bl5ka> <a href="#31-凸优化问题的标准形式" data-astro-cid-p33bl5ka>3.1 凸优化问题的标准形式</a> </li> </ul> </nav> </page-toc> </page-header> <page-content data-astro-cid-ju4pidww="true"> <main data-astro-cid-ju4pidww>   <button data-icon-button data-scroll-top data-floating="true" aria-label="Scroll to top" data-astro-cid-p774adf7> <svg width="1em" height="1em" viewBox="0 0 256 256" data-astro-cid-p774adf7="true"><path fill="currentColor" d="M208.49 120.49a12 12 0 0 1-17 0L140 69v147a12 12 0 0 1-24 0V69l-51.51 51.49a12 12 0 0 1-17-17l72-72a12 12 0 0 1 17 0l72 72a12 12 0 0 1 0 17" /></svg> </button>  <article data-url="/blogs/convex-functions-and-optimization" data-title="凸函数与凸优化 | Kunpeng Chen" data-astro-cid-ksnso4ze> <header data-astro-cid-ksnso4ze> <h1 data-astro-cid-ksnso4ze>凸函数与凸优化</h1> <post-meta data-astro-cid-ksnso4ze="true"> <post-authors data-astro-cid-ksnso4ze="true"> <author-avatars data-astro-cid-ksnso4ze="true"> <img src="/blogs/static/avatar.jpg" alt="Kunpeng Chen" width="18" height="18" data-astro-cid-ksnso4ze> </author-avatars> <author-names data-astro-cid-ksnso4ze="true"> <a href="/blogs/authors/kunpeng-chen" data-astro-cid-ksnso4ze>Kunpeng Chen</a> </author-names> </post-authors> <time datetime="2026-03-05T00:00:00.000Z" data-astro-cid-ksnso4ze>Mar 5, 2026</time> <post-tags data-astro-cid-ksnso4ze="true"> <a href="/blogs/tags/Deep Learning" data-astro-cid-ksnso4ze>#Deep Learning</a><a href="/blogs/tags/Convex Optimization" data-astro-cid-ksnso4ze>#Convex Optimization</a> </post-tags> </post-meta> <p data-astro-cid-ksnso4ze>从凸集、凸函数到对偶理论，系统梳理机器学习里的凸优化基础。</p> </header>  <prose-content data-astro-cid-ksnso4ze="true"> <h1 id="一引言为什么要学习凸优化">一、引言：为什么要学习凸优化？</h1>
+<p>机器学习的训练过程本质上是一个优化问题：我们试图找到一组参数，使得模型在给定数据上的「损失」最小。</p>
+<p>对于许多经典机器学习模型（如支持向量机 SVM、Lasso 回归等）来说，这个损失函数是凸的，它们的理论分析和高效求解可以通过凸优化这个工具来完成。但可惜，对于复杂的深度神经网络而言，通常是一个非凸的函数，意味着它拥有无数个局部最小值，这让优化过程充满了挑战。</p>
+<p>这是否意味着，在深度学习时代，凸优化理论就没有用武之地了呢？也不尽然。</p>
+<p>尽管整个深度网络是非凸的，但在其训练过程中，我们常常会遇到一些凸的子问题，或者优化算法本身的设计灵感来源于凸优化——例如正则化项的处理、某些高效优化器的设计思想等等。<strong>理解这些「老古董」有助于我们触类旁通，理解深度学习的某些设计哲学。</strong></p>
+<hr>
+<h1 id="二凸集与凸函数构建优化问题的地形">二、凸集与凸函数：构建优化问题的「地形」</h1>
+<p>在深入探讨凸优化问题之前，我们必须先理解其最基础的「砖块」——凸集和凸函数。它们是定义优化问题「地形」的关键概念，也是保证凸优化问题具有良好性质（例如全局最优解的存在性）的根本原因。</p>
+<h2 id="21-凸集形状的良好性质">2.1 凸集：形状的「良好」性质<a data-heading-anchor="" href="#21-凸集形状的良好性质" aria-label="Link to this section" tabindex="-1"></a></h2>
+<p>假设你站在一个区域内，如果从这个区域内的任意一点走向任意另一点，你都能保证整个行进路线都在这个区域内部，那么这个区域就是一个凸集。</p>
+<p>用数学的语言描述：一个集合 <math><mi>C</mi></math> 被称为<strong>凸集 (Convex Set)</strong>，如果对于任意两点 <math><mi>x</mi></math> 和 <math><mrow><mi>y</mi><mo>∈</mo><mi>C</mi></mrow></math>，以及任意实数 <math><mrow><mi>θ</mi><mo>∈</mo><mrow><mo fence="true" form="prefix" stretchy="false">[</mo><mn>0</mn><mo separator="true">,</mo><mn>1</mn><mo fence="true" form="postfix" stretchy="false">]</mo></mrow></mrow></math>，都有：</p>
+<p><math><mrow><mi>θ</mi><mi>x</mi><mo>+</mo><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>θ</mi><mo fence="true" form="postfix" stretchy="false">)</mo></mrow><mi>y</mi><mo>∈</mo><mi>C</mi></mrow></math></p>
+<p>其中，<math><mrow><mi>θ</mi><mi>x</mi><mo>+</mo><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>θ</mi><mo fence="true" form="postfix" stretchy="false">)</mo></mrow><mi>y</mi></mrow></math> 表示连接 <math><mi>x</mi></math> 和 <math><mi>y</mi></math> 的线段上的所有点。</p>
+<p>凸集在几何上最大的特点就是它「没有洞」，也没有「凹陷」或「内角」。你可以把它想象成一个「紧致内聚」的区域。比如：</p>
+<ul>
+<li><strong>是凸集</strong>：圆形、方形、三角形、超平面、半空间（超平面一侧的区域）。</li>
+<li><strong>不是凸集</strong>：星形、弯月形、带洞的甜甜圈形，因为你可以在这些形状中找到两点，它们之间的连线会穿过形状的外部。</li>
+</ul>
+<blockquote>
+<p><strong>💡 重要性质：</strong> 任意多个凸集的交集仍然是凸集。这在构建复杂的优化问题可行域时非常有用，因为许多约束条件都可能定义一个凸集，而所有约束同时满足的区域（即所有凸集的交集）依然是凸集。</p>
+</blockquote>
+<h2 id="22-凸函数碗状的损失曲面">2.2 凸函数：碗状的损失曲面<a data-heading-anchor="" href="#22-凸函数碗状的损失曲面" aria-label="Link to this section" tabindex="-1"></a></h2>
+<p>有了凸集的概念，我们就可以定义<strong>凸函数 (Convex Function)</strong> 了。直观上，一个凸函数就像一个「碗」，它的函数图像总是「向上弯曲」或平坦的，没有局部凹陷。</p>
+<p>数学上，一个函数 <math><mrow><mi>f</mi><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><mi>x</mi><mo fence="true" form="postfix" stretchy="false">)</mo></mrow></mrow></math> 被称为凸函数，如果其定义域 <math><mrow><mi>d</mi><mi>o</mi><mi>m</mi><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><mi>f</mi><mo fence="true" form="postfix" stretchy="false">)</mo></mrow></mrow></math> 是一个凸集，且对于任意 <math><mrow><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo>∈</mo><mi>d</mi><mi>o</mi><mi>m</mi><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><mi>f</mi><mo fence="true" form="postfix" stretchy="false">)</mo></mrow></mrow></math> 和任意 <math><mrow><mi>θ</mi><mo>∈</mo><mrow><mo fence="true" form="prefix" stretchy="false">[</mo><mn>0</mn><mo separator="true">,</mo><mn>1</mn><mo fence="true" form="postfix" stretchy="false">]</mo></mrow></mrow></math>，都有：</p>
+<p><math><mrow><mi>f</mi><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><mi>θ</mi><mi>x</mi><mo>+</mo><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>θ</mi><mo fence="true" form="postfix" stretchy="false">)</mo></mrow><mi>y</mi><mo fence="true" form="postfix" stretchy="false">)</mo></mrow><mo>≤</mo><mi>θ</mi><mi>f</mi><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><mi>x</mi><mo fence="true" form="postfix" stretchy="false">)</mo></mrow><mo>+</mo><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>θ</mi><mo fence="true" form="postfix" stretchy="false">)</mo></mrow><mi>f</mi><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><mi>y</mi><mo fence="true" form="postfix" stretchy="false">)</mo></mrow></mrow></math></p>
+<p>这个不等式被称为 <strong>Jensen 不等式</strong>。它的几何意义是：函数图像上任意两点连线（割线）上的值，总是在函数图像的上方或与其重合。</p>
+<ul>
+<li>比如一个一维的函数 <math><mrow><mi>f</mi><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><mi>x</mi><mo fence="true" form="postfix" stretchy="false">)</mo></mrow><mo>=</mo><msup><mi>x</mi><mn class="tml-sml-pad">2</mn></msup></mrow></math>，它的图像是一个开口向上的抛物线，就像一个碗。无论你取抛物线上哪两点，连接它们的线段都会在抛物线的上方。</li>
+<li>而像 <math><mrow><mi>f</mi><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><mi>x</mi><mo fence="true" form="postfix" stretchy="false">)</mo></mrow><mo>=</mo><mrow><mi>sin</mi><mo>⁡</mo></mrow><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><mi>x</mi><mo fence="true" form="postfix" stretchy="false">)</mo></mrow></mrow></math> 这样的函数就不是凸函数，因为它有「波峰」和「波谷」。</li>
+<li>将这个概念扩展到更高维度，例如二维的 <math><mrow><mi>f</mi><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo fence="true" form="postfix" stretchy="false">)</mo></mrow><mo>=</mo><msup><mi>x</mi><mn class="tml-sml-pad">2</mn></msup><mo>+</mo><msup><mi>y</mi><mn class="tml-sml-pad">2</mn></msup></mrow></math>，它的图像就像一个三维的碗。</li>
+</ul>
+<p>凸函数最令人欣喜的性质，也是其在优化领域如此重要的原因，就是：<strong>凸函数的任意一个局部最小值，都是其全局最小值。</strong></p>
+<p>这意味着，如果你找到了一个凸函数的局部最低点，你就不必担心它是不是「假」的最低点，它一定是整个函数图像的最低点。此外，所有全局最小值的集合，也构成一个凸集。</p>
+<hr>
+<h1 id="三凸优化我变凸了也变简单了">三、凸优化：我变「凸」了，也变简单了</h1>
+<p>现在我们已经理解了凸集和凸函数，就可以正式定义<strong>凸优化问题 (Convex Optimization Problem)</strong> 了。凸优化是优化理论中一个非常重要且研究深入的分支，因为它具有许多优美的理论性质和高效的求解算法。</p>
+<h2 id="31-凸优化问题的标准形式">3.1 凸优化问题的标准形式<a data-heading-anchor="" href="#31-凸优化问题的标准形式" aria-label="Link to this section" tabindex="-1"></a></h2>
+<p>回忆一下约束优化的标准形式：</p>
+<math-display><span class="temml-error" style="color:#b22222;white-space:pre-line;">\min_{x} \quad &amp; f_0(x) \\
+\text{s.t.} \quad &amp; f_i(x) \le 0, \quad i=1,\dots,m \\
+&amp; h_i(x) = 0, \quad i=1,\dots,p
+\end{aligned}$$
+
+其中：
+
+* $x$ 是我们要优化的变量。
+* $f_0(x)$ 是**目标函数 (Objective Function)**，我们需要最小化它。
+* $f_i(x) \le 0$ 是 $m$ 个**不等式约束 (Inequality Constraints)**。
+* $h_i(x) = 0$ 是 $p$ 个**等式约束 (Equality Constraints)**。
+
+为了使这个问题成为一个凸优化问题，**必须满足以下条件**：
+
+1. 目标函数 $f_0(x)$ 必须是凸函数。
+2. 不等式约束函数 $f_i(x)$ 必须是凸函数。这意味着由 $f_i(x) \le 0$ 定义的可行区域是一个凸集。
+3. 等式约束函数 $h_i(x)$ 必须是**仿射函数 (Affine Function)**。仿射函数是指 $h_i(x) = a_i^T x + b_i = 0$ 这种形式（线性函数是仿射函数的一种特殊情况，即 $b_i=0$）。
+
+如果一个优化问题满足以上条件，它就拥有了凸优化问题的「良好」性质：
+
+* **全局最优性保证**：任何局部最优解都是全局最优解。这意味着一旦找到一个解，它就是最好的。
+* **高效可解性**：存在许多成熟且高效的算法（如内点法、牛顿法、梯度下降法等）可以找到凸优化问题的全局最优解。这些算法通常具有多项式时间复杂度。
+
+## 3.2 经典机器学习中的凸优化问题
+
+许多经典机器学习模型在特定形式下就是凸优化问题：
+
+* **线性回归与 L2 正则化 (Ridge Regression)**：最小化均方误差 (MSE) 加上参数 L2 范数的平方，这是一个无约束的凸优化问题。
+* **逻辑回归与 L2 正则化**：最小化负对数似然损失加上参数 L2 范数的平方，同样是凸优化问题。
+* **支持向量机 (SVM) 的原始问题**：最大化分类间隔，同时满足样本分类正确的约束，这是一个带不等式约束的二次规划问题，也是凸优化问题。
+
+## 3.3 KKT 条件
+
+在之前的学习中，我们初步介绍了拉格朗日乘子法和 KKT 条件作为求解一般约束优化问题的必要条件。快速回顾一下，我们构造拉格朗日函数：
+
+$$L(x, \lambda, \nu) = f_0(x) + \sum_{i=1}^m \lambda_i f_i(x) + \sum_{i=1}^p \nu_i h_i(x)$$
+
+其中 $\lambda_i$ 是与不等式约束相关的拉格朗日乘子，$\nu_i$ 是与等式约束相关的拉格朗日乘子。
+
+如果 $x^*$ 是一个局部最优解，并且满足某些正则性条件，那么必然存在 $\lambda^*$ 和 $\nu^*$，使得以下 **KKT 条件**成立：
+
+1. **驻点条件 (Stationarity)**：
+
+$$\nabla f_0(x^*) + \sum_{i=1}^m \lambda_i^* \nabla f_i(x^*) + \sum_{i=1}^p \nu_i^* \nabla h_i(x^*) = 0$$
+
+
+
+这在几何上意味着：目标函数的梯度与约束的法向量在最优点处处于严格平衡，任何进一步降低目标函数的尝试都会违反约束条件。
+&gt; *在约束边界处，目标函数的梯度恰好与约束的法向量方向相反（或线性相关），此时目标函数的下降方向正被约束边界「阻挡」。*
+
+
+2. **原问题可行性条件 (Primal Feasibility)**：$f_i(x^*) \le 0, \quad h_i(x^*) = 0$
+3. **对偶可行性条件 (Dual Feasibility)**：$\lambda_i^* \ge 0$
+4. **互补松弛条件 (Complementary Slackness)**：$\lambda_i^* f_i(x^*) = 0$
+这告诉我们，只有那些「紧绷」的约束（即 $f_i(x^*) = 0$）才会对最优解产生影响（即 $\lambda_i^* &gt; 0$）。那些「松弛」的约束意味着我们可以在那个方向上稍微移动而不触碰到边界，因此它们对应的乘子 $\lambda_i^* = 0$。
+
+## 3.4 Slater 条件
+
+对于凸优化问题，如果满足一些特殊的条件，那么 KKT 条件不仅是局部最优解的必要条件，更是**充要条件**。
+
+**Slater 条件**就是这些特殊条件中的一种：对于凸优化问题，若存在一个严格可行点 $x$，使得所有非仿射不等式约束严格成立（即 $f_i(x) &lt; 0$，不能取等号），而其他仿射约束正常满足，则称 Slater 条件成立。
+
+你可以把 Slater 条件理解为一种「非退化条件」或者「内部点条件」。它要求对于曲面状的（非仿射）约束，你的可行域不能仅仅是这些曲面的边界，而必须包含内部的「活动空间」。这一特性极大地简化了凸优化问题的求解，我们只要找到满足 KKT 条件的点，就找到了全局最优解。
+
+## 3.5 算法视角
+
+* **内点法 (Interior-Point Methods)** 等高效凸优化算法，就是基于 KKT 条件迭代求解的。
+* 在**支持向量机 (SVM)** 中，互补松弛条件 $\lambda_i^* f_i(x^*) = 0$ 对于识别「支持向量」至关重要：如果 $\lambda_i^* &gt; 0$，则 $f_i(x^*) = 0$，样本点位于分类超平面的边界上（即支持向量）；如果 $\lambda_i^* = 0$，则该样本点在分类边界内，不是支持向量。
+
+---
+
+# 四、拉格朗日对偶：从另一个角度看问题
+
+拉格朗日对偶理论是优化领域中最优雅、最强大的工具之一。它能将一个看似困难的问题转化为一个更容易解决的对偶问题，并能揭示原问题中隐藏的深刻结构。
+
+## 4.1 拉格朗日函数与对偶函数
+
+定义**拉格朗日对偶函数 (Lagrange Dual Function)** 为拉格朗日函数关于 $x$ 的下确界：
+
+$$g(\lambda, \nu) = \inf_{x \in D} L(x, \lambda, \nu) = \inf_{x \in D} \left( f_0(x) + \sum_{i=1}^m \lambda_i f_i(x) + \sum_{i=1}^p \nu_i h_i(x) \right)$$
+
+**对偶函数 $g(\lambda, \nu)$ 总是凹函数 (Concave Function)**，无论原始问题是否是凸的！这是一个非常强大的性质，因为它意味着最大化对偶函数本身就是一个极其标准的凸优化问题。
+
+## 4.2 几何视角：支撑超平面和下界
+
+对偶函数可以被看作是原函数及其约束的线性组合的下确界。直观地，你可以将对偶函数看作是一系列原函数图像的**支撑超平面**。每组 $(\lambda, \nu)$ 定义了一个支撑超平面，对偶函数的值就是这些超平面能够「抬升」到的最高位置，同时仍然保持在原函数图像的下方。
+
+对偶函数的一个直接应用是：**它提供原问题最优值 $p^*$ 的一个下界**。即 $g(\lambda, \nu) \le p^*$。
+
+## 4.3 弱对偶与强对偶
+
+我们定义**对偶问题 (Dual Problem)** 为：
+
+$$\max_{\lambda \ge 0, \nu} \quad g(\lambda, \nu)$$
+
+设其最优值为 $d^*$。
+
+* **弱对偶 (Weak Duality)**：$d^* \le p^*$ 总是成立。对偶问题的最优值总是小于或等于原问题的最优值。
+* **强对偶 (Strong Duality)**：在某些条件下（如满足 Slater 条件的凸优化问题），有 $d^* = p^*$。此时我们通过解决对偶问题就能获得原问题的最优解。
+
+## 4.4 物理视角与算法意义
+
+* **物理视角**：如果原问题是寻找弹簧系统在约束下的最小势能，那么拉格朗日乘子就可以理解为为了维持约束所施加的「反作用力」。对偶问题就是找到这些力的最大值。
+* **算法意义**：对偶问题往往更容易求解（可能变量更少，或变为无约束问题）。更重要的是，它为机器学习中的**核技巧 (Kernel Trick)** 奠定了数学基础。
+
+---
+
+# 五、非光滑优化：处理尖锐的损失函数
+
+在深度学习和机器学习的实践中，我们经常遇到在某些点不可微的凸函数，如 ReLU 激活函数在 $x=0$ 点不可微，L1 范数在 $x=0$ 点也不可微。传统的梯度下降无法直接应用。
+
+## 5.1 什么是次梯度 (Subgradient)？
+
+对于一个凸函数 $f(x)$，它的**次梯度 (Subgradient)** 是一个向量 $g$，满足对于定义域内的任意点 $y$，都有：
+
+$$f(y) \ge f(x) + g^\top (y - x)$$
+
+* 在光滑点，函数图像只有一个唯一的切平面，其余斜率就是梯度。
+* 在非光滑点（尖点/角点），可以有多个切平面「支撑」在函数图像下方。这些切平面的斜率集合就是**次梯度集合** $\partial f(x)$。
+
+例如，Lasso 回归中的 L1 正则化项 $\|w\|_1$ 在 $w=0$ 处不可微，使用次梯度方法就能有效促使模型参数变得稀疏。
+
+## 5.2 次梯度方法
+
+次梯度方法是梯度下降法的一个直接推广，迭代更新公式为：
+
+$$x^{(k+1)} = x^{(k)} - \alpha_k g^{(k)}$$
+
+其中 $g^{(k)}$ 是在 $x^{(k)}$ 点处的任意一个次梯度。次梯度方法简单易实现，但收敛速度较慢，且通常需要递减的步长 $\alpha_k$。
+
+## 5.3 近端算子与近端梯度方法
+
+对于可以分解为「光滑部分 + 非光滑部分」的目标函数（如 $f(x) + h(x)$），我们可以引入**近端算子 (Proximal Operator)**：
+
+$$\operatorname{prox}_{\alpha h}(x) = \operatorname*{arg\,min}_z \left( h(z) + \frac{1}{2\alpha}\|z - x\|_2^2 \right)$$
+
+近端算子旨在找到一个点 $z$，使得 $h(z)$ 较小，同时又尽量接近输入点 $x$。以 L1 范数为例，其近端算子是著名的**软阈值算子 (Soft-thresholding operator)**：
+
+$$S_{\alpha}(x) = \operatorname{sign}(x)\max(\lvert x \rvert - \alpha, 0)$$
+
+**近端梯度方法 (Proximal Gradient Method)** 的更新公式为：
+
+$$x^{(k+1)} = \operatorname{prox}_{\alpha h}\left(x^{(k)} - \alpha \nabla f(x^{(k)})\right)$$
+
+这相当于先对光滑部分做一次梯度下降，然后用近端算子对结果进行「修正」（例如将绝对值极小的参数直接收缩为 0，从而实现特征选择）。
+
+---
+
+# 六、机器学习中的应用
+
+## 6.1 支持向量机 (SVM) 的对偶解析
+
+* **原始问题**：寻找最大化分类间隔的超平面，是一个凸二次规划问题。
+* **对偶问题**：通过拉格朗日对偶，我们发现最优解只依赖于样本之间的内积 $x_i^T x_j$。
+* **核技巧 (Kernel Trick)**：将内积替换为核函数 $K(x_i, x_j) = \phi(x_i)^T \phi(x_j)$，我们就可以在无需显式计算高维特征的情况下，隐式地将数据映射到高维空间，优雅地解决非线性分类问题。
+
+## 6.2 正则化项中的凸优化思想
+
+* **L2 正则化 (Ridge)**：损失中加入 $\lambda \|w\|_2^2$，这是一个光滑凸函数，给梯度增加了一个「权重衰减」项，防止过拟合。
+* **L1 正则化 (Lasso)**：损失中加入 $\lambda \|w\|_1$，这是一个非光滑凸函数，它促使参数趋向于 $0$，实现稀疏性，提高可解释性。
+
+## 6.3 其他应用概述
+
+* **优化器理论**：Adam、RMSProp 等虽然优化非凸损失，但设计灵感常借鉴凸优化理论。
+* **网络剪枝与量化**：常被建模为带有稀疏性约束或整数约束的近似凸优化问题。
+* **对抗样本生成**：在给定扰动预算（如 Lp 范数约束的凸集）下最大化分类错误的优化问题。
+
+---
+
+# 七、总结
+
+1. **认识「凸」**：理解凸集和凸函数这些核心概念，它们是构建所有凸优化问题的基础。
+2. **驾驭「对偶」**：学习拉格朗日对偶理论，掌握如何将一个优化问题转化为其对偶形式，并理解弱对偶和强对偶的含义。
+3. **应对「非光滑」**：探讨在深度学习中常见的非光滑凸函数的优化方法——次梯度法和近端算法。
+4. **融会贯通**：虽然深度学习的核心优化问题是非凸的，但凸优化和对偶理论仍然是理解局部最优、泛化能力以及设计现代优化算法的核心**基石和参考框架**。
+
+ParseError:  Expected &#x27;EOF&#x27;, got &#x27;&amp;&#x27; at position 16: 
+\min_{x} \quad &amp;̲ f_0(x) \\
+\te…</span></math-display>
+ </prose-content> </article></main> <page-footer data-astro-cid-ju4pidww="true"><footer data-astro-cid-jo6i4kqk> <p data-astro-cid-jo6i4kqk>
+&copy; 2026 Kunpeng Chen </p> <ul data-astro-cid-o2gh7vpa> <li data-astro-cid-o2gh7vpa> <a href="https://github.com/SSSuperfriendly" data-icon-button target="_blank" rel="noopener noreferrer" aria-label="GitHub" title="GitHub" data-astro-cid-o2gh7vpa> <svg width="1em" height="1em" viewBox="0 0 24 24" aria-hidden="true" data-astro-cid-o2gh7vpa="true"><path fill="currentColor" d="M12 .297c-6.63 0-12 5.373-12 12c0 5.303 3.438 9.8 8.205 11.385c.6.113.82-.258.82-.577c0-.285-.01-1.04-.015-2.04c-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729c1.205.084 1.838 1.236 1.838 1.236c1.07 1.835 2.809 1.305 3.495.998c.108-.776.417-1.305.76-1.605c-2.665-.3-5.466-1.332-5.466-5.93c0-1.31.465-2.38 1.235-3.22c-.135-.303-.54-1.523.105-3.176c0 0 1.005-.322 3.3 1.23c.96-.267 1.98-.399 3-.405c1.02.006 2.04.138 3 .405c2.28-1.552 3.285-1.23 3.285-1.23c.645 1.653.24 2.873.12 3.176c.765.84 1.23 1.91 1.23 3.22c0 4.61-2.805 5.625-5.475 5.92c.42.36.81 1.096.81 2.22c0 1.606-.015 2.896-.015 3.286c0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" /></svg> </a> </li><li data-astro-cid-o2gh7vpa> <a href="https://x.com/peng_kun96266" data-icon-button target="_blank" rel="noopener noreferrer" aria-label="Twitter" title="Twitter" data-astro-cid-o2gh7vpa> <svg width="1em" height="1em" viewBox="0 0 24 24" aria-hidden="true" data-astro-cid-o2gh7vpa="true"><path fill="currentColor" d="M22.46 6c-.77.35-1.6.58-2.46.69c.88-.53 1.56-1.37 1.88-2.38c-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29c0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15c0 1.49.75 2.81 1.91 3.56c-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.2 4.2 0 0 1-1.93.07a4.28 4.28 0 0 0 4 2.98a8.52 8.52 0 0 1-5.33 1.84q-.51 0-1.02-.06C3.44 20.29 5.7 21 8.12 21C16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56c.84-.6 1.56-1.36 2.14-2.23" /></svg> </a> </li><li data-astro-cid-o2gh7vpa> <a href="mailto:kunpengchentj@gmail.com" data-icon-button target="_blank" rel="noopener noreferrer" aria-label="Email" title="Email" data-astro-cid-o2gh7vpa> <svg width="1em" height="1em" viewBox="0 0 24 24" aria-hidden="true" data-astro-cid-o2gh7vpa="true"><path fill="currentColor" fill-rule="evenodd" d="M3.172 5.172C2 6.343 2 8.229 2 12s0 5.657 1.172 6.828S6.229 20 10 20h4c3.771 0 5.657 0 6.828-1.172S22 15.771 22 12s0-5.657-1.172-6.828S17.771 4 14 4h-4C6.229 4 4.343 4 3.172 5.172M18.576 7.52a.75.75 0 0 1-.096 1.056l-2.196 1.83c-.887.74-1.605 1.338-2.24 1.746c-.66.425-1.303.693-2.044.693s-1.384-.269-2.045-.693c-.634-.408-1.352-1.007-2.239-1.745L5.52 8.577a.75.75 0 0 1 .96-1.153l2.16 1.799c.933.777 1.58 1.315 2.128 1.667c.529.34.888.455 1.233.455s.704-.114 1.233-.455c.547-.352 1.195-.89 2.128-1.667l2.159-1.8a.75.75 0 0 1 1.056.097" clip-rule="evenodd" /></svg> </a> </li><li data-astro-cid-o2gh7vpa> <a href="/blogs/rss.xml" data-icon-button target="_blank" rel="noopener noreferrer" aria-label="RSS" title="RSS" data-astro-cid-o2gh7vpa> <svg width="1em" height="1em" viewBox="0 0 24 24" aria-hidden="true" data-astro-cid-o2gh7vpa="true"><path fill="currentColor" fill-rule="evenodd" d="M3 10c0-3.771 0-5.657 1.172-6.828S7.229 2 11 2h2c3.771 0 5.657 0 6.828 1.172S21 6.229 21 10v4c0 3.771 0 5.657-1.172 6.828S16.771 22 13 22h-2c-3.771 0-5.657 0-6.828-1.172S3 17.771 3 14zm3 2c0-1.414 0-2.121.44-2.56C6.878 9 7.585 9 9 9h6c1.414 0 2.121 0 2.56.44c.44.439.44 1.146.44 2.56v4c0 1.414 0 2.121-.44 2.56c-.439.44-1.146.44-2.56.44H9c-1.414 0-2.121 0-2.56-.44C6 18.122 6 17.415 6 16zm1-6.75a.75.75 0 0 0 0 1.5h5a.75.75 0 0 0 0-1.5z" clip-rule="evenodd" /></svg> </a> </li> </ul> </footer></page-footer> </page-content> </page-grid> </body> </html>
