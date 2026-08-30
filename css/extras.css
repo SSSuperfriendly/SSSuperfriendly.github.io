@@ -42,6 +42,12 @@
   margin: 14px 0 0;
 }
 
+.about-more {
+  /* Align Read More to the same left edge as More News — the news container
+     is inset 20px (desktop: padding; mobile: margin). */
+  margin-left: 20px;
+}
+
 .news-content p {
   margin: 0 0 6px;
 }
