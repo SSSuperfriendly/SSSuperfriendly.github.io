@@ -105,8 +105,8 @@ const researchLineContent = {
   selected: {
     description: 'Selected projects on high-performance AI and AI systems.'
   },
-  'high-performance-ai': {
-    description: 'Making AI training and inference faster and more efficient.'
+  'spatial intelligence': {
+    description: 'Exploring the intersection of spatial reasoning and artificial intelligence.'
   },
   'ai-systems': {
     description: 'Designing AI systems and the infrastructure that runs them.'
