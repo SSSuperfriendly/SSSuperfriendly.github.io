@@ -9,7 +9,7 @@
     <meta name="author" content="Chen Kunpeng">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Kunpeng Chen's personal homepage: undergraduate at Tongji University (Guohao College), researching High-Performance AI and AI Systems.">
-    <meta name="deploy-sha" content="3e098b5a85c881fd7895ff83fa2cf7181bbd947d">
+    <meta name="deploy-sha" content="d70a9f029bab5ccbad6374dee8aa7586c1415c9a">
 <link rel="canonical" href="https://SSSuperfriendly.github.io/">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Kunpeng Chen">
@@ -34,6 +34,7 @@
   </head>
 
   <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
     <nav id="site-nav" class="site-nav" aria-label="Primary navigation">
       <div class="site-nav__inner">
         <a class="site-nav__brand" href="/#Top">
@@ -44,12 +45,12 @@
           <a href="/#Top">About Me</a>
           <a href="/#News">News</a>
           <a href="/research/" class="">Research</a>
-          <a href="/blogs/" class="">Blogs</a>
+          <a href="/blogs/">Blogs</a>
           <a href="/book/">Contact Me</a>
         </div>
       </div>
     </nav>
-    <main class="main-content">
+    <main class="main-content" id="main-content">
       <section id="Top" class="fade-in">
         <div class="bio-layout">
           <div class="bio-sidebar">
@@ -62,7 +63,7 @@
             </h1>
             <div class="bio-links" aria-label="Links">
               <a class="bio-link" href="/attaches/CV.pdf" target="_blank" rel="noopener noreferrer" title="CV" aria-label="CV (PDF)"><i class="fas fa-file-pdf" aria-hidden="true"></i></a>
-              <a class="bio-link" href="https://scholar.google.com/citations?user=YOUR_SCHOLAR_ID" target="_blank" rel="noopener noreferrer" title="Google Scholar" aria-label="Google Scholar"><i class="fas fa-graduation-cap" aria-hidden="true"></i></a>
+              <a class="bio-link" href="https://sssuperfriendly.github.io/" target="_blank" rel="noopener noreferrer" title="Google Scholar" aria-label="Google Scholar"><i class="fas fa-graduation-cap" aria-hidden="true"></i></a>
               <a class="bio-link" href="https://github.com/SSSuperfriendly" target="_blank" rel="noopener noreferrer" title="GitHub" aria-label="GitHub"><i class="fab fa-github" aria-hidden="true"></i></a>
               <a class="bio-link" href="https://x.com/peng_kun96266" target="_blank" rel="noopener noreferrer" title="Twitter" aria-label="Twitter"><i class="fab fa-x-twitter" aria-hidden="true"></i></a>
               <a class="bio-link" href="https://www.linkedin.com/in/kunpengchen" target="_blank" rel="noopener noreferrer" title="LinkedIn" aria-label="LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
@@ -128,12 +129,49 @@
             <button type="button" class="research-filter__btn" data-filter="ai-systems" aria-pressed="false">AI Systems</button>
           </div>
         </div>
-        <div class="research-line-intro" aria-live="polite" aria-hidden="true">
-          <p id="research-line-description" class="research-line-intro__description"></p>
-        </div>
         <div id="publications-container">
-          <!-- Publications are loaded at runtime from /data/publications.json -->
+        <div class="research-static--desktop">
+        <div class="paper-container fade-in delay-2 paper-container--no-image">
+          <div class="paper-sidebar">
+            <span class="insub"><strong>Coming&nbsp;Soon</strong></span>
+            
+          </div>
+          <div class="paper-main">
+            <span class="papertitle papertitle--placeholder">Interesting Ahead</span>
+            <p class="paper-authors"><u><strong>Kunpeng Chen</strong></u>,
+              and his Co-authors</p>
+          </div>
         </div>
+        <div class="paper-container fade-in delay-2">
+          <div class="paper-sidebar">
+            <span class="arxiv"><strong>arXiv&nbsp;2026</strong></span>
+            
+          </div>
+          <div class="paper-main">
+            <span class="papertitle">MeCeFO-v2: Efficient Fault-Tolerant Optimization for MoE Training</span>
+            
+          </div><div class="paper-image">
+            <img src='/images/mecefo-v2.png' alt="mecefo-v2">
+          </div>
+        </div></div>
+        <div class="research-static--mobile">
+        <div class="paper-card fade-in delay-2 paper-card--static paper-card--no-media">
+          
+          <div class="paper-card__body">
+            <p class="paper-card__title paper-card__title--placeholder">Interesting Ahead</p>
+            <p class="paper-card__meta">Coming Soon</p>
+          </div>
+        </div>
+        <div class="paper-card fade-in delay-2 paper-card--static">
+          <div class="paper-card__media">
+            <img src="/images/mecefo-v2.png" alt="MeCeFO-v2: Efficient Fault-Tolerant Optimization for MoE Training">
+          </div>
+          <div class="paper-card__body">
+            <p class="paper-card__title">MeCeFO-v2: Efficient Fault-Tolerant Optimization for MoE Training</p>
+            <p class="paper-card__meta">arXiv 2026</p>
+          </div>
+        </div></div>
+      </div>
       </section>
 
       <section id="Experiences" class="fade-in delay-5">
@@ -163,6 +201,7 @@
       </footer>
     </main>
 
+    <script src="/js/publications.js"></script>
     <script src="/js/main.js"></script>
   </body>
 </html>

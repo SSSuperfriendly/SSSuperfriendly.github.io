@@ -2,6 +2,10 @@
 // Nav links are written as /#Anchor so they work from any subpage:
 // if the anchor exists on the current page we scroll to it, otherwise we
 // navigate to the homepage and let the browser land on the anchor.
+//
+// Research rendering lives in publications.js (SitePublications) so the
+// build can write the default list into the page; this file only enhances
+// filtering, transitions and viewport re-rendering.
 
 var navScrollRafId = null;
 
@@ -27,6 +31,17 @@ function handleSiteNavScroll() {
   });
 }
 
+function isPlainLeftClick(event) {
+  // Let the browser keep its own conventions: Cmd/Ctrl/Shift/middle click
+  // mean "open in a new tab / window", so those must not be intercepted.
+  return event.button === 0
+    && !event.metaKey
+    && !event.ctrlKey
+    && !event.shiftKey
+    && !event.altKey
+    && !event.defaultPrevented;
+}
+
 function initSiteNav() {
   var nav = document.getElementById('site-nav');
   updateSiteNav();
@@ -38,6 +53,9 @@ function initSiteNav() {
 
   nav.querySelectorAll('a[href^="#"], a[href^="/#"]').forEach(function(link) {
     link.addEventListener('click', function(event) {
+      if (!isPlainLeftClick(event)) {
+        return;
+      }
       var href = link.getAttribute('href');
       var hash = href.indexOf('#') >= 0 ? href.slice(href.indexOf('#')) : '';
       var isHomeAnchor = href.charAt(0) === '/';
@@ -79,10 +97,10 @@ function initSiteNav() {
 initSiteNav();
 
 // ================================================================
-// Research section: publications loaded at runtime from /data/.
-// Ported from the template site (HaoquanZhang) main.js, adapted to
-// this site: absolute data URLs, filters matching the user's own
-// research topics, and the nav helpers left to the code above.
+// Research section: the default "Favorite" list is already in the HTML
+// (written at build time), so a missing script or a failed request cannot
+// empty the section. This block fetches the data to power the topic
+// filters and the mobile/desktop switch.
 // ================================================================
 
 let authorLinks = {};
@@ -90,7 +108,6 @@ let allPublications = [];
 let currentPublicationLayoutMode = 'desktop';
 let researchResizeRafId = null;
 let researchTransitionTimer = null;
-const showResearchLineDescriptions = false;
 let placeholderTitleTimer = null;
 let activePlaceholderTitle = null;
 
@@ -100,18 +117,6 @@ const placeholderTitleIdeas = [
   'AI for Science',
   'AI for Sustainability'
 ];
-
-const researchLineContent = {
-  selected: {
-    description: 'Selected projects on high-performance AI and AI systems.'
-  },
-  'spatial intelligence': {
-    description: 'Exploring the intersection of spatial reasoning and artificial intelligence.'
-  },
-  'ai-systems': {
-    description: 'Designing AI systems and the infrastructure that runs them.'
-  }
-};
 
 function getPublicationLayoutMode() {
   return window.innerWidth <= 600 ? 'mobile' : 'desktop';
@@ -147,12 +152,21 @@ function handleResearchResize() {
   });
 }
 
-// Function to load author links
+async function fetchJSON(url) {
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(url + ' → HTTP ' + response.status);
+  }
+  return response.json();
+}
+
+// Author links are a pure enhancement: if they fail to load the names simply
+// render without links, so a failure here never takes the list down.
 async function loadAuthorLinks() {
   try {
-    const response = await fetch('/data/authors.json');
-    authorLinks = await response.json();
+    authorLinks = await fetchJSON('/data/authors.json');
   } catch (error) {
+    authorLinks = {};
     console.error('Error loading author links:', error);
   }
 }
@@ -165,18 +179,33 @@ function publicationMatchesFilter(publication, filter) {
   return topics.includes(filter);
 }
 
-function renderPublicationList(publications) {
+function renderPublicationList(publications, filter) {
   const container = document.getElementById('publications-container');
   if (!container) {
     return;
   }
 
   stopPlaceholderTitleCycle(false);
-  container.innerHTML = publications
-    .map(function(publication) {
-      return createPublicationHTML(publication);
-    })
-    .join('');
+  clearResearchStatus();
+  const render = window.SitePublications;
+  const mode = getPublicationLayoutMode();
+
+  // First paint: the build already wrote this exact list into the page. Adopt
+  // those nodes instead of re-rendering them, so the entrance animation does
+  // not play twice and the section never blanks out between paints.
+  const wrapper = filter === 'selected'
+    ? container.querySelector('.research-static--' + (mode === 'mobile' ? 'mobile' : 'desktop'))
+    : null;
+  if (wrapper && render) {
+    const nodes = Array.from(wrapper.childNodes);
+    container.replaceChildren(...nodes);
+    initPlaceholderTitleEffects(container);
+    return;
+  }
+
+  container.innerHTML = render
+    ? render.renderPublications(publications, authorLinks, mode)
+    : '';
   initPlaceholderTitleEffects(container);
 }
 
@@ -202,6 +231,12 @@ function stopPlaceholderTitleCycle(restoreTitle) {
 }
 
 function startPlaceholderTitleCycle(title) {
+  // The typing effect is decoration only — with reduced motion requested the
+  // title is left as the complete static string instead of being animated.
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    return;
+  }
+
   stopPlaceholderTitleCycle(false);
   title.textContent = title.dataset.originalTitle;
   title.classList.remove('is-typing');
@@ -285,33 +320,54 @@ function updateResearchFilterIndicator() {
   indicator.style.width = buttonRect.width + 'px';
 }
 
+// Accessible load-failure notice. It is added above the (unchanged) list, so
+// the publications that were already in the page stay readable.
+function clearResearchStatus() {
+  const container = document.getElementById('publications-container');
+  if (!container) {
+    return;
+  }
+  const status = container.querySelector('.research-status');
+  if (status) {
+    status.remove();
+  }
+}
+
+function showResearchError(message) {
+  const container = document.getElementById('publications-container');
+  if (!container) {
+    return;
+  }
+  clearResearchStatus();
+
+  const status = document.createElement('div');
+  status.className = 'research-status';
+  status.setAttribute('role', 'status');
+
+  const text = document.createElement('p');
+  text.className = 'research-status__text';
+  text.textContent = message;
+  status.appendChild(text);
+
+  const retry = document.createElement('button');
+  retry.type = 'button';
+  retry.className = 'button research-status__retry';
+  retry.textContent = 'Retry';
+  retry.addEventListener('click', function() {
+    loadResearchData();
+  });
+  status.appendChild(retry);
+
+  container.prepend(status);
+}
+
 function updateResearchContent(normalized, filteredPublications) {
   const container = document.getElementById('publications-container');
-  const lineContent = researchLineContent[normalized] || researchLineContent.selected;
-  const intro = document.querySelector('.research-line-intro');
-  const introDescription = document.getElementById('research-line-description');
-
-  if (intro && introDescription) {
-    const showIntro = showResearchLineDescriptions && normalized !== 'selected';
-    introDescription.textContent = lineContent.description;
-    intro.classList.toggle('is-visible', showIntro);
-    intro.setAttribute('aria-hidden', showIntro ? 'false' : 'true');
-
-    if (showIntro) {
-      introDescription.classList.remove('is-entering');
-      void introDescription.offsetWidth;
-      introDescription.classList.add('is-entering');
-    }
-  }
-
-  renderPublicationList(filteredPublications);
+  renderPublicationList(filteredPublications, normalized);
 
   if (container) {
     void container.offsetWidth;
     container.classList.remove('is-leaving');
-  }
-  if (intro) {
-    intro.classList.remove('is-leaving');
   }
 }
 
@@ -325,7 +381,6 @@ function setResearchFilter(filter, skipTransition) {
   });
 
   const container = document.getElementById('publications-container');
-  const intro = document.querySelector('.research-line-intro');
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const shouldFadeOut = !skipTransition
     && !prefersReducedMotion
@@ -340,12 +395,6 @@ function setResearchFilter(filter, skipTransition) {
 
   requestAnimationFrame(updateResearchFilterIndicator);
 
-  try {
-    localStorage.setItem('research-filter', normalized);
-  } catch (error) {
-    // Ignore storage errors in private browsing.
-  }
-
   if (researchTransitionTimer !== null) {
     clearTimeout(researchTransitionTimer);
     researchTransitionTimer = null;
@@ -357,9 +406,6 @@ function setResearchFilter(filter, skipTransition) {
   }
 
   container.classList.add('is-leaving');
-  if (intro && intro.classList.contains('is-visible')) {
-    intro.classList.add('is-leaving');
-  }
 
   researchTransitionTimer = setTimeout(function() {
     researchTransitionTimer = null;
@@ -369,10 +415,11 @@ function setResearchFilter(filter, skipTransition) {
 
 function initResearchFilter() {
   // Always default to Favorite ("selected") on every page load / refresh —
-  // the last-selected filter is intentionally NOT restored from localStorage.
-  const savedFilter = 'selected';
+  // the last-selected filter is intentionally NOT remembered.
+  const defaultFilter = 'selected';
 
   document.querySelectorAll('.research-filter__btn').forEach(function(button) {
+    button.disabled = false;
     button.addEventListener('click', function() {
       setResearchFilter(button.dataset.filter);
     });
@@ -381,192 +428,40 @@ function initResearchFilter() {
   currentPublicationLayoutMode = getPublicationLayoutMode();
   window.addEventListener('resize', handleResearchResize);
 
-  setResearchFilter(savedFilter, true);
+  setResearchFilter(defaultFilter, true);
 }
 
-// Function to render publications from JSON data
-async function renderPublications() {
+// Load the data behind the topic filters. The page already shows the default
+// list, so this only ever upgrades it; on failure the built-in list stays and
+// an accessible retry notice is shown.
+async function loadResearchData() {
+  const container = document.getElementById('publications-container');
+  if (!container) {
+    return;
+  }
+
   try {
-    await loadAuthorLinks();
-    const response = await fetch('/data/publications.json');
-    allPublications = await response.json();
+    const results = await Promise.all([
+      loadAuthorLinks(),
+      fetchJSON('/data/publications.json'),
+    ]);
+    allPublications = results[1];
     initResearchFilter();
   } catch (error) {
     console.error('Error loading publications:', error);
+    allPublications = [];
+    showResearchError('Could not load the publication list.');
+    document.querySelectorAll('.research-filter__btn').forEach(function(button) {
+      button.disabled = true;
+    });
   }
 }
 
-// Primary link for mobile paper cards: leaderboard → project → paper
-function getPublicationCardLink(links) {
-  if (!links) {
-    return '';
-  }
-  return links.leaderboard || links.project || links.paper || '';
-}
-
-// Primary link for desktop title: project → paper
-function getPublicationTitleLink(links) {
-  if (!links) {
-    return '';
-  }
-  return links.project || links.paper || '';
-}
-
-function createPublicationHTMLMobile(pub) {
-  const cardLink = getPublicationCardLink(pub.links);
-  const tag = cardLink ? 'a' : 'div';
-  const hrefAttr = cardLink
-    ? ` href="${cardLink}" target="_blank" rel="noopener noreferrer"`
-    : '';
-  const staticClass = cardLink ? '' : ' paper-card--static';
-
-  const mediaHTML = pub.image
-    ? `<div class="paper-card__media">
-            <img src="${pub.image}" alt="${pub.title}">
-          </div>`
-    : '';
-
-  return `
-        <${tag}${hrefAttr} class="paper-card fade-in delay-2${staticClass}${pub.image ? '' : ' paper-card--no-media'}">
-          ${mediaHTML}
-          <div class="paper-card__body">
-            <p class="paper-card__title${pub.isPlaceholder ? ' paper-card__title--placeholder' : ''}">${pub.title}</p>
-            <p class="paper-card__meta">${pub.venue}</p>
-          </div>
-        </${tag}>`;
-}
-
-// Function to create HTML for a single publication (desktop layout)
-function createPublicationHTMLDesktop(pub) {
-  // Generate authors string with automatic links
-  let authorsHTML = '';
-  pub.authors.forEach(function(author, index) {
-    let authorName = author.name;
-
-    // Check if author has a homepage link
-    const authorLink = authorLinks[authorName];
-    if (authorLink && authorLink !== '') {
-      authorName = `<a href="${authorLink}" target="_blank">${authorName}</a>`;
-    }
-
-    if (author.isHighlight) {
-      authorName = `<u><strong>${authorName}</strong></u>`;
-    }
-
-    if (author.isCoFirst) {
-      authorName += '*';
-    }
-
-    authorsHTML += authorName;
-
-    if (index < pub.authors.length - 1) {
-      authorsHTML += ',\n              ';
-    }
-  });
-
-  // Collect links with display text, then sort by text length descending
-  let linkItems = [];
-  for (const [linkType, url] of Object.entries(pub.links)) {
-    if (url && url !== '') {
-      let linkText = '';
-      switch (linkType) {
-        case 'paper': linkText = 'Paper'; break;
-        case 'code': linkText = 'Code'; break;
-        case 'project': linkText = 'Project'; break;
-        case 'demo': linkText = 'Demo'; break;
-        case 'benchmark': linkText = 'Benchmark'; break;
-        default: linkText = linkType.charAt(0).toUpperCase() + linkType.slice(1);
-      }
-      linkItems.push({ url: url, text: linkText });
-    }
-  }
-  if (pub.misc && pub.misc.text && pub.misc.link && pub.misc.link !== '') {
-    linkItems.push({ url: pub.misc.link, text: pub.misc.text, isMisc: true });
-  }
-  linkItems.sort(function(a, b) {
-    return b.text.length - a.text.length;
-  });
-
-  const sidebarLinksHTML = linkItems.map(function(item) {
-    const cls = item.isMisc ? 'button misc-button' : 'button';
-    const target = item.isMisc ? ' target="_blank"' : '';
-    return `<a href="${item.url}" class="${cls}"${target}>${item.text}</a>`;
-  }).join('\n            ');
-
-  const authorsParagraphHTML = authorsHTML
-    ? `<p class="paper-authors">${authorsHTML}</p>`
-    : '';
-
-  const venueNoBreak = pub.venue.replace(/\s/g, '&nbsp;');
-  let venueText = venueNoBreak;
-
-  // Keep Spotlight on a new line for desktop.
-  if (/neurips/i.test(pub.venue) && /spotlight/i.test(pub.venue)) {
-    venueText = venueNoBreak
-      .replace(/&nbsp;\(Spotlight\)/i, '<br>(Spotlight)')
-      .replace(/&nbsp;Spotlight/i, '<br>Spotlight');
+// Run when DOM is loaded — but only on pages that actually have the module.
+if (document.getElementById('publications-container')) {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadResearchData);
   } else {
-    venueText = venueNoBreak.replace(/&nbsp;(\([^)]+\))/, '<br>$1');
+    loadResearchData();
   }
-
-  const primaryTitleLink = getPublicationTitleLink(pub.links);
-  const titleClass = `papertitle${pub.isPlaceholder ? ' papertitle--placeholder' : ''}`;
-  const titleHTML = primaryTitleLink
-    ? `<a href="${primaryTitleLink}" class="${titleClass}" target="_blank" rel="noopener noreferrer">${pub.title}</a>`
-    : `<span class="${titleClass}">${pub.title}</span>`;
-
-  const highlightsHTML = createHighlightsHTML(pub.highlights);
-  const imageHTML = pub.image
-    ? `<div class="paper-image">
-            <img src='${pub.image}' alt="${pub.id}">
-          </div>`
-    : '';
-
-  return `
-        <div class="paper-container fade-in delay-2${pub.image ? '' : ' paper-container--no-image'}">
-          <div class="paper-sidebar">
-            <span class="${pub.venueType}"><strong>${venueText}</strong></span>
-            ${sidebarLinksHTML}
-          </div>
-          <div class="paper-main">
-            ${titleHTML}
-            ${authorsParagraphHTML}
-          </div>${imageHTML}${highlightsHTML}
-        </div>`;
-}
-
-function createHighlightsHTML(highlights) {
-  if (!Array.isArray(highlights) || highlights.length === 0) {
-    return '';
-  }
-
-  const items = highlights
-    .map(function(item) {
-      return `<li>${item}</li>`;
-    })
-    .join('\n              ');
-
-  return `
-          <div class="paper-aside">
-            <ul class="paper-highlights">
-              ${items}
-            </ul>
-          </div>`;
-}
-
-function createPublicationHTML(pub) {
-  if (window.innerWidth <= 600) {
-    return createPublicationHTMLMobile(pub);
-  }
-  return createPublicationHTMLDesktop(pub);
-}
-
-// Run when DOM is loaded
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", function() {
-    renderPublications();
-  });
-} else {
-  // DOM already loaded, run now
-  renderPublications();
 }
