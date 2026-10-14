@@ -298,6 +298,26 @@
   font-size: 0.9em;
 }
 
+/* ---------------------------------------------------------- hit counter */
+
+/* EasyCounter visitor counter under the copyright line (homepage footer
+   only). The service returns a small image; center it and let it shrink on
+   narrow screens so it can never overflow or overlap the text above. */
+.footer-counter {
+  margin: 8px 0 0;
+  padding: 0;
+  text-align: center;
+  line-height: 0;
+}
+
+.hit-counter {
+  display: inline-block;
+  max-width: 100%;
+  height: auto;
+  vertical-align: middle;
+  border: 0;
+}
+
 /* ----------------------------------------------------------------- 404 */
 
 .not-found {
