@@ -300,21 +300,27 @@
 
 /* ---------------------------------------------------------- hit counter */
 
-/* EasyCounter visitor counter under the copyright line (homepage footer
-   only). The service returns a small image; center it and let it shrink on
-   narrow screens so it can never overflow or overlap the text above. */
-.footer-counter {
-  margin: 8px 0 0;
-  padding: 0;
-  text-align: center;
-  line-height: 0;
+/* The copyright line and the EasyCounter visitor counter (homepage footer
+   only) sit side by side on one row. `flex-shrink: 0` keeps the copyright
+   text intact and lets the counter image give way instead, so the two can
+   never wrap onto a second line or overflow the viewport. */
+.footer-text {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.footer-text .copyright {
+  flex-shrink: 0;
 }
 
 .hit-counter {
-  display: inline-block;
-  max-width: 100%;
+  display: block;
+  min-width: 0;
+  max-width: min(170px, 42vw);
   height: auto;
-  vertical-align: middle;
   border: 0;
 }
 
