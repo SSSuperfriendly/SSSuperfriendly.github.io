@@ -1,0 +1,173 @@
+\documentclass[10pt,letterpaper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[default]{raleway}
+\usepackage[letterpaper,top=0.55in,bottom=0.55in,left=0.55in,right=0.55in]{geometry}
+\usepackage{paracol}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+\usepackage{array}
+\usepackage[none]{hyphenat}
+\usepackage{ragged2e}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlength{\columnsep}{1.25em}
+\columnratio{0.30}
+\emergencystretch=1.6em
+\tolerance=1800
+\hyphenpenalty=8000
+\exhyphenpenalty=8000
+
+\definecolor{maincol}{RGB}{45,50,90}
+\definecolor{darkcol}{RGB}{55,55,55}
+\definecolor{lightcol}{RGB}{243,243,243}
+
+\newcommand{\sectiontitle}[1]{%
+  \vspace{12pt}
+  {\large\bfseries\textcolor{darkcol}{\MakeUppercase{#1}}}\par
+  \textcolor{maincol}{\rule{0.18\linewidth}{1.5pt}}\par
+  \vspace{4pt}
+}
+
+\newcommand{\sideitem}[1]{%
+  {\small\RaggedRight #1\par}\vspace{4.5pt}
+}
+
+\newcommand{\entry}[4]{%
+  {\normalsize\bfseries #1}\par
+  \begin{tabular*}{\linewidth}{@{}>{\RaggedRight\arraybackslash}p{0.74\linewidth}@{\extracolsep{\fill}}>{\RaggedLeft\arraybackslash}p{0.22\linewidth}@{}}
+    {\small\textcolor{darkcol}{#3}} & {\footnotesize\textcolor{maincol}{#2}} \\
+  \end{tabular*}\par
+  {\small\RaggedRight #4\par}\vspace{6pt}
+}
+
+\newcommand{\eduentry}[4]{%
+  {\normalsize\bfseries #1}\par
+  \begin{tabular*}{\linewidth}{@{}>{\RaggedRight\arraybackslash}p{0.74\linewidth}@{\extracolsep{\fill}}>{\RaggedLeft\arraybackslash}p{0.22\linewidth}@{}}
+    {\small\textcolor{darkcol}{#2}} & {\footnotesize\textcolor{maincol}{#3}} \\
+  \end{tabular*}\par
+  {\small\RaggedRight #4\par}\vspace{6pt}
+}
+
+\newcommand{\bullets}[1]{%
+  \RaggedRight
+  \begin{itemize}[leftmargin=1.1em,topsep=1.8pt,itemsep=2.2pt,parsep=0pt,partopsep=0pt]
+    #1
+  \end{itemize}
+}
+
+\begin{document}
+\begin{paracol}{2}
+
+\begin{leftcolumn}
+\sectiontitle{Contact}
+\sideitem{\textbf{Kunpeng Chen}}
+\sideitem{Shanghai, China}
+\sideitem{\href{mailto:chenkunpeng@tongji.edu.cn}{chenkunpeng@tongji.edu.cn}}
+\sideitem{(+86) 13838610836}
+
+\sectiontitle{Research Interests}
+\sideitem{Spatial Intelligence}
+\sideitem{AI for Sustainability}
+\sideitem{AI Systems}
+
+\sectiontitle{Technical Skills}
+\sideitem{\textbf{Programming:} Python, C++, SQL, Java}
+\sideitem{\textbf{ML:} PyTorch, MindSpore,\\YOLO, MySQL, Neo4j, MATLAB}
+\sideitem{\textbf{Systems:} Flask, React, LaTeX}
+
+\sectiontitle{Honors}
+\sideitem{National Scholarship}
+\sideitem{Huawei Scholarship}
+\sideitem{National Encouragement Scholarship}
+\sideitem{Tang Zhongying Scholarship}
+\sideitem{Outstanding Student}
+\sideitem{Outstanding Student Leader}
+
+\sectiontitle{Languages}
+\sideitem{Chinese (native)}
+\sideitem{English (CET-4 / CET-6)}
+
+\sectiontitle{Leadership}
+\sideitem{\textbf{Tongji University Academic Development}\\
+\textbf{and Guidance Association}\\
+Head, Jun 2024 -- Jun 2025}
+
+\end{leftcolumn}
+
+\begin{rightcolumn}
+\colorbox{maincol}{%
+  \parbox{\dimexpr\linewidth-2\fboxsep\relax}{%
+    \vspace{15pt}
+    \centering
+    {\fontsize{24}{26}\selectfont\color{white}\textbf{KUNPENG CHEN}}\par
+    \vspace{4pt}
+    {\normalsize\color{white}B.Eng. Candidate in Computer Science and Technology}\par
+    \vspace{3pt}
+    {\small\color{white}Interested in Spatial Intelligence, Multimodal Generative AI}
+    \vspace{15pt}
+  }%
+}
+
+\sectiontitle{Education}
+\eduentry
+  {Tongji University | Guohao College}
+  {B.Eng. in Computer Science and Technology}
+  {Sep 2023 -- Jun 2027}
+  {Selected coursework: Discrete Mathematics, Data Structures, Algorithms, Computer Organization, Database Systems, and Artificial Intelligence.}
+
+\sectiontitle{Research Experience}
+\entry
+  {Cross-Modal Multi-Agent Research}{Mar 2026 -- Oct 2026}
+  {Scientific Intelligence ``Hundred Groups, Hundred Projects''}
+  {\bullets{
+    \item Conducting ongoing research on cross-modal multi-agent coordination and benchmark design.
+    \item Selected as the only AI4Environment project in Shanghai within the 2025 Scientific Intelligence ``Hundred Groups, Hundred Projects'' Special Program.
+  }}
+
+\entry
+  {Extending MeCeFO to Additional Architectures}{Mar 2026 -- Jun 2026}
+  {Follow-up study to MeCeFO (NeurIPS 2025)}
+  {\bullets{
+    \item Investigating whether MeCeFO-style fault-tolerant optimization remains effective on Mixture-of-Experts (MoE) architectures.
+    \item Studying robustness-efficiency trade-offs under alternative architectures and distributed training conditions.
+  }}
+
+\entry
+  {Trust-Aware Federated Learning for Heterogeneous Edge Systems}{Mar 2025 -- Mar 2026}
+  {Core Member}
+  {\bullets{
+    \item Designed a lightweight federated learning framework for heterogeneous edge networks under data drift and poisoning attacks.
+    \item Proposed a trust-topology algorithm based on gradient cosine similarity to isolate anomalous clients and reduce aggregation bias under Non-IID data.
+  }}
+
+\entry
+  {Tianyan Shiju: Vision-based Object Recognition for Building Load Survey}{Jan 2024 -- Apr 2025}
+  {Project Lead}
+  {\bullets{
+    \item Led a project combining VR workflows, civil-engineering research, large models, databases, and YOLOv8-based scene object detection for building live-load investigation.
+    \item Developed a high-precision survey method for structural safety assessment and smart-city maintenance, and filed one software copyright application.
+  }}
+
+\end{rightcolumn}
+\end{paracol}
+
+\vspace*{\fill}
+\noindent\makebox[\textwidth][c]{%
+  \colorbox{maincol}{%
+    \parbox{\dimexpr1\textwidth-1\fboxsep\relax}{%
+      \vspace{32pt}
+      \centering
+      {\normalsize\color{white}\textit{Make the most of the springtime of life.}}\par
+      \vspace{8pt}
+      {\large\color{white}\href{https://sssuperfriendly.github.io/}{sssuperfriendly.github.io}}\par
+      \vspace{32pt}
+    }%
+  }%
+}
+
+\end{document}
