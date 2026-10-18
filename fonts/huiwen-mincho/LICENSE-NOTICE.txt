@@ -1,0 +1,16 @@
+汇文明朝体 / Huiwen Mincho (font-family: "Huiwen-mincho")
+Version 1.00 — Copyright (c) 特里王 (TerrWang)
+
+Source:   https://fonts.zeoseven.com/items/256/
+License:  https://zhuanlan.zhihu.com/p/344103391
+
+License summary (from the font page, 2026-10):
+  - Commercial use ................. allowed
+  - Embedding in web projects ...... allowed
+  - Redistribution (non-profit) .... allowed
+  - Modification / derivatives .... allowed (must not use the reserved font name)
+  Conditions: the copyright notice must not be removed, and a copy of the
+  license must accompany redistribution; attribution is recommended.
+
+This directory is a self-hosted redistribution for this website. The font
+files were obtained from ZeoSeven's FontsAPI and split by cn-font-split.
